@@ -858,6 +858,7 @@ function renderNewsFeed(){
         '<div><div class="nf-post-name">' + p.name + '</div><div class="nf-post-meta">' + p.time + '</div></div>' +
         badge +
       '</div>' +
+      (p.img ? '<img class="nf-post-img" src="' + p.img + '" alt="' + (p.alt || '') + '" loading="lazy">' : '') +
       '<div class="nf-post-body">' + p.body + '</div>' +
       '<div class="nf-post-actions">' +
         '<button class="' + (liked?'liked':'') + '" onclick="nfLike(' + p.id + ')">\u2665 ' + (p.likes + (liked?1:0)) + '</button>' +
@@ -941,12 +942,12 @@ function renderHomeGivingHistory(){
 }
 renderHomeGivingHistory();
 
-/* V1: size the home tile rows to the tiles they actually show (wide tiles take a row of their own). */
+/* V1: rows with fewer than four tiles keep the grid's tile size; mark them so empty cells stay white. */
 function fitHomeGrids(){
   document.querySelectorAll('#prospectTiles, #openDafModule').forEach(function(el){
     var g = el.id === 'openDafModule' ? el.parentElement : el;
     var n = Array.prototype.filter.call(g.children, function(c){ return !c.classList.contains('panel-wide') && c.style.display !== 'none'; }).length;
-    if (n > 0 && n < 4){ g.classList.add('pg-fill'); g.style.setProperty('--pg-n', n); }
+    if (n > 0 && n < 4) g.classList.add('pg-short');
   });
 }
 fitHomeGrids();

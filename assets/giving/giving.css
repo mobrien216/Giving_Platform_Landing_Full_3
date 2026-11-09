@@ -1550,8 +1550,18 @@ body.hero-view:not(.scrolled) .tb-cta .garden-mini-dots span.done{background:var
   .panel-wide .p-label{margin-top:14px;}
 }
 
-/* V1: rows with fewer tiles fill the width instead of leaving empty grey cells.
-   .pg-fill sizes columns to the tiles it holds (set by assets/giving/app.js). */
-@media (min-width:900px){
-  .pgrid.pg-fill{grid-template-columns:repeat(var(--pg-n,4),1fr);}
-}
+/* V1: rows with fewer than four tiles keep the four-column grid (same tile size as the
+   news row), and the leftover cells stay white instead of showing the grey grid lines.
+   .pg-short is set by assets/giving/app.js (fitHomeGrids). */
+.pgrid.pg-short{background:transparent;border-bottom:0;}
+.pgrid.pg-short > .panel{box-shadow:0 0 0 1px var(--line);}
+
+/* V1: story tiles use photos; text is always white on a dark scrim so it reads on any image. */
+.panel-story .ps-photo{background-size:cover;background-repeat:no-repeat;}
+.panel-story::after{background:linear-gradient(to top,rgba(11,46,31,.92) 0%,rgba(11,46,31,.6) 38%,rgba(11,46,31,.1) 72%,rgba(11,46,31,0) 100%) !important;}
+.panel-story:hover::after{background:linear-gradient(to top,rgba(11,46,31,.95) 0%,rgba(11,46,31,.68) 42%,rgba(11,46,31,.16) 76%,rgba(11,46,31,0) 100%) !important;}
+.pgrid .panel-story .ps-body,.pgrid .panel-story .s-title,.pgrid .panel-story .s-tag,.pgrid .panel-story .ps-kicker{color:#fff !important;text-shadow:0 1px 3px rgba(0,0,0,.35);}
+.panel-story .s-tag{opacity:.92;}
+
+/* V1: photos in News Feed posts */
+.nf-post-img{display:block;width:100%;aspect-ratio:16/9;max-height:320px;object-fit:cover;border-radius:var(--r,4px);margin:12px 0 10px;}
