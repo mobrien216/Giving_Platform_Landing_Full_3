@@ -25,7 +25,7 @@ function npCell(kick, color, title, sub, onclick, meta){
     + (meta ? '<div class="pc-sub" style="font-family:var(--f-ledger);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:8px;">' + meta + '</div>' : '')
     + '</button>';
 }
-POPUPS.nonprofit = {k:'Non-profit Partners', t:'What are you looking for?', h:function(){
+POPUPS.nonprofit = {k:'Nonprofit Partners', t:'What are you looking for?', h:function(){
   return '<div class="pop-pad"><p class="lede">Are you looking to access the <b>Grantee Portal</b>, your <b>organizational fund account</b>, or something else?</p></div>'
     + '<div class="pop-grid" style="grid-template-columns:1fr;">'
     + npCell('Grants', 'var(--moss)', 'Grantee Portal', 'Apply for a grant, submit a report, or check on an application.', 'openGranteePortal()', GRANTEE_PORTAL_URL ? 'Opens the Grantee Portal ↗' : 'Grantee Portal · opens separately ↗')
@@ -34,7 +34,7 @@ POPUPS.nonprofit = {k:'Non-profit Partners', t:'What are you looking for?', h:fu
     + '</div>'
     + '<div class="pop-pad" style="padding-top:16px;"><p style="font-size:11.5px;color:var(--ink-3);">Grant applications and reporting live in the Grantee Portal. Organizational fund balances and statements live in the Giving Portal.</p></div>';
 }};
-POPUPS.nonprofitother = {k:'Non-profit Partners', t:'How can we help?', h:function(){
+POPUPS.nonprofitother = {k:'Nonprofit Partners', t:'How can we help?', h:function(){
   var topics = ['Becoming a grantee','Starting an organizational fund','A question for a program officer','Partnership or media','Something else'];
   return '<div class="pop-pad"><p class="lede">Tell us a little about what you need and the right person on our team will get back to you.</p>'
     + '<div class="f-row" style="margin-top:16px;"><label>What’s this about?</label><div class="chip-row" id="npTopic">' + topics.map(function(t,i){ return '<button class="chip' + (i===0?' sel':'') + '" onclick="chipPick(this)">' + t + '</button>'; }).join('') + '</div></div>'

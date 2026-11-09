@@ -1,9 +1,9 @@
 {
-  "name": "tcf-digital-prototype",
+  "name": "tcf-giving-platform-v1",
   "private": true,
   "description": "Cleveland Foundation digital experience prototype (static site). No dependencies.",
   "scripts": {
-    "build": "node scripts/stamp-assets.js && node scripts/build-pages.js",
+    "build": "node scripts/build-popup-css.js && node scripts/stamp-assets.js && node scripts/build-pages.js",
     "check": "node scripts/stamp-assets.js --check && node scripts/build-pages.js --check",
     "serve": "python -m http.server 8000"
   }

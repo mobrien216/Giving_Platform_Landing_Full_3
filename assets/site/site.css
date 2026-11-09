@@ -1,0 +1,32 @@
+/* V1 landing page — additions on top of application.css (the product team's stylesheet).
+   application.css is copied as-is from the staging build; keep page-specific tweaks here. */
+
+/* Brand fonts, self-hosted from assets/fonts (application.css expects these family names). */
+@font-face{font-family:"Paralucent";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/paralucent-bold.woff2") format("woff2");}
+@font-face{font-family:"Source Sans Pro";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/source-sans-pro-regular.woff2") format("woff2");}
+@font-face{font-family:"Source Sans Pro";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/source-sans-pro-italic.woff2") format("woff2");}
+@font-face{font-family:"Source Sans Pro";font-style:normal;font-weight:600;font-display:swap;src:url("../fonts/source-sans-pro-semibold.woff2") format("woff2");}
+@font-face{font-family:"Source Sans Pro";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/source-sans-pro-bold.woff2") format("woff2");}
+
+/* The Log in button sits in the header next to Give Now. */
+.site-header nav .btn{white-space:nowrap;}
+.site-header .nav-link{background:none;border:0;cursor:pointer;font:inherit;}
+
+/* Video controls: icons are drawn by site.js. */
+[data-film-play] svg,[data-film-sound] svg{width:20px;height:20px;}
+
+/* ---- Cleveland, You're the Reason: the campaign film plays behind the section ---- */
+.v1-campaign{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(420px,62vh,640px);display:flex;align-items:flex-end;background:var(--color-green,#164430);color:var(--color-white,#fff);}
+.v1-campaign__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;}
+.v1-campaign__shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,46,31,.2) 0%,rgba(11,46,31,.5) 40%,rgba(11,46,31,.9) 100%);}
+.v1-campaign__inner{padding-block:clamp(48px,8vw,96px);}
+.v1-campaign h2{color:var(--color-white,#fff);font-size:clamp(2rem,5vw,3.5rem);line-height:1.05;margin:0 0 .5rem;}
+.v1-campaign .eyebrow{color:color-mix(in srgb,var(--color-white,#fff) 80%,transparent);}
+.v1-campaign .lede{color:color-mix(in srgb,var(--color-white,#fff) 90%,transparent);max-width:36rem;margin-bottom:1.25rem;}
+
+/* Ticker items (light theme): built by site.js from the grants list in landing.js. */
+.ticker__track ul{margin:0;padding:0;list-style:none;}
+
+/* The prototype windows sit above the sticky header and the mobile Register bar. */
+.pop-scrim{z-index:200;}
+.toast{z-index:210;}

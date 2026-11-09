@@ -125,21 +125,21 @@ var POPUPS = {
   register:{k:'Join the Community',t:'Which one is you?',h:function(){
     var doors = [
       ['Community Member','Everyday donors &amp; community leaders.',"beginRegistration('community',true)",'var(--emberDeep,var(--red))'],
-      ['Non-profit Partner','Grantees &amp; organizational funds.',"openPopup('nonprofit',true)",'var(--moss)'],
-      ['Advisor','Charitable vehicles for your clients.',"beginRegistration('advisor',true)",'var(--olive)'],
+      ['Nonprofit Partner','Grantees &amp; organizational funds.',"openPopup('nonprofit',true)",'var(--moss)'],
+      ['Professional Advisor','Charitable vehicles for your clients.',"beginRegistration('advisor',true)",'var(--olive)'],
       ['I have a fund here','DAF &amp; organizational fund holders.',"openPopup('login',true)",'var(--forest)']
     ];
     return '<div class="pop-pad"><p class="lede">Registering takes about thirty seconds and opens the door that fits you \u2014 tailored updates, the right tools, and a team that knows why you\u2019re here.</p></div>'
       + '<div class="pop-grid" style="grid-template-columns:repeat(2,1fr);">' + doors.map(function(d){
           return '<button class="pop-cell" style="min-height:118px;" onclick="' + d[2] + '">'
             + '<svg class="p-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>'
-            + '<div class="pc-kick" style="color:' + d[3] + ';">I\u2019m ' + (d[0]==='Advisor'?'an':'a') + '\u2026</div>'
+            + '<div class="pc-kick" style="color:' + d[3] + ';">I\u2019m ' + 'a' + '\u2026</div>'
             + '<div class="pc-title" style="font-size:17px;">' + d[0] + '</div>'
             + '<div class="pc-sub">' + d[1] + '</div></button>';
         }).join('') + '</div>'
       + '<div class="pop-pad" style="padding-top:16px;"><p style="font-size:11.5px;color:var(--ink-3);">Not sure? Community Member is every one of us \u2014 start there.</p></div>';
   }},
-  sortAdvisor:{k:'Advisor',t:'Tell us a little more',h:function(){
+  sortAdvisor:{k:'Professional Advisor',t:'Tell us a little more',h:function(){
     var opts = [['professional-advisor','Professional Advisor'],['financial-advisor','Financial Advisor'],['estate-attorney','Estate Attorney'],['other','Other']];
     return '<div class="pop-pad"><p class="lede">Which best describes you? We\u2019ll route everyone to the same resources for now \u2014 this just helps us understand who\u2019s here.</p></div>'
       + '<div class="pop-grid" style="grid-template-columns:repeat(2,1fr);">'
@@ -166,11 +166,13 @@ var POPUPS = {
       + '.itag-key{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-family:var(--body);font-size:14px;color:var(--mid);}'
       + '.itag-key span{display:inline-flex;align-items:center;gap:8px;}'
       + '.itag-key i{width:9px;height:9px;display:inline-block;}';
-    var segLabel = REG_SEGMENT === 'advisor' ? 'Advisor' : (REG_SEGMENT === 'community' ? 'Community Member' : '');
+    var segLabel = REG_SEGMENT === 'advisor' ? 'Professional Advisor' : (REG_SEGMENT === 'community' ? 'Community Member' : '');
     var subLabel = SUBTYPE_LABELS[REG_SUBTYPE] || '';
     var context = segLabel ? '<span class="ipin ipin-setup" style="margin-bottom:16px;">' + segLabel + (subLabel ? ' \u00b7 ' + subLabel : '') + '</span><br/>' : '';
     return '<div class="pop-pad">' + context + '<p class="lede">One quick step and we\u2019ll start tailoring things to you \u2014 relevant updates, the right funds, the right people.</p>'
       + '<div class="j-two" style="margin-top:16px;">' + regField('tuName','Your name','Jamie Sullivan') + regField('tuEmail','Email','jamie@cleveland.com','email') + '</div>'
+      + '<div class="j-two" style="margin-top:14px;">' + regField('tuPhone','Phone','(216) 555-0148','tel') + regField('tuPassword','Create a password','At least 8 characters','password') + '</div>'
+      + '<p style="font-size:11.5px;color:var(--ink-3);margin-top:8px;">Prototype: your phone number and password are never saved or sent anywhere.</p>'
       + '<div style="margin-top:20px;"><label style="display:block;font-family:var(--f-ledger);font-size:10px;font-weight:600;color:var(--forest);margin-bottom:9px;text-transform:uppercase;letter-spacing:.12em;">Interest areas \u00b7 pick as many as you like</label>'
       + '<style>' + itagCss + '</style>'
       + '<div class="chip-row itag-row" id="tuInterests">'
@@ -240,7 +242,7 @@ function closePopup(){
 document.addEventListener('keydown', function(e){
   if (e.key === 'Escape'){
     if (document.getElementById('popScrim').classList.contains('open')) closePopup();
-    else document.getElementById('msheet').classList.remove('open');
+    else if (document.getElementById('msheet')) document.getElementById('msheet').classList.remove('open');
   }
 });
 
@@ -321,6 +323,7 @@ var TICKER_GRANTS = [
 ];
 function buildTicker(){
   var track = document.getElementById('tkTrack');
+  if (!track) return;
   var seq = TICKER_GRANTS.map(function(g){
     return '<span class="tk-item"><span class="amt">' + g[0] + '</span><span class="sep">→</span><span class="org">' + g[1] + '</span><span class="sep">·</span></span>';
   }).join('');
@@ -339,6 +342,7 @@ var NEWS = [
 ];
 function buildNews(){
   var track = document.getElementById('newsTrack');
+  if (!track) return;
   var seq = NEWS.map(function(n){
     return '<button class="n-card" onclick="openPopup(\'connected\')"><div class="n-thumb" style="background:linear-gradient(150deg,' + n.c + '22,var(--well));"><div class="mslot on-light tight" aria-hidden="true"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3.5\" width=\"18\" height=\"17\" rx=\"2.5\"/><circle cx=\"8.6\" cy=\"9.2\" r=\"1.6\"/><path d=\"M20.4 15.6l-4.7-4.6L5 20.2\"/></svg><span class="ms-cap">Image</span></div></div><div class="n-date"><span class="dot" style="background:' + n.c + ';"></span>' + n.d + ' · 2026</div><div class="n-title">' + n.t + '</div><div class="n-tag">' + n.tag + ' →</div></button>';
   }).join('');
@@ -399,7 +403,7 @@ function runCount(el){
 function initParallax(){
   if (REDUCE || !window.matchMedia('(hover:hover) and (min-width:960px)').matches) return;
   var hero = document.querySelector('.hero');
-  var g = hero.querySelector('.guilloche');
+  var g = hero && hero.querySelector('.guilloche');
   if (!g) return;   /* this hero has no pattern to move */
   var raf = null, tx = 0, ty = 0;
   hero.addEventListener('mousemove', function(e){
@@ -525,6 +529,10 @@ function submitTellUs(){
   var picks = function(sel){ return Array.prototype.map.call(document.querySelectorAll(sel), function(b){ return b.textContent; }); };
   var email = val('tuEmail');
   if (email && email.indexOf('@') < 0){ showToast('That email doesn’t look right — check it, or leave it blank for now.'); return; }
+  var pw = val('tuPassword');
+  if (pw && pw.length < 8){ showToast('Passwords need at least 8 characters.'); return; }
+  /* PROTOTYPE: phone and password are checked here and then dropped — never stored or handed on. */
+  ['tuPhone','tuPassword'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
   var reg = { segment: REG_SEGMENT, subtype: REG_SUBTYPE, name: val('tuName'), email: email,
               interests: picks('#tuInterests .chip.sel'), at: Date.now() };
   try{ localStorage.setItem(REG_KEY, JSON.stringify(reg)); }catch(e){}
@@ -572,7 +580,7 @@ function enterPortal(){ tcfGo(SITE.portal + '?signin=1'); }
 /* Tools open in a full-screen shell (#mapShell / #calcShell); the iframe src
    is only set on first open, so neither tool costs anything until asked for. */
 function openTool(id, url){
-  closePopup(); document.getElementById('msheet').classList.remove('open');
+  closePopup(); if (document.getElementById('msheet')) document.getElementById('msheet').classList.remove('open');
   var shell = document.getElementById(id + 'Shell'), veil = document.getElementById(id + 'Veil'), fr = document.getElementById(id + 'Frame');
   shell.classList.add('on'); shell.setAttribute('aria-hidden','false'); document.body.classList.add('portal-on');
   if (!fr.getAttribute('src')){
