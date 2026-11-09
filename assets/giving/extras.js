@@ -128,6 +128,25 @@ if (typeof NF_POSTS !== 'undefined') {
   );
 }
 
+/* V1: the home page shows the three featured stories as News Feed cards, side by side. */
+function renderHomeFeedCards(){
+  var host = document.getElementById('homeFeedCards');
+  if (!host || typeof NF_POSTS === 'undefined') return;
+  host.innerHTML = [101, 102, 103].map(function(id){
+    var p = NF_POSTS.filter(function(x){ return x.id === id; })[0];
+    if (!p) return '';
+    return '<article class="nf-post v1-feed-card" role="link" tabindex="0" onclick="openFeedStory(' + id + ')" onkeydown="if(event.key===&quot;Enter&quot;)openFeedStory(' + id + ')">'
+      + '<div class="nf-post-top"><div class="nf-avatar" style="background:' + p.color + ';">' + p.initials + '</div>'
+      + '<div><div class="nf-post-name">' + p.name + '</div><div class="nf-post-meta">' + p.time + '</div></div>'
+      + '<div class="nf-post-badge news">Cleveland Foundation</div></div>'
+      + (p.img ? '<img class="nf-post-img" src="' + p.img + '" alt="' + (p.alt || '') + '" loading="lazy">' : '')
+      + '<div class="nf-post-body">' + p.body + '</div>'
+      + '<div class="nf-post-actions"><span class="v1-likes">♥ ' + p.likes + '</span><span class="v1-more">Read more →</span></div>'
+      + '</article>';
+  }).join('');
+}
+renderHomeFeedCards();
+
 /* tag each rendered post so the home panels can jump straight to it */
 var _baseRenderNewsFeed = window.renderNewsFeed;
 window.renderNewsFeed = function(){
