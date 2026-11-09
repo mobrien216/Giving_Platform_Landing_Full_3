@@ -1,5 +1,20 @@
 # Cleveland Foundation — Digital Experience Prototype
 
+> **This is the V1 (board demo) version.** It shows only what the first release will include. The full prototype, with every idea explored so far, stays at [Giving_Platform_Landing_Full_2](https://github.com/mobrien216/Giving_Platform_Landing_Full_2); build back toward it from there.
+
+## What V1 changes from Full_2 (11-09-2026)
+
+| Area | V1 |
+|---|---|
+| Landing page | Rebuilt on the product team's staging stylesheet (`assets/site/application.css`, page tweaks in `assets/site/site.css`, behaviour in `assets/site/site.js`). Sections: hero, light 2026 grants ticker, *Who are you?* doors, *Cleveland, You're the Reason* with the campaign film behind it (`assets/video/campaign.mp4`, loads when scrolled near), *Neighbors helping neighbors*, scrolling *How a community foundation works*, closing CTA. |
+| Registration windows | Same flow as Full_2, styled by `assets/landing/popups.css`, which `scripts/build-popup-css.js` generates from `landing.css` + `tcf-v3-site.css` inside `@scope` so they don't restyle the page. Labels: Nonprofit Partner, Professional Advisor. Adds phone + password (checked, never stored). Interest areas are the **17 Fields of Interest**, grouped by Impact Agenda area. |
+| Community Member app | Local Legends, Impact Calculator, Impact Map, Stories from the field, News feed, Open a DAF, Plan Your Legacy, Make a Gift, and a **Your giving history** list on the home page. Removed: History Quiz, Learn, Members, Grow Your City, Own Part of the Neighborhood. |
+| Professional Advisor app | Same as Community plus the **Advisor FAQ**. Removed: Charitable Gift Planner, Estate Planning Checklist, History Quiz. |
+| Fund holder portal | Unchanged except: History Quiz and Grow Your City removed (badges off); persona tools trimmed to the Advisor FAQ; profile and giving-plan interests use the 17 Fields of Interest (`INTERESTS_V1` / `INTEREST_AREAS` at the top of `assets/portal/app.js`; the Field-to-focus-area mapping is a best guess for the program team to confirm). Portal data saves under its own key (`tcf-v1-donor-portal-profile`) so it doesn't mix with Full_2 in the same browser. |
+
+Removed features' views and code are mostly still in the files, just unlinked, so they can be switched back on.
+
+
 A clickable prototype of the Foundation's public site and its three signed-in / registered experiences, built as a static site so it can be hosted on GitHub Pages.
 
 > **Prototype only.** All people, funds, balances and grants are fictional. Nothing is sent anywhere: activity is saved in the visitor's own browser, and the Salesforce / Ren iPhi sync shown in the portal is simulated.

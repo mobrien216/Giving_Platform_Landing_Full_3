@@ -1549,3 +1549,9 @@ body.hero-view:not(.scrolled) .tb-cta .garden-mini-dots span.done{background:var
   .panel-wide{flex-direction:column;align-items:flex-start;gap:0;padding:22px 20px 20px;}
   .panel-wide .p-label{margin-top:14px;}
 }
+
+/* V1: rows with fewer tiles fill the width instead of leaving empty grey cells.
+   .pg-fill sizes columns to the tiles it holds (set by assets/giving/app.js). */
+@media (min-width:900px){
+  .pgrid.pg-fill{grid-template-columns:repeat(var(--pg-n,4),1fr);}
+}

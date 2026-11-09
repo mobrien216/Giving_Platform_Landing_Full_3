@@ -1,7 +1,7 @@
 <!--
   ADVISOR APP — fills for the shared page → advisors/index.html
-  Menu/home tools: Gift Planner · Estate Checklist · Advisor FAQ, plus their
-  three views and scripts (assets/advisors/*). Note the drawer order
+  V1 menu/home tools: Impact Calculator + Advisor FAQ (Gift Planner and Estate
+  Checklist removed for V1; the FAQ's script is assets/advisors/estate-checklist.js). Note the drawer order
   (estate, giftplanner, faq) differs from the home-panel order
   (giftplanner, estate, faq) — that is how the original pages were laid out.
   How this works: src/giving/page.html is the page both apps share. Each
@@ -28,26 +28,18 @@ Cleveland Foundation — Registration Experience for Advisors
 
 <link rel="stylesheet" href="../assets/advisors/advisor.css?v=b63d7d92">
 <!-- @fill drawer-tool-1 -->
-    <button class="dr-item" data-view="estate" onclick="navigate('estate')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><polyline points="8.5,14.5 10.5,16.5 15,12"/></svg>Estate Planning Checklist</button>
 <!-- @fill drawer-tool-2 -->
-    <button class="dr-item" data-view="giftplanner" onclick="navigate('giftplanner')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h8"/></svg>Charitable Gift Planner</button>
+    <button class="dr-item" data-view="calculator" onclick="navigate('calculator')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>Impact Calculator</button>
 <!-- @fill drawer-tool-3 -->
     <button class="dr-item" data-view="faq" onclick="navigate('faq')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.2 9a2.9 2.9 0 015.6 1c0 2-2.8 2.5-2.8 4"/><path d="M12 17.5h.01"/></svg>Advisor FAQ</button>
 <!-- @fill home-panel-1 -->
-    <button class="panel" onclick="navigate('giftplanner',false)">
-      <div class="t-icon" style="background:var(--gray2);color:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A8DA9" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h8"/></svg></div>
-      <svg class="p-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      <div class="p-label">Charitable Gift Planner</div>
-      <div class="p-sub">Size a gift, choose how to fund it, and price the tax result before the meeting.</div>
-      <div class="p-count">Cash &middot; Stock &middot; QCD &middot; DAF</div>
-    </button>
 <!-- @fill home-panel-2 -->
-    <button class="panel" onclick="navigate('estate',false)">
-      <div class="t-icon" style="background:var(--green);color:var(--white);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><polyline points="8.5,14.5 10.5,16.5 15,12"/></svg></div>
+    <button class="panel" onclick="navigate('calculator',false)">
+      <div class="t-icon" style="background:var(--gray2);color:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A8DA9" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg></div>
       <svg class="p-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      <div class="p-label">Estate Planning Checklist</div>
-      <div class="p-sub">Every standard estate step, with the charitable decision flagged where it belongs.</div>
-      <div class="p-count">53 items &middot; 9 sections</div>
+      <div class="p-label">Impact Calculator</div>
+      <div class="p-sub">Watch a gift compound into meals, nights, and hours.</div>
+      <div class="p-count">Since 1914 · 6% avg</div>
     </button>
 <!-- @fill home-panel-3 -->
     <button class="panel" onclick="navigate('faq',false)">
@@ -58,56 +50,6 @@ Cleveland Foundation — Registration Experience for Advisors
       <div class="p-count">10 questions</div>
     </button>
 <!-- @fill app-views -->
-<!-- =================== ESTATE PLANNING CHECKLIST =================== -->
-<section class="view" id="view-estate">
-  <div class="page">
-    <div class="page-head">
-      <div class="eyebrow">Advisor Tool</div>
-      <h1>Estate Planning Checklist</h1>
-      <p class="lede">The industry-standard checklist, with the charitable decision flagged at every point it belongs. Progress saves in this browser only — nothing is transmitted.</p>
-    </div>
-
-    <div class="ec-band">
-      <svg class="guilloche" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#19B9A9" stroke-width=".6" opacity=".45"><circle cx="270" cy="40" r="60"/><circle cx="270" cy="40" r="100"/><circle cx="270" cy="40" r="140"/><circle cx="270" cy="40" r="180"/><circle cx="270" cy="40" r="220"/></g></svg>
-      <div class="inner">
-        <div class="ec-lede">Nine areas, fifty-three items. Mark anything that doesn&rsquo;t apply and it drops out of the count.</div>
-        <div class="ec-readout">
-          <div class="ec-count num"><span id="ecDone">0</span> <small>of <span id="ecTotal">53</span></small></div>
-          <div class="ec-countlabel" id="ecNaNote">items complete</div>
-          <div class="ec-ticks" id="ecTicks"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="ec-toolbar">
-      <label class="ec-switch">
-        <input type="checkbox" id="ecGiveToggle">
-        <span>Giving opportunities only &middot; <span id="ecGiveCount">0</span></span>
-      </label>
-      <button class="ec-mini" type="button" id="ecCopy">Copy what&rsquo;s left</button>
-      <button class="ec-mini" type="button" id="ecReset">Reset</button>
-    </div>
-  </div>
-
-  <div class="page" style="padding-top:0;">
-    <div class="ec-tabwrap">
-      <div class="ec-tabs" role="tablist" aria-label="Checklist sections" id="ecTabs"></div>
-    </div>
-    <div id="ecPanels"></div>
-
-    <div class="card" style="margin-top:20px;border-left:5px solid var(--ember);">
-      <h3>Bring this to the people who can act on it</h3>
-      <p style="color:var(--ink-2);font-size:14.5px;margin-top:6px;max-width:58ch;">An estate attorney drafts and executes the documents. The tax advisor prices the moves. A Cleveland Foundation gift planner can confirm how a gift is accepted and how a fund is structured.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
-        <button class="btn btn-accent" onclick="showLegacyModal()">Talk with a gift planner</button>
-        <button class="btn btn-ghost" onclick="navigate('giftplanner',false)">Open the Gift Planner</button>
-      </div>
-    </div>
-
-    <p class="ec-disclaimer">This checklist is general educational information, not legal, tax, or financial advice, and it does not create an advisory relationship. Rules on taxes, trusts, and charitable deductions change and vary by state and by situation. Confirm exemption amounts, contribution limits, and distribution rules that apply in the current year with the client&rsquo;s own attorney and tax advisor before acting.</p>
-  </div>
-</section>
-
 <!-- =================== ADVISOR FAQ =================== -->
 <section class="view" id="view-faq">
   <div class="page">
@@ -136,155 +78,6 @@ Cleveland Foundation — Registration Experience for Advisors
     </div>
   </div>
 </section>
-
-<!-- =================== CHARITABLE GIFT PLANNER =================== -->
-<section class="view" id="view-giftplanner">
-  <div class="page">
-    <div class="page-head">
-      <div class="eyebrow">Advisor Tool</div>
-      <h1>Charitable Gift Planner</h1>
-      <p class="lede">Model a client&rsquo;s charitable gift against income, assets, and deduction limits &mdash; then copy the summary into your notes.</p>
-    </div>
-  </div>
-  <div class="gp-shell-wrap">
-
-
-<div class="app-header" hidden>
-  <p class="gp-eyebrow">The Cleveland Foundation · Advisor Tool</p>
-  <h1>Charitable Giving & Tax Planning Calculator</h1>
-  <p>A working tool for advisor conversations: enter a client's profile to get a tax-aware starting point on how much to give this year, which assets to fund it with, and which giving vehicle fits. Built around 2026 federal figures.</p>
-</div>
-
-<div class="shell">
-  <!-- ================= FORM SIDE ================= -->
-  <div class="form-side">
-    <form id="plannerForm">
-
-      <div class="gp-panel">
-        <p class="block-label">01 — Client</p>
-        <h2 class="block-title">Client profile</h2>
-        <div class="field-grid">
-          <div class="field">
-            <label for="filingStatus">Filing status</label>
-            <select id="filingStatus">
-              <option value="single">Single</option>
-              <option value="mfj">Married filing jointly</option>
-              <option value="hoh">Head of household</option>
-              <option value="mfs">Married filing separately</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="clientAge">Client age</label>
-            <input type="number" id="clientAge" min="0" value="62">
-          </div>
-          <div class="field" id="spouseFields">
-            <label for="spouseAge">Spouse age</label>
-            <input type="number" id="spouseAge" min="0" value="60">
-          </div>
-        </div>
-      </div>
-
-      <div class="gp-panel">
-        <p class="block-label">02 — Income</p>
-        <h2 class="block-title">Income & deductions this year</h2>
-        <div class="field-grid">
-          <div class="field">
-            <label for="agi">Estimated AGI</label>
-            <div class="prefix-wrap"><span>$</span><input type="number" id="agi" min="0" value="450000"></div>
-          </div>
-          <div class="field">
-            <label for="otherItemized">Other itemizable deductions</label>
-            <div class="prefix-wrap"><span>$</span><input type="number" id="otherItemized" min="0" value="18000"></div>
-            <small class="help">SALT (capped $10k) + mortgage interest + other — excluding charitable.</small>
-          </div>
-          <div class="field">
-            <label for="ltcgRate">Long-term capital gains rate</label>
-            <select id="ltcgRate">
-              <option value="0">0%</option>
-              <option value="15" selected>15%</option>
-              <option value="20">20%</option>
-            </select>
-          </div>
-          <div class="field" style="justify-content:flex-end;">
-            <div class="check-row" style="padding-top:0;">
-              <input type="checkbox" id="niit">
-              <label for="niit">Also subject to 3.8% NIIT (Medicare surtax)</label>
-            </div>
-          </div>
-          <div class="check-row">
-            <input type="checkbox" id="highIncome">
-            <label for="highIncome">This is an unusually high-income year (business sale, bonus, Roth conversion, etc.)
-              <span class="help">Flags timing as a reason to accelerate deductions into this year rather than later.</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="gp-panel">
-        <p class="block-label">03 — Assets</p>
-        <h2 class="block-title">Giving capacity & assets</h2>
-        <div class="field-grid">
-          <div class="field">
-            <label for="cash">Cash available to give</label>
-            <div class="prefix-wrap"><span>$</span><input type="number" id="cash" min="0" value="30000"></div>
-          </div>
-          <div class="field">
-            <label for="stock">Appreciated stock available (FMV)</label>
-            <div class="prefix-wrap"><span>$</span><input type="number" id="stock" min="0" value="60000"></div>
-            <small class="help">Held more than 12 months.</small>
-          </div>
-          <div class="field">
-            <label for="stockGain">Of that, unrealized gain</label>
-            <div class="prefix-wrap"><span>$</span><input type="number" id="stockGain" min="0" value="42000"></div>
-          </div>
-          <div class="field">
-            <label for="ira">IRA / retirement balance</label>
-            <div class="prefix-wrap"><span>$</span><input type="number" id="ira" min="0" value="500000"></div>
-            <small class="help">Only relevant if client (or spouse) is 70½ or older.</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="gp-panel">
-        <p class="block-label">04 — Goals</p>
-        <h2 class="block-title">Giving goals</h2>
-        <div class="field-grid">
-          <div class="field">
-            <label for="hasDAF">Already has a donor-advised fund?</label>
-            <select id="hasDAF">
-              <option value="no">No</option>
-              <option value="yes">Yes</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="target">Target gift this year (optional)</label>
-            <div class="prefix-wrap"><span>$</span><input type="number" id="target" min="0" placeholder="Leave blank for a suggestion"></div>
-          </div>
-          <div class="check-row">
-            <input type="checkbox" id="consideringPF">
-            <label for="consideringPF">Client is weighing a private foundation as an alternative
-              <span class="help">Adds a donor-advised-fund vs. private-foundation comparison to the output.</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-    </form>
-  </div>
-
-  <!-- ================= RESULT LEDGER ================= -->
-  <div class="ledger-side">
-    <div class="note">
-      <strong>Planning estimate only</strong> — for illustration and discussion, not tax, legal, or investment advice. State taxes and carryover rules are not modeled. Confirm all figures with the client's CPA or tax attorney before acting.
-    </div>
-    <div id="results"></div>
-  </div>
-</div>
-
-  </div>
-</section>
-
 <!-- @fill app-scripts -->
 
 <script src="../assets/advisors/estate-checklist.js?v=76928a64"></script>
-<script src="../assets/advisors/gift-planner.js?v=f03ad8ef"></script>

@@ -824,9 +824,6 @@ const NF_POSTS = [
     action:function(){ navigate('legends'); } },
   { id:3, name:'James T.', initials:'JT', color:'var(--tcf-blue)', type:'why', time:'3d ago', likes:9,
     body:'I volunteer at the West Side Market food drive every month. Watching neighbors help neighbors is why I keep showing up.' },
-  { id:4, name:'Cleveland Foundation', initials:'CF', color:'var(--tcf-primary)', type:'news', time:'This week', likes:21,
-    body:'New year, new question — test your knowledge of when major events happened across our city on the Cleveland History Quiz.',
-    action:function(){ navigate('history'); } },
   { id:5, name:'Priya K.', initials:'PK', color:'var(--tcf-pink)', type:'why', time:'5d ago', likes:18,
     body:'Cleveland gave my parents a home when they had nowhere else to go. Every gift I make is a small way of returning the favor.' }
 ];
@@ -922,10 +919,37 @@ function initGivingHistoryView(){
     return '<div class="row"><div class="org-mark ' + r.mark + '">$</div><div class="info"><div class="name">' + r.name + '</div><div class="meta">' + r.meta + '</div></div><button class="btn btn-ghost btn-sm" onclick="navigate(\'contributions\')">Manage</button></div>';
   }).join('') : '<div class="row"><div class="info"><div class="meta">No recurring donations on your account.</div></div></div>';
 
-  document.getElementById('ghGiftList').innerHTML = GH_GIFTS.map(function(g){
+  document.getElementById('ghGiftList').innerHTML = GH_GIFTS.slice().sort(function(a, b){ return ghTime(b) - ghTime(a); }).map(function(g){
     return '<div class="row"><div class="org-mark ' + g.mark + '">$</div><div class="info"><div class="name">' + g.fund + ' \u2014 ' + ghFmt(g.amount) + '</div><div class="meta">' + g.date + ' \u00b7 ' + g.method + '</div></div></div>';
   }).join('');
 }
+
+/* V1: "Your giving history" on the home page — newest first, with the date and amount of each gift. */
+function ghTime(g){ return new Date(g.date).getTime() || 0; }
+function renderHomeGivingHistory(){
+  var list = document.getElementById('homeGhList');
+  if (!list) return;
+  var gifts = GH_GIFTS.slice().sort(function(a, b){ return ghTime(b) - ghTime(a); });
+  var total = gifts.reduce(function(sum, g){ return sum + g.amount; }, 0);
+  var meta = document.getElementById('homeGhMeta');
+  if (meta) meta.textContent = gifts.length + ' gifts · ' + ghFmt(total) + ' lifetime';
+  list.innerHTML = gifts.slice(0, 5).map(function(g){
+    return '<div class="row"><div class="org-mark ' + g.mark + '">$</div><div class="info"><div class="name">' + g.fund + '</div>'
+      + '<div class="meta">' + g.date + ' · ' + g.method.split(' — ')[0] + '</div></div>'
+      + '<div class="name" style="margin-left:auto;font-variant-numeric:tabular-nums;">' + ghFmt(g.amount) + '</div></div>';
+  }).join('');
+}
+renderHomeGivingHistory();
+
+/* V1: size the home tile rows to the tiles they actually show (wide tiles take a row of their own). */
+function fitHomeGrids(){
+  document.querySelectorAll('#prospectTiles, #openDafModule').forEach(function(el){
+    var g = el.id === 'openDafModule' ? el.parentElement : el;
+    var n = Array.prototype.filter.call(g.children, function(c){ return !c.classList.contains('panel-wide') && c.style.display !== 'none'; }).length;
+    if (n > 0 && n < 4){ g.classList.add('pg-fill'); g.style.setProperty('--pg-n', n); }
+  });
+}
+fitHomeGrids();
 
 /* ============================================================
    SUBTABS

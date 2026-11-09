@@ -1,3 +1,5 @@
+/* V1: the 17 Fields of Interest (supplied 11-09-2026). Registration, profile and giving plan all use this list. */
+var INTERESTS_V1 = ['Agriculture, Fishing & Forestry','Arts & Culture','Community & Economic Development','Education','Environment','Health','Human Services','Information & Communications','International Human Rights','International Relations','Philanthropy','Public Affairs','Public Safety & Disaster Management','Religion','Science','Social Sciences','Sports & Recreation'];
 /* ============================================================
    CORE — utilities, profile store, simulated CRM/ERP sync,
    fund data engine, navigation shell
@@ -101,13 +103,13 @@ function pin(sys, dark){ var m={ri:['Ren iPhi',''],sf:['Salesforce','sf'],cd:['C
    simulated sync queue that shows where it would land in
    Salesforce (CRM) or Ren iPhi (ERP).
    ============================================================ */
-var STORE_KEY = 'tcf-donor-portal-profile-v1';
+var STORE_KEY = 'tcf-v1-donor-portal-profile';   /* V1 has its own key: Full_2 shares this browser origin on GitHub Pages */
 function defaultState(){
   return {
     v:1, signedIn:false, keep:true, fundId:'wff',
     profile:{ first:'Taylor', last:'Williams', email:'taylor@williams.example', phone:'(216) 555-0142',
       street:'1200 Example Ave', city:'Cleveland Heights', st:'OH', zip:'44118',
-      interests:['Housing','Arts & culture','Food access'],
+      interests:['Community & Economic Development','Arts & Culture','Human Services'],
       comms:{ grantPosted:true, receipts:true, push:false, stories:true, newsletter:true } },
     settings:{ pins:true, fyStart:{ eac:7 } },
     cart:[], grants:[], contribs:[], favorites:['Greater Cleveland Food Bank'],
@@ -170,7 +172,7 @@ var FUNDS = [
   { id:'wff', name:'Williams Family Fund', type:'daf', typeLabel:'Donor advised fund', no:'DAF-40218', inception:'2019-03-15', seed:26,
     color:'#EE7331', pools:{ growth:55, balanced:25, conservative:15, cash:5 },
     people:[ {n:'Taylor Williams', r:'Primary advisor', e:'taylor@williams.example', you:true}, {n:'Jordan Williams', r:'Joint advisor', e:'jordan@williams.example'}, {n:'Avery Williams-Park', r:'View & recommend', e:'avery@williams.example'} ],
-    focus:['Housing','Arts & culture','Food access'] },
+    focus:['Community & Economic Development','Arts & Culture','Human Services'] },
   { id:'wng', name:'Williams Next Generation Fund', type:'daf', typeLabel:'Donor advised fund', no:'DAF-51877', inception:'2023-11-01', seed:23,
     color:'#C0629A', pools:{ sri:70, balanced:25, cash:5 },
     people:[ {n:'Taylor Williams', r:'Primary advisor', e:'taylor@williams.example', you:true}, {n:'Avery Williams-Park', r:'Joint advisor', e:'avery@williams.example'} ],
@@ -178,7 +180,7 @@ var FUNDS = [
   { id:'eac', name:'Eastside Arts Collective Endowment Fund', type:'org', typeLabel:'Organizational endowment fund', no:'ORG-10934', inception:'2016-07-01', seed:2,
     org:'Eastside Arts Collective', color:'#19B9A9', spending:.045, pools:{ growth:60, balanced:30, cash:10 },
     people:[ {n:'Taylor Williams', r:'Board treasurer · Authorized signer', e:'taylor@williams.example', you:true}, {n:'Renée Okafor', r:'Executive director · Authorized signer', e:'renee@eastsidearts.example'}, {n:'Marcus Bell', r:'Finance manager · View only', e:'marcus@eastsidearts.example'} ],
-    focus:['Arts & culture'] }
+    focus:['Arts & Culture'] }
 ];
 /* Which funds this account holder sees. A new account (opened online) has only its own
    funds; the demo account has the Williams funds plus any it opened online. */
@@ -344,17 +346,12 @@ var NAV = [
   { id:'feed',        label:'News feed',              icon:'feed' },
   { id:'map',         label:'Impact map',             icon:'map' },
   { id:'legends',     label:'Local Legends',          icon:'star', dafOnly:true },
-  { id:'quiz',        label:'History quiz',           icon:'quiz', dafOnly:true },
-  { id:'garden',      label:'Grow Your City',         icon:'flower' },
+  /* V1: History quiz and Grow Your City are not in the first release (views kept, unlinked). */
   { id:'impact',      label:'Impact calculator',      icon:'calc', dafOnly:true },
   /* persona tools: the engagement features from the person's registration app, shown
      inside the portal (tool: [app folder, view]). Visible only for that persona. */
-  { id:'giftplanner', label:'Gift planner',           icon:'pen',    persona:'advisor',   tool:['advisors','giftplanner'] },
-  { id:'estate',      label:'Estate planning checklist', icon:'check', persona:'advisor', tool:['advisors','estate'] },
-  { id:'faq',         label:'Advisor FAQ',            icon:'quiz',   persona:'advisor',   tool:['advisors','faq'] },
-  { id:'learning',    label:'Learn',                  icon:'layers', persona:'community', tool:['community','learning'] },
-  { id:'members',     label:'Members',                icon:'users',  persona:'community', tool:['community','members'] },
-  { id:'vision',      label:'Vision cards',           icon:'eye',    persona:'community', tool:['community','vision'] }
+  /* V1: the advisor app keeps only the FAQ; the community app's Learn, Members and Vision cards are not in V1. */
+  { id:'faq',         label:'Advisor FAQ',            icon:'quiz',   persona:'advisor',   tool:['advisors','faq'] }
 ];
 /* feature gates follow the product feature map: org fund holders do not see
    Portfolio Modeling, the History Quiz, Local Legends or the Impact Calculator.
@@ -438,7 +435,7 @@ function renderChrome(){
   var nn=$('#notifCount'); var un=notifs().filter(function(n){return n.t>S.notifRead;}).length; nn.textContent=un||''; nn.setAttribute('data-n',un);
   // tabs
   $('#tabs').innerHTML = TABS.map(function(t){
-    var sel = ROUTE===t.id || (t.id==='engage' && ['feed','map','legends','quiz','garden','impact'].indexOf(ROUTE)>-1) || (t.id==='grants' && ROUTE==='history') || (t.id==='performance' && (ROUTE==='allocation'||ROUTE==='funds'));
+    var sel = ROUTE===t.id || (t.id==='engage' && ['feed','map','legends','impact'].indexOf(ROUTE)>-1) || (t.id==='grants' && ROUTE==='history') || (t.id==='performance' && (ROUTE==='allocation'||ROUTE==='funds'));
     if(t.id==='home') return '<div><button class="tab-home'+(ROUTE==='home'?' sel':'')+'" onclick="go(\'home\')" aria-label="Dashboard">'+ic('home',24,2)+'</button></div>';
     return '<button class="tab'+(sel?' sel':'')+'" onclick="go(\''+t.id+'\')">'+ic(t.icon,22)+'<span>'+t.label+'</span></button>';
   }).join('');
@@ -507,7 +504,7 @@ function notifs(){
   var b=build(f); var lastG=b.ev.filter(function(e){return e.k==='grant' && e.status==='Posted';}).slice(-1)[0];
   if(lastG) list.push({t:base-86400000*2, i:'check', title:(f.type==='org'?'Distribution posted':'Grant posted'), body:money(lastG.amt)+' to '+lastG.org+' was paid on '+fdate(lastG.d)+'.', go:'history'});
   var q=Math.floor(TODAY.getMonth()/3); list.push({t:base-86400000*6, i:'doc', title:'Statement ready', body:'Your Q'+(q===0?4:q)+' statement is ready to download.', go:'statements'});
-  if(!isOrg()){ list.push({t:base-86400000, i:'quiz', title:'New quiz question', body:'This week\u2019s Cleveland history question is live.', go:'quiz'});
+  if(!isOrg()){ 
     list.push({t:base-86400000*3, i:'star', title:'Local Legend of the week', body:'Meet this week\u2019s legend.', go:'legends'}); }
   S.grants.forEach(function(g){ if(g.fund===f.id) list.push({t:g.t+1000, i:'grant', title:'Grant '+grantStatus(g).toLowerCase(), body:money(g.amt)+' to '+g.org+'.', go:'history'}); });
   return list.sort(function(a,b){return b.t-a.t;});
@@ -1079,8 +1076,8 @@ function openNewFund(){ location.href = OPEN_FLOW + '?from=portal'; }
 /* the flow's investment pools → this prototype's pool set (unlisted pools count as Balanced) */
 var FLOW_POOLS = { growth:'growth', balanced:'balanced', sri:'sri', mm:'cash' };
 /* registration interests (landing page) → this portal's causes (INTERESTS) */
-var REG_INTERESTS = [['arts','Arts & culture'],['public education','Education'],['youth','Youth'],['economic mobility','Workforce'],
-  ['workforce','Workforce'],['health','Health'],['basic needs','Food access'],['neighborhood','Neighborhoods'],['environment','Environment']];
+/* V1: registration uses the same 17 Fields of Interest as the portal, so labels carry over as-is. */
+var REG_INTERESTS = INTERESTS_V1.map(function(f){ return [f.toLowerCase(), f]; });
 function causesFromRegistration(){
   var reg=null; try{ reg=JSON.parse(localStorage.getItem('tcf_registration')||'null'); }catch(e){}
   var out=[]; ((reg && reg.interests) || []).forEach(function(label){
@@ -1344,10 +1341,13 @@ function bookCall(){ var sl=$('#slotRow .chip.sel').textContent, tp=$('#callTopi
    The plan keeps its own state in this browser and publishes a small summary
    (PLAN_SUMMARY_KEY) after every change. My giving plan only reads that summary,
    so the two can evolve separately. */
-var INTERESTS = ['Arts & culture','Education','Environment','Food access','Health','Housing','Youth','Workforce','Neighborhoods','Racial equity'];
+var INTERESTS = INTERESTS_V1;
 /* profile causes → the plan's focus-area keys (portal/plan/, QUIZ.areas) */
-var INTEREST_AREAS = { 'Arts & culture':'arts', 'Education':'education', 'Environment':'environment', 'Food access':'food', 'Health':'healthaccess',
-  'Housing':'housing', 'Youth':'youth', 'Workforce':'workforce', 'Neighborhoods':'commdev', 'Racial equity':'racial' };
+/* Field of Interest → closest giving-plan focus area (best judgment; program team to confirm). */
+var INTEREST_AREAS = { 'Agriculture, Fishing & Forestry':'land', 'Arts & Culture':'arts', 'Community & Economic Development':'commdev',
+  'Education':'education', 'Environment':'environment', 'Health':'healthaccess', 'Human Services':'hhs', 'Information & Communications':'media',
+  'International Human Rights':'civil', 'International Relations':'peace', 'Philanthropy':'philanthropy', 'Public Affairs':'advocacy',
+  'Public Safety & Disaster Management':'disaster', 'Religion':'religion', 'Science':'innovation', 'Social Sciences':'civic', 'Sports & Recreation':'recreation' };
 var PLAN_SUMMARY_KEY = 'tcf-five-year-plan-summary', PLAN_STATE_KEY = 'tcf-five-year-plan-v2';
 var SETTINGS = [
   { id:'profile',  label:'Profile details', icon:'user' },
@@ -1689,11 +1689,12 @@ ENG.homeModules = function(){
   var org=isOrg(), n=gardenCount(), lg=legendOfWeek(), q=quizOfWeek(), ans=S.quiz[q.idx];
   var html = rail('Engage','Your Cleveland','<button onclick="go(\'engage\')">See all</button>') + tickerHTML();
   html += '<div class="pgrid g4 data">'+
-    '<button class="panel panel-gate" style="--pk:var(--aqua)" onclick="go(\'garden\')">'+guilloche()+'<div class="p-kick">Grow Your City</div><div class="p-label">'+n+' of 6 planted</div><div class="p-sub">Collect Land Florals for showing up for the city.</div><div class="mini-dots" style="position:relative">'+GARDEN_BADGES.map(function(b){ return '<span class="'+(S.garden[b.id]&&S.garden[b.id].unlocked?'done':'')+'" style="'+(S.garden[b.id]&&S.garden[b.id].unlocked?'background:var(--aqua);border-color:var(--aqua)':'background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)')+'"></span>'; }).join('')+'</div></button>'+
+    (org ? panel('qr','Your fund','QR code to give','Let supporters give to '+F().org+' from a phone.','qr','var(--gray2)','var(--aqua)','Print or share')
+         : panel('impact','What it buys','Impact calculator','Turn a gift into meals, nights of shelter, or acres.','calc','var(--gray2)','var(--aqua)','See your impact'))+
     (org ? panel('feed','Grantee partner','Share your story','Post an update from '+F().org+' to donors.','pen','var(--gray2)','var(--moss)','Posts as a grantee partner')
          : '<button class="panel" style="--pk:var(--mid)" onclick="go(\'legends\')"><div class="p-kick">Legend of the week</div><span class="p-arrow">'+ic('arrowUR',18,2.2)+'</span><div class="t-icon" style="background:var(--gray2);color:var(--mid);font-family:var(--f-display);font-weight:800">'+initials(lg.name)+'</div><div class="p-label">'+esc(lg.name)+'</div><div class="p-sub">'+esc(lg.cat)+' · '+esc(lg.years)+'</div></button>')+
     (org ? panel('map','Where it goes','Impact map', GRANTS.length+' Foundation grants across the region.','map','var(--gray2)','var(--blue)','Filter by pillar or neighborhood')
-         : '<button class="panel" style="--pk:var(--pink)" onclick="go(\'quiz\')"><div class="p-kick">History quiz · week '+(weekIdx()+1)+'</div><span class="p-arrow">'+ic('arrowUR',18,2.2)+'</span><div class="p-label" style="font-size:40px;letter-spacing:-.04em">'+q.y+'</div><div class="p-sub">'+(ans?(ans.correct?'You got it right.':'Answered — see the reveal.'):'What happened in Cleveland this year?')+'</div><div class="p-count">'+(ans?'Answered':'1 question · 30 seconds')+'</div></button>')+
+         : panel('feed','Community','News feed','Why people give, grantee stories and Foundation news.','feed','var(--well)','var(--pink)'))+
     (org ? panel('feed','Community','News feed','Stories from donors, grantees and the Foundation.','feed','var(--well)','var(--forest)')
          : panel('map','Where it goes','Impact map', GRANTS.length+' grants mapped across Greater Cleveland.','map','var(--gray2)','var(--blue)','Filter by pillar or neighborhood'))+
   '</div>';
@@ -1712,12 +1713,12 @@ function tickerHTML(){
 VIEWS.engage = function(){
   var org=isOrg(), n=gardenCount();
   var html = pageHead('Engage','Your Cleveland',{lede:'Learn the city\u2019s story, see where the Foundation\u2019s grants land, and connect with the people and nonprofits doing the work.'});
-  html += '<div class="pad"><div class="calc-out" onclick="go(\'garden\')" style="cursor:pointer">'+guilloche(250,330)+'<div class="card-k" style="color:var(--gray2)">Grow Your City</div><div class="co-big">'+n+' of 6</div><div class="co-cap">Land Florals planted</div><div class="progress"><span style="width:'+(n/6*100)+'%"></span></div></div></div><div class="gap-m"></div>';
+  /* V1: Grow Your City banner removed. */
   var cells=[['feed','Community','News feed', org?'Post stories as a grantee partner and connect with donors.':'Why people give, grantee stories and Foundation news.','feed','var(--well)','var(--forest)'],
     ['map','Where it goes','Impact map',GRANTS.length+' grants, mapped by pillar and neighborhood.','map','var(--gray2)','var(--blue)'],
     ['legends','Every week','Local Legends','52 Clevelanders who shaped the city.','star','var(--gray2)','var(--mid)'],
-    ['quiz','Every week','History quiz','A weekly quiz on Cleveland\u2019s civic history.','quiz','var(--gray2)','var(--pink)'],
-    ['garden','Badges','Grow Your City','Six Land Floral badges to collect.','flower','var(--gray2)','var(--moss)'],
+
+
     ['impact','What it buys','Impact calculator','Turn a gift into meals, nights of shelter, or acres.','calc','var(--gray2)','var(--mid)']];
   html += '<div class="pgrid g3">'+cells.filter(function(c){ return allowed(c[0]); }).map(function(c){ return panel(c[0],c[1],c[2],c[3],c[4],c[5],c[6]); }).join('')+'</div>';
   html += tickerHTML();
@@ -1743,7 +1744,7 @@ function feedPosts(){
     { id:'w1', type:'why', name:NF_POSTS[0].name, color:'#19B9A9', time:'2h ago', likes:NF_POSTS[0].likes, body:NF_POSTS[0].body },
     PARTNER_POSTS[1],
     { id:'w2', type:'why', name:NF_POSTS[2].name, color:'#1A8DA9', time:'3d ago', likes:NF_POSTS[2].likes, body:NF_POSTS[2].body },
-    { id:'n2', type:'news', name:'Cleveland Foundation', color:'#164430', time:'This week', likes:21, body:'New week, new question: how well do you know '+quizOfWeek().y+' in Cleveland? Take the history quiz.', go:'quiz', dafOnly:true },
+    /* V1: weekly history-quiz post removed. */
     PARTNER_POSTS[2],
     { id:'w3', type:'why', name:NF_POSTS[4].name, color:'#C0629A', time:'5d ago', likes:NF_POSTS[4].likes, body:NF_POSTS[4].body },
     { id:'n3', type:'news', name:'Cleveland Foundation', color:'#164430', time:'1w ago', likes:48, body:'Where do Foundation grants go? The impact map now shows '+GRANTS.length+' recent grants by pillar and neighborhood.', go:'map' }
@@ -1759,7 +1760,7 @@ VIEWS.feed = function(){
     (org?'<input id="cmTitle" placeholder="Headline — e.g. What your support built this season" style="width:100%;border:none;border-bottom:1px solid var(--line);padding:8px 0;font-family:var(--f-display);font-weight:700;font-size:16px;color:var(--forest);background:none" aria-label="Story headline">':'')+
     '<textarea id="cmBody" placeholder="'+(org?'Tell donors what happened, who it helped, and what\u2019s next.':'Why do you give? One or two sentences is perfect.')+'" aria-label="Post text"></textarea>'+
     '<div class="cm-foot"><span class="ptype '+(org?'grantee':'')+'">'+(org?'Grantee partner story':'Why I give')+'</span>'+(org?'<button class="chip" onclick="toast(\'Photo upload would open your camera roll.\')">'+ic('plus',13,2)+'Photo</button>':'')+'<span class="spacer"></span><button class="btn btn-accent btn-sm" onclick="publishPost()">Post</button></div></div></div>';
-  html += '<div class="gap-m"></div><div class="pad"><div class="chip-row scroll">'+[['all','All'],['grantee','Grantee stories'],['why','Why I give'],['news','Foundation'],['quiz','Quiz scores']].filter(function(c){ return !(org && c[0]==='quiz'); }).map(function(c){ return '<button class="chip'+(FEED_F===c[0]?' sel':'')+'" onclick="FEED_F=\''+c[0]+'\';render()">'+c[1]+'</button>'; }).join('')+'</div></div><div class="gap-m"></div>';
+  html += '<div class="gap-m"></div><div class="pad"><div class="chip-row scroll">'+[['all','All'],['grantee','Grantee stories'],['why','Why I give'],['news','Foundation']].filter(function(c){ return !(org && c[0]==='quiz'); }).map(function(c){ return '<button class="chip'+(FEED_F===c[0]?' sel':'')+'" onclick="FEED_F=\''+c[0]+'\';render()">'+c[1]+'</button>'; }).join('')+'</div></div><div class="gap-m"></div>';
   html += '<div class="pad">'+(list.length?list.map(function(p){return postHTML(p);}).join(''):'<div class="empty"><b>No posts here yet</b>Be the first — share something above.</div>')+'</div>';
   html += '<p class="tiny pad">Sample posts; grantee partners shown are fictional.</p>';
   return html;
@@ -1921,6 +1922,7 @@ function shareBadge(id){ var data={ title:'Cleveland Foundation', text:'I\u2019m
   var done=function(){ unlockBadge(id,'Shared an invite'); closeSheet(); };
   if(navigator.share) navigator.share(data).then(done).catch(function(){}); else { if(navigator.clipboard) navigator.clipboard.writeText(data.url).catch(function(){}); toast('Invite link copied.'); done(); } }
 function unlockBadge(id, detail){
+  return;   /* V1: Grow Your City badges are not in the first release. */
   if(S.garden[id] && S.garden[id].unlocked) return;
   S.garden[id]={unlocked:true, t:Date.now(), detail:detail||''}; save();
   logSync('sf','Engagement Activity','Earned Land Floral badge: '+BADGE_BY[id].plant+' ('+BADGE_BY[id].desc+')');

@@ -151,9 +151,10 @@ var POPUPS = {
   tellus:{k:'Tell us a little more',t:'Tell us a little more about you',h:function(){
     /* Interest areas — color-coded by Impact Agenda pillar. The tags lead; pillar names sit in a small key below. */
     var interestGroups = [
-      { area:'People to Prosperity',  key:'pros',   color:'var(--orange)',   items:['Arts & Culture','Public Education','Youth Development','Economic Mobility','Health & Human Services','Basic Needs & Critical Support'] },
-      { area:'Vibrant Neighborhoods', key:'neigh',  color:'var(--pink)',  items:['Neighborhood Revitalization','Environmental Protection','Transportation Access','Civic Engagement'] },
-      { area:'Grow Our Region',       key:'region', color:'var(--blue)', items:['Workforce Development','Science & Technology','Research & Innovation','Attracting Investment'] }
+      /* The 17 Fields of Interest (supplied 11-09-2026), grouped by Impact Agenda area. */
+      { area:'Connect People to Prosperity',    key:'pros',   color:'var(--orange)', items:['Arts & Culture','Education','Health','Human Services','Information & Communications','Religion','Sports & Recreation'] },
+      { area:'Invest in Vibrant Neighborhoods', key:'neigh',  color:'var(--pink)',   items:['Agriculture, Fishing & Forestry','Community & Economic Development','Environment','Public Safety & Disaster Management','Social Sciences'] },
+      { area:'Grow Our Region',                 key:'region', color:'var(--blue)',   items:['International Human Rights','International Relations','Philanthropy','Public Affairs','Science'] }
     ];
     /* Same chip type as the site (mono, all caps). Unselected: a subtle outline in the pillar color.
        Selected: filled with the pillar color, white text. Colors are the landing page's own. */

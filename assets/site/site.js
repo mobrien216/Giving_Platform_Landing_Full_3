@@ -44,6 +44,20 @@
   document.querySelectorAll('[data-film]').forEach(function(box){
     var v = box.querySelector('video'), playBtn = box.querySelector('[data-film-play]'), sndBtn = box.querySelector('[data-film-sound]');
     if (!v) return;
+    /* The film (~75 MB) loads only when its section is about to scroll into view, then plays muted. */
+    if (v.dataset.src){
+      var started = false;
+      var start = function(){
+        if (started) return;
+        var r = box.getBoundingClientRect();
+        if (r.top < window.innerHeight * 1.5 && r.bottom > -200){
+          started = true; window.removeEventListener('scroll', start);
+          v.src = v.dataset.src; v.preload = 'auto';
+          if (!REDUCED){ var pr = v.play(); if (pr && pr.catch) pr.catch(function(){}); }
+        }
+      };
+      window.addEventListener('scroll', start, { passive: true }); start();
+    }
     if (REDUCED){ v.removeAttribute('autoplay'); v.pause(); }
     function sync(){
       if (playBtn){ playBtn.innerHTML = v.paused ? ICON.play : ICON.pause; playBtn.setAttribute('aria-label', v.paused ? 'Play video' : 'Pause video'); }
@@ -53,7 +67,7 @@
     /* No film file yet: hide the controls, the poster image stands in. */
     function noFilm(){ [playBtn, sndBtn].forEach(function(b){ if (b) b.hidden = true; }); }
     v.addEventListener('error', noFilm, true);
-    if (v.error || v.networkState === 3) noFilm();   /* failed before this script ran */
+    if (v.getAttribute('src') && (v.error || v.networkState === 3)) noFilm();   /* failed before this script ran */
     if (playBtn) playBtn.addEventListener('click', function(){ if (v.paused) v.play(); else v.pause(); });
     if (sndBtn) sndBtn.addEventListener('click', function(){ v.muted = !v.muted; if (!v.muted && v.paused) v.play(); });
     sync();

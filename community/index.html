@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
-<link rel="stylesheet" href="../assets/giving/giving.css?v=384b7c93">
+<link rel="stylesheet" href="../assets/giving/giving.css?v=ef916973">
 <link rel="stylesheet" href="../assets/css/tcf-v3-giving.css?v=b2c4c0f2">
 <link rel="icon" href="../assets/img/favicon.svg">
 </head>
@@ -42,7 +42,7 @@
 
   <!-- standing calls to action -->
   <div class="tb-ctas">
-    <button class="tb-cta tb-cta-grow" onclick="navigate('garden',false)" aria-label="Grow Your City Together">
+    <button class="tb-cta tb-cta-grow" hidden style="display:none" onclick="navigate('garden',false)" aria-label="Grow Your City Together">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M12 12C12 7 8 6 5 6c0 4 2 7 7 7z"/><path d="M12 12c0-5 4-6 7-6 0 4-2 7-7 7z"/></svg>
       <span class="cta-full">Grow Your City Together</span><span class="cta-short">Grow</span>
       <span class="garden-mini-dots" id="gardenMiniDots" aria-hidden="true"></span>
@@ -79,13 +79,9 @@
     <button class="dr-item active" data-view="home" onclick="navigate('home')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>Home</button>
     <button class="dr-item" data-view="newsfeed" onclick="navigate('newsfeed')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 019 9M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg>News Feed</button>
     <button class="dr-item" data-view="legends" onclick="navigate('legends')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3L21 9l-4.9 4.4L17.4 20 12 16.7 6.6 20l1.3-6.6L3 9l6.1-.7z"/></svg>Local Legends</button>
-    <button class="dr-item" data-view="history" onclick="navigate('history')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18"/><path d="M8 2v4M16 2v4"/></svg>Cleveland History Quiz</button>
-    <button class="dr-item" data-view="learning" onclick="navigate('learning')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Learning Tracks</button>
     <button class="dr-item" data-view="impact" onclick="navigate('impact')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-10a7 7 0 0114 0c0 5.5-7 10-7 10z"/><circle cx="12" cy="11" r="2"/></svg>Stories &amp; Impact</button>
     <button class="dr-item" data-view="calculator" onclick="navigate('calculator')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>Impact Calculator</button>
     <button class="dr-item" data-view="impactmap" onclick="navigate('impactmap')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-6 3V7l6-3m0 16l6 3m-6-3V4m6 16l6-3V4l-6 3m0 13V7m0 0L9 4"/></svg>Impact Map</button>
-    <button class="dr-item" data-view="members" onclick="navigate('members')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Members</button>
-    <button class="dr-item" data-view="garden" onclick="navigate('garden')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M12 12C12 7 8 6 5 6c0 4 2 7 7 7z"/><path d="M12 12c0-5 4-6 7-6 0 4-2 7-7 7z"/></svg>Grow Your City</button>
 
     <div class="dr-label" id="drawerJourneyLabel">Your Journey</div>
     <button class="dr-item" onclick="openDAF()" id="drawerOpenDAF"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Open a DAF</button>
@@ -124,7 +120,7 @@
         <p class="h-lede">When you give to the Cleveland Foundation, your gift joins the generosity of your neighbors, grows over time, and helps strengthen our city today and for generations to come.</p>
         <div class="h-actions">
           <button class="btn btn-accent" onclick="navigate('contributions',false)">Give today</button>
-          <button class="btn btn-onhero" onclick="navigate('garden',false)">Grow your city together</button>
+          <button class="btn btn-onhero" onclick="navigate('impactmap',false)">See where grants go</button>
         </div>
         <div class="h-tag">Every gift counts · It takes all of us</div>
       </div>
@@ -165,21 +161,7 @@
       <div class="p-count">New every Monday</div>
     </button>
 
-    <button class="panel" onclick="navigate('history',false)">
-      <div class="t-icon" style="background:var(--orange);color:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18"/><path d="M8 2v4M16 2v4"/></svg></div>
-      <svg class="p-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      <div class="p-label">Cleveland History Quiz</div>
-      <div class="p-sub">Test your knowledge of when major events happened across our city.</div>
-      <div class="p-count">A new question every week</div>
-    </button>
 
-    <button class="panel" onclick="navigate('learning',false)">
-      <div class="t-icon" style="background:var(--gray2);color:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#086C43" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
-      <svg class="p-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      <div class="p-label">Learn</div>
-      <div class="p-sub">How community endowment works, and your role in it.</div>
-      <div class="p-count">4 tracks</div>
-    </button>
 
     <button class="panel" onclick="navigate('calculator',false)">
       <div class="t-icon" style="background:var(--gray2);color:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A8DA9" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg></div>
@@ -197,13 +179,6 @@
       <div class="p-count">200+ pins</div>
     </button>
 
-    <button class="panel" onclick="navigate('members',false)">
-      <div class="t-icon" style="background:var(--gray2);color:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D3591B" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-      <svg class="p-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      <div class="p-label">Members</div>
-      <div class="p-sub">Giving circles, events, and donor gatherings.</div>
-      <div class="p-count">Community</div>
-    </button>
   </div>
 
   <!-- DONOR tiles (revealed once a fund is active) -->
@@ -291,7 +266,6 @@
     </button>
 
     <button class="panel panel-cta" onclick="navigate('newsfeed',false)">
-      <svg class="guilloche" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#19B9A9" stroke-width=".6" opacity=".5"><circle cx="150" cy="330" r="70"/><circle cx="150" cy="330" r="110"/><circle cx="150" cy="330" r="150"/><circle cx="150" cy="330" r="190"/><circle cx="150" cy="330" r="230"/></g></svg>
       <div class="p-label" style="position:relative;">Open the News Feed</div>
       <div class="p-sub" style="position:relative;">Stories from the foundation and the Whys your neighbors are sharing.</div>
       <div class="p-count" style="position:relative;">2 new this week</div>
@@ -329,7 +303,7 @@
   <div class="sect-rail">
     <div class="sr-main"><div class="sr-kick">Take action</div><h2>More ways to engage</h2></div>
     <div class="sr-lead"></div>
-    <div class="sr-meta">Five paths · One foundation</div>
+    <div class="sr-meta">Three paths · One foundation</div>
   </div>
   <div class="pgrid">
     <!-- primary conversion, full width -->
@@ -352,13 +326,6 @@
       <div class="p-count">Beyond your lifetime</div>
     </button>
 
-    <button class="panel" onclick="openGardenBadges()">
-      <div class="t-icon" style="background:var(--mid);color:var(--white);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22V12"/><path d="M12 12C12 7 8 6 5 6c0 4 2 7 7 7z"/><path d="M12 12c0-5 4-6 7-6 0 4-2 7-7 7z"/></svg></div>
-      <svg class="p-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      <div class="p-label">Grow Your City</div>
-      <div class="p-sub">Collect all six Land Florals as you show up for the city.</div>
-      <div class="p-count">Land Florals Challenge</div>
-    </button>
 
     <button class="panel" onclick="navigate('contributions')">
       <div class="t-icon" style="background:var(--orange);color:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/></svg></div>
@@ -368,17 +335,18 @@
       <div class="p-count">Card · ACH · Securities</div>
     </button>
 
-    <button class="panel" onclick="window.open('https://www.smallchange.co/projects/walbrook-junction','_blank')">
-      <div class="t-icon" style="background:var(--green);color:var(--white);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l5-4 5 4v14"/><path d="M9 9h1M9 13h1M9 17h1"/><path d="M15 21v-8h4v8"/></svg></div>
-      <svg class="p-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      <div class="p-label">Own Part of the Neighborhood</div>
-      <div class="p-sub">Become a micro-investor in real estate projects around Cleveland and build wealth for your family.</div>
-      <div class="p-count">Via Small Change ↗</div>
-    </button>
   </div>
 
-  <div style="text-align:center;margin-top:-4px;margin-bottom:14px;">
-    <button onclick="navigate('givinghistory')" style="background:none;border:none;padding:6px;font-size:13px;font-weight:700;color:var(--tcf-mid-green);cursor:pointer;text-decoration:underline;">Log in to see your giving history &rarr;</button>
+  <!-- ============ YOUR GIVING HISTORY (V1) ============ -->
+  <div class="sect-rail">
+    <div class="sr-main"><div class="sr-kick">Your account</div><h2>Your giving history</h2></div>
+    <div class="sr-lead"></div>
+    <div class="sr-meta" id="homeGhMeta">Every gift you've made</div>
+    <button class="sr-btn" onclick="navigate('givinghistory',false)" aria-label="See all of your giving history"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg></button>
+  </div>
+  <div class="card home-gh" style="margin-bottom:18px;">
+    <div class="row-list" id="homeGhList"></div>
+    <div style="text-align:center;padding-top:10px;"><button class="btn btn-quiet btn-sm" onclick="navigate('givinghistory',false)">See all giving history &rarr;</button></div>
   </div>
 
   <!-- impact stats strip -->
@@ -790,14 +758,6 @@
       <div class="story-row" onclick="showToast('Opening story…')" style="cursor:pointer;"><div class="thumb t3"></div><div><div class="tag">Community Health · 4 min</div><h4>Doula Network Expands to West Side</h4><div class="excerpt">Five new community-based doulas joined the program this spring — maternal outcomes are rising.</div></div></div>
       <div class="story-row" onclick="showToast('Opening story…')" style="cursor:pointer;"><div class="thumb t1" style="background:var(--tcf-blue);"></div><div><div class="tag">Education · 7 min</div><h4>Closing the Third-Grade Reading Gap in Cleveland Schools</h4><div class="excerpt">A targeted literacy program is helping 3,200 students reach grade-level reading.</div></div></div>
     </div>
-    <div class="card">
-      <h3 style="margin-bottom:14px;">Learning Tracks</h3>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div onclick="openLearningTrack('engagement')" style="background:var(--surface-2);border-radius:10px;padding:14px;cursor:pointer;display:flex;align-items:center;gap:12px;"><span style="font-size:18px;">🤝</span><div style="flex:1;"><div style="font-weight:700;font-size:14px;color:var(--tcf-primary);">Community Engagement</div><div style="font-size:12px;color:var(--ink-faint);">4 articles · ~18 min</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></div>
-        <div onclick="openLearningTrack('estate')" style="background:var(--surface-2);border-radius:10px;padding:14px;cursor:pointer;display:flex;align-items:center;gap:12px;"><span style="font-size:18px;">📋</span><div style="flex:1;"><div style="font-weight:700;font-size:14px;color:var(--tcf-primary);">Estate Planning &amp; Legacy Giving 101</div><div style="font-size:12px;color:var(--ink-faint);">5 articles · ~25 min</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></div>
-        <div onclick="openLearningTrack('endowments')" style="background:var(--surface-2);border-radius:10px;padding:14px;cursor:pointer;display:flex;align-items:center;gap:12px;"><span style="font-size:18px;">📈</span><div style="flex:1;"><div style="font-weight:700;font-size:14px;color:var(--tcf-primary);">Endowments</div><div style="font-size:12px;color:var(--ink-faint);">4 articles · ~20 min</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-    </div>
     <div class="card" style="border:2px solid var(--tcf-orange);text-align:center;">
       <div class="eyebrow">Ready to Act?</div>
       <h3 style="margin-bottom:8px;">Turn inspiration into impact</h3>
@@ -1048,13 +1008,9 @@
     <div class="page-head">
       <div class="eyebrow">For You</div>
       <h1>News Feed</h1>
-      <p class="lede">Personalized stories from others making an impact — plus the Whys people are sharing in Grow Your City.</p>
+      <p class="lede">Personalized stories from others making an impact, and why your neighbors give.</p>
     </div>
 
-    <div class="nf-composer" onclick="navigate('garden');showToast('Share your \u201cwhy\u201d from the Foxglove badge in Grow Your City.')">
-      <div class="nf-comp-icon">+</div>
-      <div class="nf-comp-text">Share your own "why" in Grow Your City&hellip;</div>
-    </div>
 
     <div id="nfFeed"></div>
   </div>
@@ -1230,7 +1186,7 @@
   <button class="dock-item" data-view="newsfeed" onclick="navigate('newsfeed',false)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 019 9M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg>Feed</button>
   <button class="dock-item" data-view="contributions" onclick="navigate('contributions',false)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/></svg>Give</button>
   <button class="dock-item" data-view="impactmap" onclick="navigate('impactmap',false)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-6 3V7l6-3m0 16l6 3m-6-3V4m6 16l6-3V4l-6 3m0 13V7m0 0L9 4"/></svg>Map</button>
-  <button class="dock-item" data-view="garden" onclick="navigate('garden',false)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M12 12C12 7 8 6 5 6c0 4 2 7 7 7z"/><path d="M12 12c0-5 4-6 7-6 0 4-2 7-7 7z"/></svg>Grow</button>
+  <button class="dock-item" data-view="legends" onclick="navigate('legends',false)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3L21 9l-4.9 4.4L17.4 20 12 16.7 6.6 20l1.3-6.6L3 9l6.1-.7z"/></svg>Legends</button>
   <button class="dock-item active" data-view="home" onclick="navigate('home',false)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>Home</button>
 </nav>
 
@@ -1350,7 +1306,7 @@
 <script src="../assets/data/grants-2025.js?v=f8da6a55"></script>
 <script src="../assets/giving/map-and-grants.js?v=20058938"></script>
 
-<script src="../assets/giving/app.js?v=2f54546c"></script>
+<script src="../assets/giving/app.js?v=c5da00d5"></script>
 
 <script src="../assets/giving/extras.js?v=86bf2363"></script>
 <script>window.SITE_HOME = "../";</script>
