@@ -114,13 +114,16 @@ function initParallax(){
 if (typeof NF_POSTS !== 'undefined') {
   NF_POSTS.unshift(
     { id:101, name:'Cleveland Foundation', initials:'CF', color:'var(--tcf-primary)', type:'news', time:'2d ago', likes:41,
+      img:'../assets/img/stories/summer-job.jpg', alt:'Two young people rebuilding an engine in a workshop',
       body:'Connect people to prosperity \u2014 a summer job on Euclid Avenue turned into a career. Our workforce grantees placed 1,180 young people in paid roles last year, and two-thirds were still employed twelve months later.',
       action:function(){ navigate('impact'); } },
     { id:102, name:'Cleveland Foundation', initials:'CF', color:'var(--tcf-primary)', type:'news', time:'4d ago', likes:27,
+      img:'../assets/img/stories/hough-homeowners.jpg', alt:'A homeowner pointing down the street while neighbors look on, in front of a new house',
       body:'Vibrant neighborhoods \u2014 Hough\u2019s newest homeowners built more than houses. Twelve families closed on homes built with neighborhood labor, and the block club that organized the effort is now advising three other wards.',
       action:function(){ navigate('impactmap'); } },
     { id:103, name:'Cleveland Foundation', initials:'CF', color:'var(--tcf-primary)', type:'news', time:'1w ago', likes:35,
-      body:'Grow our region \u2014 fresh water, new jobs. The lakefront tech corridor drew nine water-technology companies to Cleveland this year, building on research the foundation has backed since 2019.',
+      img:'../assets/img/stories/midline.jpg', alt:'Two men talking inside a large former industrial building',
+      body:'Grow our region \u2014 see how the Midline is redefining the future with good jobs.',
       action:function(){ navigate('impactmap'); } }
   );
 }

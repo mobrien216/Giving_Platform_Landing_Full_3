@@ -723,7 +723,7 @@ VIEWS.home = function(){
   // engagement
   html += '<div class="gap-m"></div>' + (window.ENG ? ENG.homeModules() : '');
   // advisor
-  html += '<div class="gap-m"></div><div class="pad"><div class="card row" style="gap:14px"><span class="avatar round" style="background:var(--moss)">JR</span><div style="flex:1;min-width:0"><div style="font-weight:700;color:var(--forest)">Jordan Reyes</div><div class="tiny">Senior philanthropic advisor '+pin('sf')+'</div></div><button class="btn btn-quiet btn-sm" onclick="openMessage()">Message</button></div></div>';
+  html += '<div class="gap-m"></div><div class="pad"><div class="card row" style="gap:14px"><span class="avatar round" style="background:var(--moss)">BS</span><div style="flex:1;min-width:0"><div style="font-weight:700;color:var(--forest)">Brittany Schultz</div><div class="tiny">Senior philanthropic advisor '+pin('sf')+'</div></div><button class="btn btn-quiet btn-sm" onclick="openMessage()">Message</button></div></div>';
   html += syncFoot();
   return html;
 };
@@ -1313,22 +1313,22 @@ var CONVOS = [ {d:'2026-08-28', k:'Phone · 40 min', t:'Year-end giving plan and
 VIEWS.advisor = function(){
   var mine=S.messages.map(function(m){ return {d:ymd(new Date(m.t)), k:'Portal message', t:m.subject}; }).concat(S.calls.map(function(c){ return {d:ymd(new Date(c.t)), k:'Call booked · '+c.slot, t:c.topic}; }));
   return pageHead('Support','My advisor')+
-    '<div class="pad"><div class="calc-out">'+guilloche(240,330)+'<div class="row" style="gap:14px"><span class="avatar round" style="width:62px;height:62px;font-size:22px;background:var(--ember)">JR</span><div><div style="font-family:var(--f-display);font-weight:800;font-size:24px;letter-spacing:-.02em">Jordan Reyes</div><div class="co-cap" style="margin-top:2px">Senior philanthropic advisor</div></div></div>'+
-    '<p style="color:var(--gray2);font-size:14px;margin-top:14px;line-height:1.6">Jordan works with families and nonprofits on multi-year giving plans, complex gifts, and endowment strategy.</p>'+
+    '<div class="pad"><div class="calc-out">'+guilloche(240,330)+'<div class="row" style="gap:14px"><span class="avatar round" style="width:62px;height:62px;font-size:22px;background:var(--ember)">BS</span><div><div style="font-family:var(--f-display);font-weight:800;font-size:24px;letter-spacing:-.02em">Brittany Schultz</div><div class="co-cap" style="margin-top:2px">Senior philanthropic advisor</div></div></div>'+
+    '<p style="color:var(--gray2);font-size:14px;margin-top:14px;line-height:1.6">Brittany works with families and nonprofits on multi-year giving plans, complex gifts, and endowment strategy.</p>'+
     '<div class="v-actions"><button class="btn btn-accent" onclick="openMessage()">'+ic('chat',18)+'Send a message</button><button class="btn btn-onhero" onclick="openSchedule()">'+ic('cal',18)+'Book a call</button></div></div>'+
     '<p class="tiny" style="margin-top:8px">Advisor shown is fictional for the prototype. '+pin('sf')+'</p></div>'+
     '<div class="gap-m"></div>'+rail('History','Recent conversations','')+'<div class="list" style="padding-top:14px">'+mine.reverse().concat(CONVOS).map(function(c){ return '<div class="ff-row"><span class="avatar" style="background:var(--well);color:var(--forest)">'+ic('chat',18)+'</span><div class="ffr-main"><div class="ffr-name">'+esc(c.t)+'</div><div class="ffr-meta">'+fdate(c.d)+' · '+esc(c.k)+'</div></div></div>'; }).join('')+'</div>';
 };
 function openMessage(subject){
-  openSheet({ kick:'To Jordan Reyes', title:'Send a message', body:'<div class="f-row"><label for="msgSub">Subject</label><input id="msgSub" value="'+esc(subject||'')+'" placeholder="What\u2019s on your mind?"></div><div class="f-row"><label for="msgBody">Message</label><textarea id="msgBody" placeholder="Jordan usually replies within one business day."></textarea></div><p class="tiny">Messages are secure and saved to your record. Please don\u2019t include account passwords or full bank numbers.</p>',
+  openSheet({ kick:'To Brittany Schultz', title:'Send a message', body:'<div class="f-row"><label for="msgSub">Subject</label><input id="msgSub" value="'+esc(subject||'')+'" placeholder="What\u2019s on your mind?"></div><div class="f-row"><label for="msgBody">Message</label><textarea id="msgBody" placeholder="Brittany usually replies within one business day."></textarea></div><p class="tiny">Messages are secure and saved to your record. Please don\u2019t include account passwords or full bank numbers.</p>',
     foot:'<button class="btn btn-quiet" onclick="closeSheet()">Cancel</button><button class="btn btn-accent" onclick="sendMessage()">Send message</button>' });
 }
 function sendMessage(){ var s=$('#msgSub').value.trim(), b=$('#msgBody').value.trim(); if(!s&&!b){ toast('Write a subject or a message first.'); return; }
   S.messages.push({t:Date.now(), subject:s||b.slice(0,60), body:b, fund:S.fundId}); save(); logSync('sf','Case','Message to advisor: '+(s||b.slice(0,40)));
-  closeSheet(); toast('Message sent to Jordan.'); if(ROUTE==='advisor') render(); }
+  closeSheet(); toast('Message sent to Brittany.'); if(ROUTE==='advisor') render(); }
 function openSchedule(){
   var slots=[], d=new Date(TODAY); while(slots.length<6){ d=addDays(d,1); if(d.getDay()===0||d.getDay()===6) continue; slots.push(fdate(d,'short')+' · '+(slots.length%2?'2:00 PM':'10:30 AM')); }
-  openSheet({ kick:'With Jordan Reyes', title:'Book a call', body:'<div class="f-lab">Pick a time (Eastern)</div><div class="chip-row" id="slotRow">'+slots.map(function(s,i){ return '<button class="chip'+(i===0?' sel':'')+'" onclick="$$(\'#slotRow .chip\').forEach(function(c){c.classList.remove(\'sel\')});this.classList.add(\'sel\')">'+s+'</button>'; }).join('')+'</div><div class="gap-m"></div><div class="f-row"><label for="callTopic">Topic</label><select id="callTopic"><option>Year-end giving</option><option>Gift of stock or complex assets</option><option>Rebalancing my fund</option><option>Adding family members</option><option>Opening a new fund</option><option>Something else</option></select></div>',
+  openSheet({ kick:'With Brittany Schultz', title:'Book a call', body:'<div class="f-lab">Pick a time (Eastern)</div><div class="chip-row" id="slotRow">'+slots.map(function(s,i){ return '<button class="chip'+(i===0?' sel':'')+'" onclick="$$(\'#slotRow .chip\').forEach(function(c){c.classList.remove(\'sel\')});this.classList.add(\'sel\')">'+s+'</button>'; }).join('')+'</div><div class="gap-m"></div><div class="f-row"><label for="callTopic">Topic</label><select id="callTopic"><option>Year-end giving</option><option>Gift of stock or complex assets</option><option>Rebalancing my fund</option><option>Adding family members</option><option>Opening a new fund</option><option>Something else</option></select></div>',
     foot:'<button class="btn btn-quiet" onclick="closeSheet()">Cancel</button><button class="btn btn-accent" onclick="bookCall()">Book call</button>' });
 }
 function bookCall(){ var sl=$('#slotRow .chip.sel').textContent, tp=$('#callTopic').value; S.calls.push({t:Date.now(), slot:sl, topic:tp}); save(); logSync('sf','Event','Call booked: '+sl+' — '+tp); closeSheet(); toast('Booked for '+sl+'. A calendar invite is on its way.'); if(ROUTE==='advisor') render(); }
@@ -1460,8 +1460,8 @@ VIEWS.givingplan = function(p){
       '<div class="gp-meter"><div class="pm-top"><span>Your giving plan</span><b>'+pct+'%</b></div>'+
         '<div class="pm-bar" role="progressbar" aria-label="Giving plan complete" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><span style="width:'+pct+'%"></span></div>'+
         '<div class="tiny">You’re '+pct+'% complete: '+done+' of '+JOURNEY.length+' cards done. Every card is optional.</div></div>'+
-      '<div class="gp-advisor"><span class="avatar round" style="background:var(--moss)">JR</span>'+
-        '<div class="gp-adv-who"><div class="gp-adv-n">Work on it with Jordan Reyes</div><div class="tiny">Senior philanthropic advisor</div></div>'+
+      '<div class="gp-advisor"><span class="avatar round" style="background:var(--moss)">BS</span>'+
+        '<div class="gp-adv-who"><div class="gp-adv-n">Work on it with Brittany Schultz</div><div class="tiny">Senior philanthropic advisor</div></div>'+
         '<div class="gp-adv-act"><button class="btn btn-quiet btn-sm" onclick="openMessage()">'+ic('chat',16)+'Message</button><button class="btn btn-accent btn-sm" onclick="openSchedule()">'+ic('cal',16)+'Book a call</button></div></div>'+
     '</div></div>';
 
