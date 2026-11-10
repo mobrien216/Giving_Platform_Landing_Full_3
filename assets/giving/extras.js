@@ -128,24 +128,61 @@ if (typeof NF_POSTS !== 'undefined') {
   );
 }
 
-/* V1: the home page shows the three featured stories as News Feed cards, side by side. */
+/* V1: "From the field" — the three featured stories as a carousel of square cards, the same
+   size as the home tiles (two across on phones, four across on desktop), ending with an
+   "Open the News Feed" card. Titles come from STORY_TITLES; the full text lives in the feed. */
+var STORY_TITLES = {
+  101:{ tag:'Connect people to prosperity', title:'A summer job became a career on Euclid Avenue' },
+  102:{ tag:'Vibrant neighborhoods', title:'Hough\u2019s newest homeowners built more than houses' },
+  103:{ tag:'Grow our region', title:'See how the Midline is redefining the future with good jobs' }
+};
 function renderHomeFeedCards(){
   var host = document.getElementById('homeFeedCards');
   if (!host || typeof NF_POSTS === 'undefined') return;
   host.innerHTML = [101, 102, 103].map(function(id){
-    var p = NF_POSTS.filter(function(x){ return x.id === id; })[0];
-    if (!p) return '';
-    return '<article class="nf-post v1-feed-card" role="link" tabindex="0" onclick="openFeedStory(' + id + ')" onkeydown="if(event.key===&quot;Enter&quot;)openFeedStory(' + id + ')">'
-      + '<div class="nf-post-top"><div class="nf-avatar" style="background:' + p.color + ';">' + p.initials + '</div>'
-      + '<div><div class="nf-post-name">' + p.name + '</div><div class="nf-post-meta">' + p.time + '</div></div>'
-      + '<div class="nf-post-badge news">Cleveland Foundation</div></div>'
-      + (p.img ? '<img class="nf-post-img" src="' + p.img + '" alt="' + (p.alt || '') + '" loading="lazy">' : '')
-      + '<div class="nf-post-body">' + p.body + '</div>'
-      + '<div class="nf-post-actions"><span class="v1-likes">♥ ' + p.likes + '</span><span class="v1-more">Read more →</span></div>'
-      + '</article>';
-  }).join('');
+    var p = NF_POSTS.filter(function(x){ return x.id === id; })[0], t = STORY_TITLES[id];
+    if (!p || !t) return '';
+    return '<button type="button" class="v1-story" onclick="openFeedStory(' + id + ')">'
+      + '<span class="v1-story__img" style="background-image:url(' + p.img + ')" role="img" aria-label="' + (p.alt || '') + '"></span>'
+      + '<span class="v1-story__body"><span class="v1-story__tag">' + t.tag + '</span>'
+      + '<span class="v1-story__title">' + t.title + '</span>'
+      + '<span class="v1-story__foot"><span>\u2665 ' + p.likes + '</span><span>Read more \u2192</span></span></span>'
+      + '</button>';
+  }).join('')
+  + '<button type="button" class="v1-story v1-story--cta" onclick="navigate(\'newsfeed\',false)">'
+  + '<span class="v1-story__body"><span class="v1-story__title">Open the News Feed</span>'
+  + '<span class="v1-story__sub">Stories from the foundation and why your neighbors give.</span>'
+  + '<span class="v1-story__foot"><span>2 new this week</span><span>\u2192</span></span></span></button>';
 }
 renderHomeFeedCards();
+
+/* Carousel controls: arrows page by what's visible; dots show the page; hidden when nothing scrolls. */
+function initCarousel(root){
+  var track = root.querySelector('.v1-carousel__track'), dots = root.querySelector('[data-dots]');
+  var prev = root.querySelector('[data-prev]'), next = root.querySelector('[data-next]');
+  function pages(){ return track.clientWidth ? Math.max(1, Math.round(track.scrollWidth / track.clientWidth)) : 1; }
+  function page(){ return track.clientWidth ? Math.round(track.scrollLeft / track.clientWidth) : 0; }
+  function sync(){
+    var n = pages(), i = Math.min(page(), n - 1);
+    root.classList.toggle('is-static', n < 2);
+    dots.innerHTML = n < 2 ? '' : Array.apply(null, Array(n)).map(function(_, k){
+      return '<button type="button" class="' + (k === i ? 'on' : '') + '" aria-label="Page ' + (k + 1) + ' of ' + n + '" data-page="' + k + '"></button>';
+    }).join('');
+    prev.disabled = track.scrollLeft < 4;
+    next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+  }
+  function go(dir){ track.scrollBy({ left: dir * track.clientWidth, behavior: REDUCE ? 'auto' : 'smooth' }); }
+  prev.addEventListener('click', function(){ go(-1); });
+  next.addEventListener('click', function(){ go(1); });
+  dots.addEventListener('click', function(e){ var b = e.target.closest('[data-page]'); if (b) track.scrollTo({ left: +b.dataset.page * track.clientWidth, behavior: REDUCE ? 'auto' : 'smooth' }); });
+  track.addEventListener('keydown', function(e){ if (e.key === 'ArrowRight'){ e.preventDefault(); go(1); } else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(-1); } });
+  var t; track.addEventListener('scroll', function(){ clearTimeout(t); t = setTimeout(sync, 60); }, { passive: true });
+  window.addEventListener('resize', sync);
+  sync();
+  /* the home view can be hidden at load (intro): recheck whenever the track changes size */
+  if ('ResizeObserver' in window) new ResizeObserver(sync).observe(track);
+}
+document.querySelectorAll('[data-carousel]').forEach(initCarousel);
 
 /* tag each rendered post so the home panels can jump straight to it */
 var _baseRenderNewsFeed = window.renderNewsFeed;

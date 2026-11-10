@@ -616,7 +616,7 @@ function donut(mix, size, label, sub){
   size=size||132; var r=size/2-12, c=2*Math.PI*r, off=0, segs='';
   Object.keys(mix).forEach(function(k){ var p=mix[k]/100; if(!p) return; segs+='<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+POOLS[k].color+'" stroke-width="18" stroke-dasharray="'+(c*p-2).toFixed(2)+' '+c.toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'" transform="rotate(-90 '+size/2+' '+size/2+')"/>'; off+=c*p; });
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" role="img" aria-label="Allocation donut">'+segs+
-    (label?'<text x="50%" y="48%" text-anchor="middle" style="font-family:var(--f-display);font-weight:800;font-size:15px;fill:var(--forest)">'+esc(label)+'</text><text x="50%" y="62%" text-anchor="middle" style="font-family:var(--f-ledger);font-size:8.5px;letter-spacing:.12em;fill:var(--ink-3)">'+esc(sub||'')+'</text>':'')+'</svg>';
+    (label?'<text x="50%" y="48%" text-anchor="middle" style="font-family:var(--f-display);font-weight:800;font-size:15px;fill:var(--forest)">'+esc(label)+'</text><text x="50%" y="62%" text-anchor="middle" style="font-family:var(--f-ledger);font-size:12px;letter-spacing:.12em;fill:var(--ink-3)">'+esc(sub||'')+'</text>':'')+'</svg>';
 }
 function allocLegend(mix){ return '<div class="alloc-leg">'+Object.keys(mix).filter(function(k){return mix[k]>0;}).map(function(k){ return '<div class="al"><i class="sw" style="background:'+POOLS[k].color+'"></i>'+POOLS[k].name+'<b>'+mix[k]+'%</b></div>'; }).join('')+'</div>'; }
 
@@ -635,7 +635,7 @@ function vaultHTML(full){
     '<div class="range-row"><div class="ranges" role="tablist" aria-label="Date range">'+keys.map(function(k){ return '<button class="rng'+(PERF.range===k?' sel':'')+'" onclick="setRange(\''+k+'\')">'+labels[k]+'</button>'; }).join('')+'</div></div>'+
     '<div class="custom-range'+(PERF.range==='CUSTOM'?' on':'')+'" id="custRange"><div><label for="cFrom">From</label><input type="date" id="cFrom" value="'+cust.from+'" min="'+f.inception+'" max="'+ymd(TODAY)+'"></div><div><label for="cTo">To</label><input type="date" id="cTo" value="'+cust.to+'" min="'+f.inception+'" max="'+ymd(TODAY)+'"></div><button class="btn btn-accent btn-sm" onclick="applyCustom()">Apply</button></div>'+
     '<div class="chart" id="vChart"></div>'+
-    '<div style="display:flex;gap:14px;margin-top:8px;font-size:11px;color:var(--gray2);flex-wrap:wrap"><span><i class="sw" style="background:var(--aqua)"></i>Net contributed</span><span><i class="sw" style="background:var(--ember)"></i>Investment growth</span><span><i class="sw" style="background:var(--magenta-lt);width:3px"></i>'+(org?'Distributions':'Grants paid')+'</span></div>'+
+    '<div style="display:flex;gap:14px;margin-top:8px;font-size:12px;color:var(--gray2);flex-wrap:wrap"><span><i class="sw" style="background:var(--aqua)"></i>Net contributed</span><span><i class="sw" style="background:var(--ember)"></i>Investment growth</span><span><i class="sw" style="background:var(--magenta-lt);width:3px"></i>'+(org?'Distributions':'Grants paid')+'</span></div>'+
     '<div class="v-stats" id="vStats"></div>'+
     (full?'':'<div class="v-actions">'+(org
       ? '<button class="btn btn-accent" onclick="openGrantForm(\''+jsq(f.org)+'\')">'+ic('grant',18)+'Request a grant</button><button class="btn btn-onhero" onclick="go(\'contribute\')">'+ic('plus',18)+'Contribute</button>'
@@ -1027,7 +1027,7 @@ function ctAmtInput(el){ var v=parseFloat(el.value.replace(/[^0-9.]/g,''))||0; C
 function ctSet(v){ CT.amt=v; var el=$('#ctAmt'); el.value=v.toLocaleString('en-US'); ctAmtInput(el); }
 function methodDetail(f){
   var m=CT.method;
-  if(m==='ach') return '<div class="f-row"><label for="ctFreq">Frequency</label><select id="ctFreq" onchange="CT.freq=this.value">'+[['once','One time'],['Monthly','Monthly'],['Quarterly','Quarterly'],['Annually','Annually']].map(function(o){return '<option value="'+o[0]+'"'+(CT.freq===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select><div class="hint">From Checking ••4471 · <button class="link" style="padding:0;font-size:9px" onclick="toast(\'Adding a bank account opens the payment processor\u2019s secure form.\')">Add an account</button></div></div>';
+  if(m==='ach') return '<div class="f-row"><label for="ctFreq">Frequency</label><select id="ctFreq" onchange="CT.freq=this.value">'+[['once','One time'],['Monthly','Monthly'],['Quarterly','Quarterly'],['Annually','Annually']].map(function(o){return '<option value="'+o[0]+'"'+(CT.freq===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select><div class="hint">From Checking ••4471 · <button class="link" style="padding:0;font-size:12px" onclick="toast(\'Adding a bank account opens the payment processor\u2019s secure form.\')">Add an account</button></div></div>';
   if(m==='card') return '<p class="tiny">Card gifts post right away. A processing fee may apply.</p>';
   if(m==='stock') return '<div class="wire"><div class="fr"><span class="fk">Transfer type</span><span class="fv">DTC</span></div><div class="fr"><span class="fk">Reference</span><span class="fv">'+f.no+'</span></div><p class="tiny" style="margin-top:8px">Your advisor sends the Foundation\u2019s brokerage details and a letter of authorization for your broker. Tell us what you\u2019re sending so it\u2019s credited to the right fund.</p></div>';
   if(m==='wire'){
@@ -1172,7 +1172,7 @@ VIEWS.statements = function(p){
     html += '<div class="pad"><div class="f-lab">Period type</div><div class="chip-row">'+[['month','Month'],['quarter','Quarter'],['cy','Calendar year'],['fy','Fiscal year']].map(function(t){ return '<button class="chip'+(ST.type===t[0]?' sel':'')+'" onclick="ST.type=\''+t[0]+'\';ST.sel=0;render()">'+t[1]+'</button>'; }).join('')+'</div>'+
       '<div class="gap-s"></div><div class="f-row"><label for="stSel">Period</label><select id="stSel" onchange="ST.sel=+this.value;render()">'+list.map(function(p,i){ return '<option value="'+i+'"'+(i===ST.sel?' selected':'')+'>'+esc(p.label)+(p.open?' (to date)':'')+'</option>'; }).join('')+'</select></div>'+
       (pr?reconFacts(pr, s, org):'')+'<div class="gap-s"></div><div class="row wrap">'+(pr?'<button class="btn btn-accent btn-sm" onclick="printStatement('+pr.a+','+pr.b+',\''+jsq(pr.label)+'\')">'+ic('download',16)+'Download PDF</button><button class="btn btn-quiet btn-sm" onclick="exportTx('+pr.a+','+pr.b+')">'+ic('doc',16)+'Transactions CSV</button>':'')+'</div>'+
-      '<p class="tiny" style="margin-top:10px">Need a different window? Use a custom range on <button class="link" style="padding:0;font-size:9px" onclick="go(\'performance\')">Fund performance</button>.</p></div>';
+      '<p class="tiny" style="margin-top:10px">Need a different window? Use a custom range on <button class="link" style="padding:0;font-size:12px" onclick="go(\'performance\')">Fund performance</button>.</p></div>';
   } else {
     html += rail(org?'By fiscal year':'By tax year', org?'Gifts received':'Contribution receipts', '')+'<div class="pad" style="padding-top:14px">'+taxYearTable()+'<p class="tiny" style="margin-top:10px">'+(org?'Gifts to the fund are receipted to each donor by the Foundation.':'Keep these with your tax records. Your advisor can resend any year.')+'</p></div>';
   }
@@ -1184,7 +1184,7 @@ function stmtRow(p, kind){ return '<button class="ff-row" onclick="printStatemen
 function printDoc(title, inner){
   var fr=document.createElement('iframe'); fr.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0'; document.body.appendChild(fr);
   var d=fr.contentWindow.document;
-  d.open(); d.write('<!doctype html><html><head><meta charset="utf-8"><title>'+esc(title)+'</title><style>body{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:var(--green);margin:40px;font-size:13px}h1{font-size:24px;margin:0 0 4px;color:#164430}h2{font-size:15px;margin:26px 0 8px;color:#164430}.k{font:600 10px monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}table{width:100%;border-collapse:collapse;margin-top:8px}td,th{padding:8px 6px;border-bottom:1px solid var(--gray3);text-align:right}td:first-child,th:first-child{text-align:left}th{font:600 9px monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mid)}.tot td{font-weight:700;background:var(--white)}.bar{height:4px;display:flex;margin:14px 0 22px}.bar span{flex:1}.foot{margin-top:30px;font-size:10px;color:var(--mid)}</style></head><body>'+
+  d.open(); d.write('<!doctype html><html><head><meta charset="utf-8"><title>'+esc(title)+'</title><style>body{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:var(--green);margin:40px;font-size:13px}h1{font-size:24px;margin:0 0 4px;color:#164430}h2{font-size:15px;margin:26px 0 8px;color:#164430}.k{font:600 10px monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}table{width:100%;border-collapse:collapse;margin-top:8px}td,th{padding:8px 6px;border-bottom:1px solid var(--gray3);text-align:right}td:first-child,th:first-child{text-align:left}th{font:600 9px monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mid)}.tot td{font-weight:700;background:var(--white)}.bar{height:4px;display:flex;margin:14px 0 22px}.bar span{flex:1}.foot{margin-top:30px;font-size:12px;color:var(--mid)}</style></head><body>'+
     '<div class="k">The Cleveland Foundation</div><div class="bar"><span style="background:#086C43"></span><span style="background:#EE7331"></span><span style="background:#19B9A9"></span><span style="background:var(--red)"></span></div>'+inner+'<p class="foot">Prototype document with fictional data. Generated '+fdate(new Date())+' from the donor portal.</p></body></html>');
   d.close();
   setTimeout(function(){ try{ fr.contentWindow.focus(); fr.contentWindow.print(); }catch(e){ toast('Printing is blocked in this browser.'); } setTimeout(function(){ fr.remove(); }, 2000); }, 300);
@@ -1264,7 +1264,7 @@ VIEWS.endow = function(){
       enSlider('years','Years to show',EN.years,5,50,1,'yrsFmt')+
       (EN.mode==='gift'?enSlider('add','Added each year',EN.add,0,250000,5000,'money'):'')+'</div>'+
     '<div class="gap-m"></div><div class="calc-out" id="enOut"></div>'+
-    '<div class="gap-m"></div><div class="card"><div class="card-k">Balance and support over time</div><div class="chart on-light" id="enChart"></div><div class="row" style="gap:14px;font-size:11.5px;color:var(--ink-2);margin-top:6px"><span><i class="sw" style="background:var(--forest)"></i>Endowment balance</span><span><i class="sw" style="background:var(--ember)"></i>Total support paid out</span></div></div>'+
+    '<div class="gap-m"></div><div class="card"><div class="card-k">Balance and support over time</div><div class="chart on-light" id="enChart"></div><div class="row" style="gap:14px;font-size:12px;color:var(--ink-2);margin-top:6px"><span><i class="sw" style="background:var(--forest)"></i>Endowment balance</span><span><i class="sw" style="background:var(--ember)"></i>Total support paid out</span></div></div>'+
     '<p class="tiny" style="margin-top:10px">Illustrative only, in today\u2019s dollars before inflation. Actual spending follows the fund agreement and the Foundation\u2019s spending policy. Not investment or tax advice.</p>'+
     '<div class="gap-s"></div><button class="btn btn-quiet btn-block" onclick="openMessage(\'Endowment planning\')">'+ic('chat',18)+'Talk it through with your advisor</button></div>';
 };
@@ -1654,7 +1654,7 @@ VIEWS.architecture = function(){
   var lands=[['Grants and distributions','Ren iPhi','Grant / Distribution'],['Contributions','Ren iPhi','Receipt / Gift'],['Rebalance requests','Ren iPhi','Reallocation Request'],['Fiscal-year settings','Ren iPhi','Fund reporting'],['Profile and preferences','Salesforce','Contact'],['Family and authorized users','Salesforce','Contact Relationship'],['Advisor messages and calls','Salesforce','Case / Event'],['Badges, quiz, legends','Salesforce','Engagement Activity'],['Feed posts and connections','Salesforce','Engagement Activity'],['Grant cart (before submit)','Salesforce','Grant Cart']];
   return pageHead('For developers','Architecture map',{lede:'Proposed technical layers behind the portal and where each account holder action is saved. For discussion with IT — not an approved design.'})+
     '<div class="pad">'+layers.map(function(l){ return '<div class="arch-layer"><div class="al-h" style="background:'+l[1]+'">'+l[0]+'<span>'+l[2]+'</span></div><div class="arch-cells">'+l[3].map(function(c){ return '<div><b>'+c[0]+'</b><span>'+c[1]+'</span></div>'; }).join('')+'</div></div>'; }).join('')+'</div>'+
-    '<div class="gap-m"></div>'+rail('Data flow','Where activity lands','Proposed')+'<div class="pad" style="padding-top:14px"><div class="tbl-wrap"><table class="tbl" style="min-width:460px"><thead><tr><th>Action</th><th style="text-align:left">System</th><th style="text-align:left">Object</th></tr></thead><tbody>'+lands.map(function(r){ return '<tr><td class="b">'+r[0]+'</td><td style="text-align:left"><span class="sy-s '+(r[1]==='Salesforce'?'sy-sf':'sy-ri')+'" style="font-family:var(--f-ledger);font-size:9px;padding:3px 7px;border-radius:6px">'+r[1]+'</span></td><td style="text-align:left">'+r[2]+'</td></tr>'; }).join('')+'</tbody></table></div></div>';
+    '<div class="gap-m"></div>'+rail('Data flow','Where activity lands','Proposed')+'<div class="pad" style="padding-top:14px"><div class="tbl-wrap"><table class="tbl" style="min-width:460px"><thead><tr><th>Action</th><th style="text-align:left">System</th><th style="text-align:left">Object</th></tr></thead><tbody>'+lands.map(function(r){ return '<tr><td class="b">'+r[0]+'</td><td style="text-align:left"><span class="sy-s '+(r[1]==='Salesforce'?'sy-sf':'sy-ri')+'" style="font-family:var(--f-ledger);font-size:12px;padding:3px 7px;border-radius:6px">'+r[1]+'</span></td><td style="text-align:left">'+r[2]+'</td></tr>'; }).join('')+'</tbody></table></div></div>';
 };
 
 /* ============================================================
@@ -1698,11 +1698,53 @@ ENG.homeModules = function(){
     (org ? panel('feed','Community','News feed','Stories from donors, grantees and the Foundation.','feed','var(--well)','var(--forest)')
          : panel('map','Where it goes','Impact map', GRANTS.length+' grants mapped across Greater Cleveland.','map','var(--gray2)','var(--blue)','Filter by pillar or neighborhood'))+
   '</div>';
-  var p=feedPosts().slice(0,1)[0];
-  if(p) html += '<div class="gap-m"></div><div class="pad">'+postHTML(p, true)+'</div>';
+  html += '<div class="gap-m"></div>'+rail('Stories & impact','From the field','<button onclick="go(\'feed\')">Open feed</button>')+storyCarouselHTML();
   return html;
 };
-ENG.homeAfter = function(){};
+ENG.homeAfter = function(){ document.querySelectorAll('[data-carousel]').forEach(initStoryCarousel); };
+
+/* V1: featured stories (same three as the community and advisor apps), shown as a carousel of
+   cards the same size as the dashboard tiles: 2 across on phones, 4 across from 760px. */
+var FEATURED_STORIES = [
+  { id:'s101', tag:'Connect people to prosperity', title:'A summer job became a career on Euclid Avenue', img:'../assets/img/stories/summer-job.jpg', alt:'Two young people rebuilding an engine in a workshop', likes:41, time:'2d ago',
+    body:'Connect people to prosperity \u2014 a summer job on Euclid Avenue turned into a career. Our workforce grantees placed 1,180 young people in paid roles last year, and two-thirds were still employed twelve months later.' },
+  { id:'s102', tag:'Vibrant neighborhoods', title:'Hough\u2019s newest homeowners built more than houses', img:'../assets/img/stories/hough-homeowners.jpg', alt:'A homeowner pointing down the street while neighbors look on, in front of a new house', likes:27, time:'4d ago',
+    body:'Vibrant neighborhoods \u2014 Hough\u2019s newest homeowners built more than houses. Twelve families closed on homes built with neighborhood labor, and the block club that organized the effort is now advising three other wards.' },
+  { id:'s103', tag:'Grow our region', title:'See how the Midline is redefining the future with good jobs', img:'../assets/img/stories/midline.jpg', alt:'Two men talking inside a large former industrial building', likes:35, time:'1w ago',
+    body:'Grow our region \u2014 see how the Midline is redefining the future with good jobs.' }
+];
+function storyCarouselHTML(){
+  var cards = FEATURED_STORIES.map(function(st){
+    return '<button type="button" class="v1-story" onclick="openStory(\''+st.id+'\')">'
+      +'<span class="v1-story__img" style="background-image:url('+st.img+')" role="img" aria-label="'+esc(st.alt)+'"></span>'
+      +'<span class="v1-story__body"><span class="v1-story__tag">'+esc(st.tag)+'</span><span class="v1-story__title">'+esc(st.title)+'</span>'
+      +'<span class="v1-story__foot"><span>\u2665 '+st.likes+'</span><span>Read more \u2192</span></span></span></button>';
+  }).join('')
+  +'<button type="button" class="v1-story v1-story--cta" onclick="go(\'feed\')"><span class="v1-story__body"><span class="v1-story__title">Open the News feed</span>'
+  +'<span class="v1-story__sub">Stories from the Foundation, grantees and your neighbors.</span><span class="v1-story__foot"><span>2 new this week</span><span>\u2192</span></span></span></button>';
+  return '<div class="v1-carousel" data-carousel><div class="v1-carousel__track" tabindex="0" aria-label="Stories from the field">'+cards+'</div>'
+    +'<div class="v1-carousel__nav"><button type="button" class="v1-carousel__btn" data-prev aria-label="Previous stories">'+ic('back',18,2.2)+'</button>'
+    +'<div class="v1-carousel__dots" data-dots></div><button type="button" class="v1-carousel__btn" data-next aria-label="Next stories">'+ic('chev',18,2.2)+'</button></div></div>';
+}
+function openStory(id){ go('feed'); setTimeout(function(){ var el=document.getElementById('post-'+id); if(el){ el.scrollIntoView({block:'center'}); el.classList.add('post-flash'); } }, 120); }
+function initStoryCarousel(root){
+  if(root._ready) return; root._ready=true;
+  var track=root.querySelector('.v1-carousel__track'), dots=root.querySelector('[data-dots]'), prev=root.querySelector('[data-prev]'), next=root.querySelector('[data-next]');
+  function pages(){ return track.clientWidth ? Math.max(1, Math.round(track.scrollWidth/track.clientWidth)) : 1; }
+  function sync(){
+    var n=pages(), i=Math.min(track.clientWidth ? Math.round(track.scrollLeft/track.clientWidth) : 0, n-1);
+    root.classList.toggle('is-static', n<2);
+    dots.innerHTML = n<2 ? '' : Array.apply(null, Array(n)).map(function(_,k){ return '<button type="button" class="'+(k===i?'on':'')+'" aria-label="Page '+(k+1)+' of '+n+'" data-page="'+k+'"></button>'; }).join('');
+    prev.disabled = track.scrollLeft < 4; next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+  }
+  function step(d){ track.scrollBy({left:d*track.clientWidth, behavior:'smooth'}); }
+  prev.onclick=function(){ step(-1); }; next.onclick=function(){ step(1); };
+  dots.onclick=function(e){ var b=e.target.closest('[data-page]'); if(b) track.scrollTo({left:+b.dataset.page*track.clientWidth, behavior:'smooth'}); };
+  track.onkeydown=function(e){ if(e.key==='ArrowRight'){ e.preventDefault(); step(1); } else if(e.key==='ArrowLeft'){ e.preventDefault(); step(-1); } };
+  var t; track.addEventListener('scroll', function(){ clearTimeout(t); t=setTimeout(sync,60); }, {passive:true});
+  if('ResizeObserver' in window) new ResizeObserver(sync).observe(track); else window.addEventListener('resize', sync);
+  sync();
+}
 function tickerHTML(){
   var r=rng(hash(ymd(TODAY))), pick=[]; for(var i=0;i<14;i++) pick.push(GRANTS[Math.floor(r()*GRANTS.length)]);
   var items=pick.map(function(g){ return '<span class="tk-item"><span class="org">'+esc(g.org)+'</span><span class="sep">/</span><span class="amt">'+esc((g.pillar||'').replace('Organization ','Org. '))+'</span><span class="sep">/</span>'+esc(g.neighborhood||'Greater Cleveland')+'</span>'; }).join('');
@@ -1738,7 +1780,7 @@ var PARTNER_POSTS = [
 function feedPosts(){
   var org=isOrg(), mine=S.feed.posts.slice().reverse();
   var lg=legendOfWeek();
-  var base=[
+  var base=FEATURED_STORIES.map(function(st){ return { id:st.id, type:'news', name:'Cleveland Foundation', color:'#164430', time:st.time, likes:st.likes, img:st.img, alt:st.alt, body:st.body }; }).concat([
     PARTNER_POSTS[0],
     { id:'n1', type:'news', name:'Cleveland Foundation', color:'#164430', time:'Yesterday', likes:32, body:'This week\u2019s Local Legend: '+lg.name+'. '+lg.legacy, go:'legends', dafOnly:true },
     { id:'w1', type:'why', name:NF_POSTS[0].name, color:'#19B9A9', time:'2h ago', likes:NF_POSTS[0].likes, body:NF_POSTS[0].body },
@@ -1748,7 +1790,7 @@ function feedPosts(){
     PARTNER_POSTS[2],
     { id:'w3', type:'why', name:NF_POSTS[4].name, color:'#C0629A', time:'5d ago', likes:NF_POSTS[4].likes, body:NF_POSTS[4].body },
     { id:'n3', type:'news', name:'Cleveland Foundation', color:'#164430', time:'1w ago', likes:48, body:'Where do Foundation grants go? The impact map now shows '+GRANTS.length+' recent grants by pillar and neighborhood.', go:'map' }
-  ].filter(function(p){ return !(org && p.dafOnly); });
+  ]).filter(function(p){ return !(org && p.dafOnly); });
   return mine.concat(base);
 }
 var FEED_F='all';
@@ -1773,7 +1815,8 @@ function postHTML(p, compact){
   if(p.type==='grantee' && !own && !(org && p.org===F().org)) acts+='<button onclick="openGrantForm(\''+jsq(p.org)+'\')">'+ic('grant',15,2)+'Recommend a grant</button>';
   if(p.go && allowed(p.go)) acts+='<button onclick="go(\''+p.go+'\')">'+ic('arrowUR',15,2)+'Open</button>';
   if(own) acts+='<button onclick="deletePost(\''+p.id+'\')">'+ic('x',15,2)+'Delete</button>';
-  return '<article class="post"><div class="pt"><span class="avatar round" style="background:'+p.color+'">'+(p.type==='news'?ic('spark',18,2):initials(p.name))+'</span><div style="min-width:0"><div class="pn">'+esc(p.name)+'</div><div class="pm">'+esc(p.time||ago(p.t))+'</div></div><span class="ptype '+p.type+'">'+label+'</span></div>'+
+  return '<article class="post" id="post-'+esc(p.id)+'"><div class="pt"><span class="avatar round" style="background:'+p.color+'">'+(p.type==='news'?ic('spark',18,2):initials(p.name))+'</span><div style="min-width:0"><div class="pn">'+esc(p.name)+'</div><div class="pm">'+esc(p.time||ago(p.t))+'</div></div><span class="ptype '+p.type+'">'+label+'</span></div>'+
+    (p.img?'<img class="post-img" src="'+p.img+'" alt="'+esc(p.alt||'')+'" loading="lazy">':'')+
     (p.media && !compact?'<div class="post-media"><div class="mslot">'+esc(p.media)+' · placeholder</div></div>':'')+
     '<div class="pb">'+(p.title?'<b>'+esc(p.title)+'</b>':'')+esc(p.body)+'</div><div class="pa">'+acts+'</div></article>';
 }

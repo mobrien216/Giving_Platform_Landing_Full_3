@@ -765,7 +765,7 @@ function hqRenderLeaderboard(){
     var statSub = hqLbSort === 'score' ? (r.pct + '% accuracy') : (r.correct + ' correct');
     return '<div class="hq-lb-row' + (r.isYou ? ' is-you' : '') + '">' +
       '<div class="hq-lb-rank">' + rank + '</div>' +
-      '<div class="nf-avatar" style="background:' + r.color + ';width:30px;height:30px;font-size:11px;">' + r.initials + '</div>' +
+      '<div class="nf-avatar" style="background:' + r.color + ';width:30px;height:30px;font-size:12px;">' + r.initials + '</div>' +
       '<div class="hq-lb-name">' + r.name + (r.isYou ? '<span class="you-tag">You</span>' : '') + '</div>' +
       '<div><div class="hq-lb-stat">' + statMain + '</div><div class="hq-lb-stat-sub">' + statSub + '</div></div>' +
     '</div>';
@@ -1262,7 +1262,7 @@ function vRenderCard(){
   var card=V_CARDS[vCurrent];
   var inner=document.getElementById('vCardInner'); if(!inner)return;
   document.getElementById('vCard').style.background=card.bg;
-  inner.innerHTML='<div style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.88);margin-bottom:auto;">Vision '+(vCurrent+1)+' of '+V_CARDS.length+'</div><div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:12px;">'+card.scenario+'</div><div style="font-size:clamp(17px,4vw,22px);font-weight:700;line-height:1.2;color:#fff;margin-bottom:12px;letter-spacing:-.01em;">'+card.headline+'</div><div style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.92);">'+card.body+'</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;">'+card.tags.map(function(t){return'<span style="font-size:11px;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);font-weight:600;">'+t+'</span>';}).join('')+'</div><div style="position:absolute;right:-20px;bottom:-20px;font-size:100px;opacity:.06;">'+card.deco+'</div>';
+  inner.innerHTML='<div style="font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.88);margin-bottom:auto;">Vision '+(vCurrent+1)+' of '+V_CARDS.length+'</div><div style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:12px;">'+card.scenario+'</div><div style="font-size:clamp(17px,4vw,22px);font-weight:700;line-height:1.2;color:#fff;margin-bottom:12px;letter-spacing:-.01em;">'+card.headline+'</div><div style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.92);">'+card.body+'</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;">'+card.tags.map(function(t){return'<span style="font-size:12px;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);font-weight:600;">'+t+'</span>';}).join('')+'</div><div style="position:absolute;right:-20px;bottom:-20px;font-size:100px;opacity:.06;">'+card.deco+'</div>';
   var refl=document.getElementById('vReflection'); if(refl) refl.style.display='block';
   document.getElementById('vReflQ').textContent=card.q;
   var opts=document.getElementById('vReflOpts');

@@ -22,7 +22,7 @@ function npCell(kick, color, title, sub, onclick, meta){
     + '<div class="pc-kick" style="color:' + color + ';">' + kick + '</div>'
     + '<div class="pc-title" style="font-size:18px;">' + title + '</div>'
     + '<div class="pc-sub">' + sub + '</div>'
-    + (meta ? '<div class="pc-sub" style="font-family:var(--f-ledger);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:8px;">' + meta + '</div>' : '')
+    + (meta ? '<div class="pc-sub" style="font-family:var(--f-ledger);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:8px;">' + meta + '</div>' : '')
     + '</button>';
 }
 POPUPS.nonprofit = {k:'Nonprofit Partners', t:'What are you looking for?', h:function(){
@@ -32,7 +32,7 @@ POPUPS.nonprofit = {k:'Nonprofit Partners', t:'What are you looking for?', h:fun
     + npCell('Your fund', 'var(--forest)', 'Org Fund Account', 'Balances, fiscal-year statements, distributions, and your QR code to give.', 'openOrgFund()', 'Sign in to the Giving Portal →')
     + npCell('Anything else', 'var(--emberDeep,#D3591B)', 'Something else', 'Starting a fund, a partnership, a program question — or not sure where to start.', "openPopup('nonprofitother',true)", 'Talk with our team →')
     + '</div>'
-    + '<div class="pop-pad" style="padding-top:16px;"><p style="font-size:11.5px;color:var(--ink-3);">Grant applications and reporting live in the Grantee Portal. Organizational fund balances and statements live in the Giving Portal.</p></div>';
+    + '<div class="pop-pad" style="padding-top:16px;"><p style="font-size:12px;color:var(--ink-3);">Grant applications and reporting live in the Grantee Portal. Organizational fund balances and statements live in the Giving Portal.</p></div>';
 }};
 POPUPS.nonprofitother = {k:'Nonprofit Partners', t:'How can we help?', h:function(){
   var topics = ['Becoming a grantee','Starting an organizational fund','A question for a program officer','Partnership or media','Something else'];
