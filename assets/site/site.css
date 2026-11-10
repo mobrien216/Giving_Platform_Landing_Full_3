@@ -16,7 +16,13 @@
 [data-film-play] svg,[data-film-sound] svg{width:20px;height:20px;}
 
 /* ---- Hero: solid dark green, text only ---- */
-.v1-hero{background:var(--color-green,#164430);background-image:none;min-height:clamp(420px,62vh,640px);display:flex;align-items:center;}
+.v1-hero{background-color:var(--color-green,#164430);
+  /* solid green on the left (behind the text), easing into a soft brand-color glow on the right */
+  background-image:
+    radial-gradient(ellipse 55% 75% at 100% 18%, rgba(25,185,169,.30) 0%, rgba(25,185,169,0) 70%),
+    radial-gradient(ellipse 45% 60% at 88% 100%, rgba(238,115,49,.16) 0%, rgba(238,115,49,0) 70%),
+    linear-gradient(100deg, #164430 0%, #164430 42%, #125238 72%, #0b6142 100%);
+min-height:clamp(420px,62vh,640px);display:flex;align-items:center;}
 .v1-hero__inner{width:100%;}
 .v1-hero .hero__content{max-width:40rem;}
 .v1-hero .hero__headline,.v1-hero .lede{color:#fff;}
