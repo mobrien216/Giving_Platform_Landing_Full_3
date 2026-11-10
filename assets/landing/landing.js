@@ -166,15 +166,32 @@ var POPUPS = {
       + '#tuInterests .itag.sel,#tuInterests .itag.sel:hover{background:var(--green);border-color:var(--green);color:var(--white);}'
       + '.itag-key{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-family:var(--body);font-size:14px;color:var(--mid);}'
       + '.itag-key span{display:inline-flex;align-items:center;gap:8px;}'
-      + '.itag-key i{width:9px;height:9px;display:inline-block;}';
+      + '.itag-key i{width:9px;height:9px;display:inline-block;}'
+      /* V1: compact window so the button shows without scrolling on a phone */
+      + '.tu.pop-pad{padding:14px 18px 0;}'
+      + '.tu .tu-seg{display:block;font-family:var(--f-ledger);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--moss);margin-bottom:4px;}'
+      + '.tu .tu-lede{font-size:14px;line-height:1.4;color:var(--ink-2);margin:0;}'
+      + '.tu .j-two{grid-template-columns:1fr 1fr;gap:8px 10px;}'
+      + '.tu .f-row label{font-size:12px;margin-bottom:3px;letter-spacing:.06em;}'
+      + '.tu .f-row input{min-height:40px;padding:7px 11px;font-size:16px;}'
+      + '.tu .tu-note{font-size:12px;line-height:1.35;color:var(--ink-3);margin:6px 0 0;}'
+      + '.tu .tu-int{display:block;font-family:var(--f-ledger);font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.08em;}'
+      + '#tuInterests.itag-row{gap:5px;}'
+      + '#tuInterests .itag{min-height:0;padding:3px 9px;font-size:12px;line-height:1.35;font-weight:600;border-width:1px;}'
+      + '.tu .itag-key{gap:4px 12px;margin-top:8px;font-size:12px;}'
+      + '.tu .itag-key i{width:8px;height:8px;}'
+      + '.tu-foot{position:sticky;bottom:0;z-index:2;background:var(--paper,#fff);padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));margin-top:12px;border-top:1px solid var(--line);}'
+      + '.tu-foot .tu-join{width:100%;min-height:48px;font-size:16px;background:var(--red,#CB1E4B)!important;border-color:var(--red,#CB1E4B)!important;color:#fff!important;}'
+      + '@media (hover:hover){.tu-foot .tu-join:hover{background:#A81840!important;border-color:#A81840!important;}}'
+      + '@media (min-width:620px){.tu-foot{padding:14px 32px;}.tu-foot .tu-join{width:auto;min-width:280px;padding:0 32px;}}';
     var segLabel = REG_SEGMENT === 'advisor' ? 'Professional Advisor' : (REG_SEGMENT === 'community' ? 'Community Member' : '');
     var subLabel = SUBTYPE_LABELS[REG_SUBTYPE] || '';
-    var context = segLabel ? '<span class="ipin ipin-setup" style="margin-bottom:16px;">' + segLabel + (subLabel ? ' \u00b7 ' + subLabel : '') + '</span><br/>' : '';
-    return '<div class="pop-pad">' + context + '<p class="lede">One quick step and we\u2019ll start tailoring things to you \u2014 relevant updates, the right funds, the right people.</p>'
-      + '<div class="j-two" style="margin-top:16px;">' + regField('tuName','Your name','Jamie Sullivan') + regField('tuEmail','Email','jamie@cleveland.com','email') + '</div>'
-      + '<div class="j-two" style="margin-top:14px;">' + regField('tuPhone','Phone','(216) 555-0148','tel') + regField('tuPassword','Create a password','At least 8 characters','password') + '</div>'
-      + '<p style="font-size:12px;color:var(--ink-3);margin-top:8px;">Prototype: your phone number and password are never saved or sent anywhere.</p>'
-      + '<div style="margin-top:20px;"><label style="display:block;font-family:var(--f-ledger);font-size:12px;font-weight:600;color:var(--forest);margin-bottom:9px;text-transform:uppercase;letter-spacing:.12em;">Interest areas \u00b7 pick as many as you like</label>'
+    var context = segLabel ? '<span class="tu-seg">' + segLabel + (subLabel ? ' \u00b7 ' + subLabel : '') + '</span>' : '';
+    return '<div class="pop-pad tu">' + context + '<p class="tu-lede">One quick step and we\u2019ll tailor updates, funds and people to you.</p>'
+      + '<div class="j-two" style="margin-top:10px;">' + regField('tuName','Your name','Jamie Sullivan') + regField('tuEmail','Email','jamie@cleveland.com','email') + '</div>'
+      + '<div class="j-two" style="margin-top:8px;">' + regField('tuPhone','Phone','(216) 555-0148','tel') + regField('tuPassword','Create a password','At least 8 characters','password') + '</div>'
+      + '<p class="tu-note">Prototype: phone and password are never saved or sent.</p>'
+      + '<div><span class="tu-int">Interest areas \u00b7 pick any</span>'
       + '<style>' + itagCss + '</style>'
       + '<div class="chip-row itag-row" id="tuInterests">'
       + interestGroups.map(function(g){ return g.items.map(function(x){
@@ -182,7 +199,7 @@ var POPUPS = {
         }).join(''); }).join('')
       + '</div>'
       + '<div class="itag-key">' + interestGroups.map(function(g){ return '<span><i style="background:' + g.color + '"></i>' + g.area + '</span>'; }).join('') + '</div></div>'
-      + '<button class="btn btn-accent btn-block btn-lg" style="margin-top:20px;" onclick="submitTellUs()">Continue</button></div>';
+      + '</div><div class="tu-foot"><button class="btn btn-block tu-join" onclick="submitTellUs()">Join the Community</button></div>';
   }},
   granteeholding:{k:'Grantee Partners',t:'Grantee Portal',h:function(){
     return '<div class="pop-pad"><div class="story-hero" style="background:linear-gradient(160deg,var(--green),var(--forest) 55%,var(--pine));display:flex;align-items:center;justify-content:center;"><div style="text-align:center;position:relative;z-index:2;padding:0 20px;"><div style="width:72px;height:72px;border-radius:var(--r);border:1px dashed rgba(255,255,255,.42);display:flex;align-items:center;justify-content:center;color:#fff;margin:0 auto 16px;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V5l8-3 8 3v16"/><path d="M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h6v4H9z"/></svg></div><h3 style="color:#fff;margin-bottom:6px;">Grantee Portal</h3><div class="ledger" style="color:var(--gray2);font-size:12px;letter-spacing:.2em;text-transform:uppercase;">Coming soon</div></div></div><p class="lede" style="margin-top:16px;">A dedicated home for applications, reporting, and funder communication is on its way. In the meantime, our program team is happy to help directly.</p><div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;"><button class="btn btn-accent btn-lg" style="flex:1;" onclick="closePopup();showToast(\'A member of our program team will follow up by email.\')">Notify our team</button><button class="btn btn-quiet btn-lg" style="flex:1;" onclick="closePopup()">Back to the site</button></div></div>';
