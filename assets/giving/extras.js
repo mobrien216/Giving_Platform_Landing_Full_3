@@ -218,7 +218,7 @@ function openFeedStory(id){
 var introEl = document.getElementById('intro');
 
 function playIntro(){
-  if (REDUCE || !introEl) return;
+  if (REDUCE || !introEl){ document.documentElement.classList.remove('intro-pending'); return; }
   introEl.classList.remove('done','skip','play');
   void introEl.offsetWidth;            /* restart the whole timeline */
   document.body.classList.add('intro-on');
@@ -230,6 +230,7 @@ function skipIntro(){
   introEl.classList.add('skip');
 }
 function finishIntro(){
+  document.documentElement.classList.remove('intro-pending');
   introEl.classList.remove('play','skip');
   introEl.classList.add('done');
   document.body.classList.remove('intro-on');

@@ -573,7 +573,21 @@ var SITE = { portal:'portal/', community:'community/', advisors:'advisors/',
              map:'tools/impact-map.html', calc:'tools/impact-calculator.html' };
 var REG_KEY = 'tcf_registration';   /* read by assets/js/tcf-bridge.js in community/ and advisors/ */
 
-function tcfGo(url){ closePopup(); location.href = url; }
+function tcfGo(url){
+  var toApp = url === SITE.community || url === SITE.advisors;
+  if (!toApp || REDUCE){ closePopup(); location.href = url; return; }
+  /* V1: green cover (the welcome animation's color) fades in over the window, then the app opens */
+  var cover = document.createElement('div');
+  cover.setAttribute('aria-hidden', 'true');
+  cover.setAttribute('data-go-cover', '');
+  cover.style.cssText = 'position:fixed;inset:0;z-index:1000;background:#164430;opacity:0;transition:opacity .28s ease;';
+  document.body.appendChild(cover);
+  void cover.offsetWidth;   /* commit the transparent start so the fade runs */
+  cover.style.opacity = '1';
+  setTimeout(function(){ location.href = url; }, 300);
+}
+/* coming Back to this page from the browser's cache: take the green cover away again */
+window.addEventListener('pageshow', function(e){ if (e.persisted){ document.querySelectorAll('[data-go-cover]').forEach(function(c){ c.remove(); }); closePopup(); } });
 
 /* every Log-In skips the info window and opens the portal's sign-in */
 function enterPortal(){ tcfGo(SITE.portal + '?signin=1'); }

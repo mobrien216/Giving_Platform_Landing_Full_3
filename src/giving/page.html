@@ -9,6 +9,17 @@
 <title>{{title}}</title>
 <link rel="preload" href="../assets/fonts/paralucent-bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/source-sans-pro-regular.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+/* V1: the welcome animation covers the page from the first paint. Same rules as playIntro()
+   and the bridge: no animation for reduced motion, inside the portal frame, or a link to a module. */
+(function(){
+  var h = location.hash.replace(/^#\/?/, '');
+  var embed = /[?&]embed=1\b/.test(location.search) && window.parent !== window;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!embed && !reduce && (!h || h === 'home')) document.documentElement.classList.add('intro-pending');
+})();
+</script>
+<style>html.intro-pending,html.intro-pending body{background:#164430;overflow:hidden;}html.intro-pending .intro{display:block;}</style>
 <link rel="stylesheet" href="../assets/css/tcf-v3.css?v=3fa62056">
 <!-- Impact Map dependencies (Leaflet) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -1275,7 +1286,7 @@
 
 <script src="../assets/giving/app.js?v=b027522f"></script>
 
-<script src="../assets/giving/extras.js?v=d11edc15"></script>
+<script src="../assets/giving/extras.js?v=63f5731a"></script>
 <!-- @slot app-scripts -->
 <script>window.SITE_HOME = "../";</script>
 <script src="../assets/js/tcf-bridge.js?v=8fca3c3b"></script>
