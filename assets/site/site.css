@@ -15,14 +15,27 @@
 /* Video controls: icons are drawn by site.js. */
 [data-film-play] svg,[data-film-sound] svg{width:20px;height:20px;}
 
-/* ---- Cleveland, You're the Reason: the campaign film plays behind the section ---- */
-.v1-campaign{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(420px,62vh,640px);display:flex;align-items:flex-end;background:var(--color-green,#164430);color:var(--color-white,#fff);}
-.v1-campaign__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;}
-.v1-campaign__shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,46,31,.2) 0%,rgba(11,46,31,.5) 40%,rgba(11,46,31,.9) 100%);}
-.v1-campaign__inner{padding-block:clamp(48px,8vw,96px);}
-.v1-campaign h2{color:var(--color-white,#fff);font-size:clamp(2rem,5vw,3.5rem);line-height:1.05;margin:0 0 .5rem;}
-.v1-campaign .eyebrow{color:color-mix(in srgb,var(--color-white,#fff) 80%,transparent);}
-.v1-campaign .lede{color:color-mix(in srgb,var(--color-white,#fff) 90%,transparent);max-width:36rem;margin-bottom:1.25rem;}
+/* ---- Hero: the campaign film plays full bleed behind the headline ---- */
+.v1-hero{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(520px,82vh,820px);display:flex;align-items:center;background:var(--color-green,#164430);}
+.v1-hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;}
+/* dark wash, heaviest behind the text (left on desktop, all over on phones), so white type always reads */
+.v1-hero__shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(11,46,31,.88) 0%,rgba(11,46,31,.7) 38%,rgba(11,46,31,.25) 75%,rgba(11,46,31,.15) 100%),linear-gradient(0deg,rgba(11,46,31,.55) 0%,rgba(11,46,31,0) 35%);}
+.v1-hero__inner{width:100%;}
+.v1-hero .hero__content{max-width:36rem;text-shadow:0 2px 12px rgba(0,0,0,.35);}
+.v1-hero .hero__headline,.v1-hero .lede{color:#fff;}
+.v1-hero__controls{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(16px,3vw,32px);display:flex;gap:8px;}
+@media (max-width:880px){
+  .v1-hero__shade{background:rgba(11,46,31,.66);}
+  .v1-hero .hero__content{margin-inline:auto;text-align:center;}
+}
+
+/* ---- Neighbors helping neighbors: a little brand texture (subsets of the circles-and-squares pattern) ---- */
+.v1-neighbors{position:relative;overflow:hidden;isolation:isolate;}
+.v1-shapes{position:absolute;z-index:-1;pointer-events:none;}
+.v1-shapes svg{display:block;width:100%;height:auto;}
+.v1-shapes--a{top:clamp(16px,3vw,40px);left:clamp(-20px,2vw,48px);width:clamp(72px,9vw,120px);}
+.v1-shapes--b{bottom:clamp(16px,3vw,40px);right:clamp(-20px,2vw,48px);width:clamp(72px,9vw,120px);}
+@media (max-width:640px){ .v1-shapes{opacity:.35;} }
 
 /* Ticker items (light theme): built by site.js from the grants list in landing.js. */
 .ticker__track ul{margin:0;padding:0;list-style:none;}
