@@ -75,6 +75,21 @@ html,body{animation:ground 6.2s linear both}
 .portrait .camp{left:120px;top:1110px;font-size:160px}
 .portrait .f4 .logo{left:160px;top:760px}
 .portrait .f4 .bar{left:160px;top:1060px}
+/* V1: phones — bigger type and logo, narrower margins, so the animation fills a phone screen.
+   (A phone is narrower than 9:16, so width sets the scale; these sizes are tuned for 1080 wide.) */
+.portrait .kick{font-size:34px}
+.portrait .f1 .kick{top:700px!important}
+.portrait .f1 .line{top:760px!important;font-size:112px;left:50px;right:50px}
+.portrait .f1 .bar{left:90px!important;top:1050px!important;width:900px!important;height:10px}
+.portrait .f2 .col{left:95px;width:900px;top:1080px!important}
+.portrait .f2 .line{font-size:108px}
+.portrait .stats{gap:60px;margin-top:56px}
+.portrait .stat .v{font-size:118px}
+.portrait .stat .k{font-size:36px;line-height:1.15;margin-top:16px}
+.portrait .camp{left:95px;top:1080px;font-size:180px}
+.portrait .f4 .logo{left:90px;top:700px;width:900px;height:289px}
+.portrait .f4 .bar{left:90px;top:1050px;width:900px;height:10px}
+.portrait .sub{top:1110px;font-size:38px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important}}
 </style>
 </head><body>
@@ -107,7 +122,7 @@ function counts(t){document.querySelectorAll('.cu').forEach(function(el){
   el.textContent=(el.dataset.pre||'')+s+(el.dataset.suf||'');});}
 var stage=document.getElementById('stage');
 function fit(){var tall=innerHeight>innerWidth*1.05;stage.classList.toggle('portrait',tall);
-  var w=tall?1080:1920,h=tall?1920:1080;stage.style.transform='scale('+Math.min(innerWidth/w,innerHeight/h)+')';}
+  var w=tall?1000:1920,h=tall?1920:1080;stage.style.transform='scale('+Math.min(innerWidth/w,innerHeight/h)+')';}   /* phones: 1000 not 1080, so the edge margins trim off and the content is ~8% larger */
 addEventListener('resize',fit);fit();
 var t0=performance.now(),sent=false;
 function done(){if(sent)return;sent=true;try{parent.postMessage({tcf:'intro-done'},location.origin)}catch(e){}}
