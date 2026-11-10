@@ -116,10 +116,10 @@ body.at-hero:not(.scrolled) .nav-login{border-color:var(--white);color:var(--whi
 /* ---------- 6. Portal ---------- */
 .top{background:rgba(255,255,255,.96);border-bottom:1px solid var(--gray3);}
 .top .ic-btn:hover{background:var(--gray2);}
-.dot-count{background:var(--red);color:var(--white);font-family:var(--body);font-weight:700;font-size:11px;}
+.dot-count{background:var(--red);color:var(--white);font-family:var(--body);font-weight:700;font-size:12px;}
 /* bottom bar becomes the Green dock (P1) */
 .tabs{background:var(--green);border-top:0;padding:6px 6px calc(6px + var(--safe-b));gap:2px;}
-.tab{color:var(--gray2);border-radius:var(--r);font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.06em;}
+.tab{color:var(--gray2);border-radius:var(--r);font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.06em;}
 .tab.sel{background:var(--white);color:var(--green);}
 .tab.sel::after{display:none;}
 .tab-home{width:auto;height:auto;min-height:52px;margin:0;padding:8px 14px;border-radius:var(--r);background:transparent;color:var(--white);box-shadow:none;}
@@ -148,21 +148,21 @@ body.at-hero:not(.scrolled) .nav-login{border-color:var(--white);color:var(--whi
 .v-fund{color:var(--white);}
 .v-type,.v-asof{color:var(--gray2);}
 .v-chg,.v-chg.neg{color:var(--white);}
-.pin{border:0;background:var(--gray2);color:var(--green);font-family:var(--body);font-size:11px;letter-spacing:.08em;}
+.pin{border:0;background:var(--gray2);color:var(--green);font-family:var(--body);font-size:12px;letter-spacing:.08em;}
 .pin::before{background:var(--blue);}
 .pin.dark{background:rgba(255,255,255,.14);color:var(--white);}
 /* status (P12): Gray 2 pill with a colored square */
-.status{background:var(--gray2)!important;color:var(--green)!important;font-family:var(--body);font-size:11.5px;font-weight:700;letter-spacing:.08em;padding:5px 10px;}
+.status{background:var(--gray2)!important;color:var(--green)!important;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.08em;padding:5px 10px;}
 .status::before{width:9px;height:9px;border-radius:0;background:var(--st,var(--mid));}
 .st-entered,.st-queued{--st:var(--gray3);}
 .st-entered::before,.st-queued::before{box-shadow:inset 0 0 0 1px rgba(22,68,48,.18);}
 .st-approved{--st:var(--orange);}
 .st-posted{--st:var(--mid);}
-.seal{background:var(--white)!important;border:1.5px solid var(--gray3);color:var(--green)!important;font-family:var(--body);font-size:11.5px;letter-spacing:.08em;padding:4px 10px;display:inline-flex;align-items:center;gap:7px;}
+.seal{background:var(--white)!important;border:1.5px solid var(--gray3);color:var(--green)!important;font-family:var(--body);font-size:12px;letter-spacing:.08em;padding:4px 10px;display:inline-flex;align-items:center;gap:7px;}
 .seal::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--metal,var(--orange));box-shadow:0 0 0 2px var(--white),0 0 0 3px var(--metal,var(--orange));}
 .seal.plat{--metal:var(--green);} .seal.silver{--metal:var(--gray3);}
 .steps span.on{background:var(--orange);}
-.ptype{background:var(--gray2);color:var(--green);font-family:var(--body);font-size:11.5px;}
+.ptype{background:var(--gray2);color:var(--green);font-family:var(--body);font-size:12px;}
 .ptype.news{background:var(--green);color:var(--white);}
 .qz-opt.right{border-color:var(--mid);background:var(--gray2);}
 .qz-opt.wrong{border-color:var(--red);background:var(--gray2);}

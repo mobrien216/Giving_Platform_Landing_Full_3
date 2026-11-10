@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
-<link rel="stylesheet" href="../assets/giving/giving.css?v=f623ef9a">
+<link rel="stylesheet" href="../assets/giving/giving.css?v=e0259bb3">
 <link rel="stylesheet" href="../assets/css/tcf-v3-giving.css?v=b2c4c0f2">
 <link rel="icon" href="../assets/img/favicon.svg">
 </head>
@@ -235,8 +235,14 @@
     <button class="sr-btn" onclick="navigate('newsfeed',false)" aria-label="Open the News Feed"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg></button>
   </div>
   <!-- V1: featured stories as News Feed cards, side by side (built by assets/giving/extras.js from NF_POSTS 101-103) -->
-  <div class="v1-feed-cards" id="homeFeedCards"></div>
-  <div class="v1-feed-more"><button class="btn btn-quiet btn-sm" onclick="navigate('newsfeed',false)">Open the News Feed &rarr;</button></div>
+  <div class="v1-carousel" data-carousel>
+    <div class="v1-carousel__track" id="homeFeedCards" tabindex="0" aria-label="Stories from the field"></div>
+    <div class="v1-carousel__nav">
+      <button type="button" class="v1-carousel__btn" data-prev aria-label="Previous stories"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="v1-carousel__dots" data-dots></div>
+      <button type="button" class="v1-carousel__btn" data-next aria-label="Next stories"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
 
   <!-- Donor quick cards (post-activation) -->
   <div id="donorQuickActions" style="display:none;">
@@ -258,7 +264,7 @@
         <div style="display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:14px;"><h3>Your advisor</h3><span class="ipin ipin-integration" data-pin="salesforce-advisor">Salesforce</span></div>
         <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px;">
           <div style="width:50px;height:50px;border-radius:50%;background:var(--moss);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">BS</div>
-          <div><div style="font-weight:700;color:var(--forest);font-size:15px;">Brittany Schultz</div><div class="ledger" style="font-size:10.5px;color:var(--ink-3);margin-top:2px;">SR. PHILANTHROPIC ADVISOR · TCF</div></div>
+          <div><div style="font-weight:700;color:var(--forest);font-size:15px;">Brittany Schultz</div><div class="ledger" style="font-size:12px;color:var(--ink-3);margin-top:2px;">SR. PHILANTHROPIC ADVISOR · TCF</div></div>
         </div>
         <button class="btn btn-primary btn-sm" onclick="navigate('advisor')">Schedule a call</button>
       </div>
@@ -318,11 +324,11 @@
   <!-- impact stats strip -->
   <div class="band band-paper" style="margin-top:0;">
     <div class="inner" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;text-align:center;padding-top:6px;padding-bottom:6px;">
-      <div><div class="stat-value" style="font-size:24px;">$3.1B</div><div class="stat-label" style="font-size:9px;">Granted since 1914</div></div>
+      <div><div class="stat-value" style="font-size:24px;">$3.1B</div><div class="stat-label" style="font-size:12px;">Granted since 1914</div></div>
       <div style="border-left:1px solid var(--line);border-right:1px solid var(--line);">
-        <div class="stat-value" style="font-size:24px;">2,800+</div><div class="stat-label" style="font-size:9px;">Nonprofits supported</div>
+        <div class="stat-value" style="font-size:24px;">2,800+</div><div class="stat-label" style="font-size:12px;">Nonprofits supported</div>
       </div>
-      <div><div class="stat-value" style="font-size:24px;">$160M</div><div class="stat-label" style="font-size:9px;">Granted last year</div></div>
+      <div><div class="stat-value" style="font-size:24px;">$160M</div><div class="stat-label" style="font-size:12px;">Granted last year</div></div>
     </div>
   </div>
 </section>
@@ -466,9 +472,9 @@
           <circle cx="45" cy="45" r="34" fill="none" stroke="var(--tcf-orange)" stroke-width="16" stroke-dasharray="21 193" stroke-dashoffset="-192"/>
         </svg>
         <div class="alloc-legend">
-          <div><span class="dot" style="background:var(--tcf-primary);"></span>CF Index Pool — 60%<br><small style="color:var(--ink-faint);font-size:11px;">Diversified equity &amp; fixed</small></div>
-          <div><span class="dot" style="background:var(--tcf-aqua);"></span>Fixed Income — 30%<br><small style="color:var(--ink-faint);font-size:11px;">Investment grade bonds</small></div>
-          <div><span class="dot" style="background:var(--tcf-orange);"></span>Alternatives — 10%<br><small style="color:var(--ink-faint);font-size:11px;">Real assets, private equity</small></div>
+          <div><span class="dot" style="background:var(--tcf-primary);"></span>CF Index Pool — 60%<br><small style="color:var(--ink-faint);font-size:12px;">Diversified equity &amp; fixed</small></div>
+          <div><span class="dot" style="background:var(--tcf-aqua);"></span>Fixed Income — 30%<br><small style="color:var(--ink-faint);font-size:12px;">Investment grade bonds</small></div>
+          <div><span class="dot" style="background:var(--tcf-orange);"></span>Alternatives — 10%<br><small style="color:var(--ink-faint);font-size:12px;">Real assets, private equity</small></div>
         </div>
       </div>
     </div>
@@ -570,7 +576,7 @@
       <p style="color:var(--ink-soft);font-size:13.5px;margin-bottom:18px;">Connect a debit or credit card. Every time you spend, we round the purchase up to the nearest dollar and set the spare change aside for your fund — swept over automatically once a week.</p>
 
       <div style="background:var(--surface-2);border-radius:12px;padding:14px;margin-bottom:18px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:10px;">How it works</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:10px;">How it works</div>
         <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span>Coffee Shop</span><span>$4.35 &nbsp;<strong style="color:var(--tcf-mid-green);">→ +$0.65</strong></span></div>
         <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span>Grocery Store</span><span>$62.10 &nbsp;<strong style="color:var(--tcf-mid-green);">→ +$0.90</strong></span></div>
         <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;"><span>Gas Station</span><span>$38.50 &nbsp;<strong style="color:var(--tcf-mid-green);">→ +$0.50</strong></span></div>
@@ -599,8 +605,8 @@
         </div>
         <div style="background:var(--surface-2);border-radius:12px;padding:16px;margin-bottom:16px;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;text-align:center;">
-            <div><div class="stat-value" style="font-size:20px;">$0.00</div><div class="stat-label" style="font-size:9.5px;">Round-ups this month</div></div>
-            <div><div class="stat-value" style="font-size:15px;" id="roundupsFundDisplay">Greatest Needs Fund</div><div class="stat-label" style="font-size:9.5px;">Destination fund</div></div>
+            <div><div class="stat-value" style="font-size:20px;">$0.00</div><div class="stat-label" style="font-size:12px;">Round-ups this month</div></div>
+            <div><div class="stat-value" style="font-size:15px;" id="roundupsFundDisplay">Greatest Needs Fund</div><div class="stat-label" style="font-size:12px;">Destination fund</div></div>
           </div>
         </div>
         <label style="display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;padding:14px;background:var(--surface-2);border-radius:10px;margin-bottom:12px;">
@@ -630,8 +636,8 @@
 
     <div class="card" style="padding:16px 18px;margin-bottom:16px;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;text-align:center;">
-        <div><div class="stat-value" style="font-size:22px;" id="ghLifetimeTotal">$0</div><div class="stat-label" style="font-size:9.5px;">Lifetime giving</div></div>
-        <div><div class="stat-value" style="font-size:22px;" id="ghGiftCount">0</div><div class="stat-label" style="font-size:9.5px;">Gifts given</div></div>
+        <div><div class="stat-value" style="font-size:22px;" id="ghLifetimeTotal">$0</div><div class="stat-label" style="font-size:12px;">Lifetime giving</div></div>
+        <div><div class="stat-value" style="font-size:22px;" id="ghGiftCount">0</div><div class="stat-label" style="font-size:12px;">Gifts given</div></div>
       </div>
     </div>
 
@@ -682,7 +688,7 @@
       </div>
       <div class="card" id="lt-intro-card">
         <p id="lt-description" style="color:var(--ink-soft);font-size:14px;line-height:1.6;margin-bottom:14px;"></p>
-        <div style="display:flex;gap:20px;"><div style="text-align:center;"><div id="lt-course-count" style="font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--tcf-primary);"></div><div class="stat-label" style="font-size:10px;">Courses</div></div><div style="text-align:center;"><div id="lt-time" style="font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--tcf-primary);"></div><div class="stat-label" style="font-size:10px;">Minutes</div></div></div>
+        <div style="display:flex;gap:20px;"><div style="text-align:center;"><div id="lt-course-count" style="font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--tcf-primary);"></div><div class="stat-label" style="font-size:12px;">Courses</div></div><div style="text-align:center;"><div id="lt-time" style="font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--tcf-primary);"></div><div class="stat-label" style="font-size:12px;">Minutes</div></div></div>
       </div>
       <div id="lt-courses"></div>
       <div class="card" style="border:2px solid var(--tcf-orange);text-align:center;margin-top:4px;">
@@ -718,7 +724,7 @@
   <div class="page">
     <div class="page-head"><div class="eyebrow">For You</div><h1>Stories &amp; Impact</h1><p class="lede">See how Cleveland Foundation grants are changing Greater Cleveland.</p></div>
     <div class="card">
-      <div class="card-head"><div><h3>Recent Stories</h3><div style="font-size:11.5px;color:var(--ink-faint);margin-top:2px;">Curated for you</div></div></div>
+      <div class="card-head"><div><h3>Recent Stories</h3><div style="font-size:12px;color:var(--ink-faint);margin-top:2px;">Curated for you</div></div></div>
       <div class="story-row" onclick="openFeedStory(101)" style="cursor:pointer;"><div class="thumb" style="background:url(../assets/img/stories/summer-job.jpg) center 30%/cover;"></div><div><div class="tag">Connect People to Prosperity</div><h4>A summer job became a career on Euclid Avenue</h4><div class="excerpt">How paid summer work turned into a lasting career path.</div></div></div>
       <div class="story-row" onclick="openFeedStory(102)" style="cursor:pointer;"><div class="thumb" style="background:url(../assets/img/stories/hough-homeowners.jpg) center 40%/cover;"></div><div><div class="tag">Invest in Vibrant Neighborhoods</div><h4>Hough's newest homeowners built more than houses</h4><div class="excerpt">Neighbors building homes, and a block club that keeps growing.</div></div></div>
       <div class="story-row" onclick="openFeedStory(103)" style="cursor:pointer;"><div class="thumb" style="background:url(../assets/img/stories/midline.jpg) center 35%/cover;"></div><div><div class="tag">Grow Our Region</div><h4>See how the Midline is redefining the future with good jobs</h4><div class="excerpt">A former industrial corridor, reimagined for the next generation of work.</div></div></div>
@@ -801,14 +807,14 @@
       <button id="vNextBtn" onclick="vGoCard(1)" style="background:rgba(22,68,48,.08);border:1.5px solid var(--border);color:var(--ink-soft);width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
     </div>
     <div class="card" id="vReflection">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tcf-orange);margin-bottom:10px;">Your Take</div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tcf-orange);margin-bottom:10px;">Your Take</div>
       <div style="font-size:16px;font-weight:700;color:var(--tcf-primary);margin-bottom:14px;line-height:1.35;" id="vReflQ"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="vReflOpts"></div>
       <button onclick="vSkip()" style="background:none;border:none;color:var(--ink-faint);font-family:inherit;font-size:13px;cursor:pointer;margin-top:10px;padding:4px;">Skip this one →</button>
     </div>
     <div class="card" id="vFinal" style="display:none;text-align:center;">
       <div style="width:72px;height:72px;border-radius:50%;background:var(--tcf-orange);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:32px;">🌟</div>
-      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tcf-orange);margin-bottom:6px;">Your Philanthropic Profile</div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tcf-orange);margin-bottom:6px;">Your Philanthropic Profile</div>
       <h3 id="vBuilderType" style="font-size:22px;margin-bottom:8px;"></h3>
       <p id="vBuilderDesc" style="color:var(--ink-soft);font-size:14px;line-height:1.55;margin-bottom:12px;"></p>
       <div id="vBuilderVision" style="font-size:16px;font-weight:700;color:var(--tcf-orange);margin-bottom:20px;"></div>
@@ -864,7 +870,7 @@
     </div>
 
     <div class="card">
-      <div style="font-size:11px;font-weight:700;color:var(--tcf-orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Their Story</div>
+      <div style="font-size:12px;font-weight:700;color:var(--tcf-orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Their Story</div>
       <p style="font-size:14.5px;line-height:1.6;color:var(--ink);" id="lgdStory">Story text.</p>
       <div class="lgd-legacy" id="lgdLegacy">Legacy line.</div>
     </div>
@@ -1268,9 +1274,9 @@
 <script src="../assets/data/grants-2025.js?v=f8da6a55"></script>
 <script src="../assets/giving/map-and-grants.js?v=20058938"></script>
 
-<script src="../assets/giving/app.js?v=5e185656"></script>
+<script src="../assets/giving/app.js?v=b027522f"></script>
 
-<script src="../assets/giving/extras.js?v=6298dd89"></script>
+<script src="../assets/giving/extras.js?v=d11edc15"></script>
 <script>window.SITE_HOME = "../";</script>
 <script src="../assets/js/tcf-bridge.js?v=8fca3c3b"></script>
 </body>
