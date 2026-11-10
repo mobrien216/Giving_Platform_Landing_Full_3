@@ -1564,4 +1564,26 @@ body.hero-view:not(.scrolled) .tb-cta .garden-mini-dots span.done{background:var
 .panel-story .s-tag{opacity:.92;}
 
 /* V1: photos in News Feed posts */
-.nf-post-img{display:block;width:100%;aspect-ratio:16/9;max-height:320px;object-fit:cover;border-radius:var(--r,4px);margin:12px 0 10px;}
+.nf-post-img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r,4px);margin:12px 0 10px;}
+
+/* V1: News Feed reads as a column on desktop instead of stretching edge to edge. */
+#view-newsfeed .page-head,#nfFeed{max-width:760px;margin-left:auto;margin-right:auto;}
+
+/* V1: home "From the field" — feed cards side by side (3 across on desktop, swipe on phones). */
+.v1-feed-cards{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(272px,82%);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px var(--gut,16px) 6px;-webkit-overflow-scrolling:touch;}
+.v1-feed-cards .v1-feed-card{scroll-snap-align:start;margin:0;display:flex;flex-direction:column;cursor:pointer;transition:border-color .2s,box-shadow .2s;}
+.v1-feed-cards .v1-feed-card:hover,.v1-feed-cards .v1-feed-card:focus-visible{border-color:var(--ember);box-shadow:0 6px 18px -10px rgba(22,68,48,.35);}
+.v1-feed-cards .nf-post-body{flex:1;}
+.v1-feed-cards .nf-post-actions{align-items:center;}
+.v1-feed-cards .v1-likes,.v1-feed-cards .v1-more{font-family:var(--f-ledger);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--moss);}
+.v1-feed-cards .v1-likes{color:var(--forest);}
+@media (min-width:900px){
+  .v1-feed-cards{grid-auto-flow:row;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;}
+}
+.v1-feed-more{text-align:center;padding:10px 0 22px;}
+
+/* V1: the integration "pins" (Salesforce / Ren iPhi build notes) and their toggle are off for the demo. */
+.ipin,.pin-toggle{display:none!important;}
+/* the badge repeats the name and crowds the header when three cards share a row */
+@media (min-width:900px) and (max-width:1439px){ .v1-feed-cards .nf-post-badge{display:none;} }
+.v1-feed-cards .nf-post-name{white-space:nowrap;}

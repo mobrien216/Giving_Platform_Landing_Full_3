@@ -12,7 +12,7 @@
      prototype's landing styles, fenced to the windows by scripts/build-popup-css.js. -->
 <link rel="stylesheet" href="assets/css/tcf-v3.css?v=3fa62056">
 <link rel="stylesheet" href="assets/site/application.css?v=44e847bb">
-<link rel="stylesheet" href="assets/site/site.css?v=97bd78d0">
+<link rel="stylesheet" href="assets/site/site.css?v=8be5b0c3">
 <link rel="stylesheet" href="assets/landing/popups.css?v=0946cdfc">
 <link rel="icon" href="assets/img/favicon.svg">
 </head>
@@ -35,8 +35,10 @@
 <main id="main" class="site-main">
 
 <!-- ============ HERO ============ -->
-<section class="section section--lg section--dark hero">
-  <div class="wrap wrap--wide hero__inner">
+<section class="section section--lg section--dark hero v1-hero" data-film>
+  <video class="v1-hero__video" data-src="assets/video/campaign.mp4" poster="assets/site/img/dancing.jpg" muted loop playsinline preload="none" aria-label="Cleveland Foundation campaign film"></video>
+  <div class="v1-hero__shade" aria-hidden="true"></div>
+  <div class="wrap wrap--wide v1-hero__inner">
     <div class="hero__content">
       <h1 class="hero__headline">Cleveland,<br>You're the Reason.</h1>
       <p class="lede lede--lg">You're the reason this community foundation exists. Come with us. The next generation of Cleveland starts with neighbors like you.</p>
@@ -45,9 +47,10 @@
         <button type="button" class="btn btn--inverse btn--lg" onclick="openPopup('give')">Give</button>
       </div>
     </div>
-    <figure class="media media--wide hero__film rounded-lg shadow-lg">
-      <img alt="Neighbors dancing outside the Cleveland Foundation's MidTown headquarters" width="1600" height="1089" src="assets/site/img/dancing.jpg">
-    </figure>
+  </div>
+  <div class="v1-hero__controls">
+    <button type="button" class="btn btn--overlay btn--icon" data-film-play aria-label="Pause video"></button>
+    <button type="button" class="btn btn--overlay btn--icon" data-film-sound aria-label="Turn sound on"></button>
   </div>
 </section>
 
@@ -66,7 +69,7 @@
     <div class="cols cols--2-3 items-center gap-8 lg:grid-cols-2 lg:gap-16">
       <div class="text-center md:text-left">
         <p class="eyebrow">Who are you?</p>
-        <h2 id="who-heading">Join the Community and Become Part of the Story</h2>
+        <h2 id="who-heading">Become Part of the Story by Joining the Community</h2>
         <p class="lede">See what registering does for you.</p>
         <div class="media mt-8 hidden rounded-lg md:block">
           <img alt="" loading="lazy" width="900" height="600" src="assets/site/img/who.jpg">
@@ -113,23 +116,10 @@
   </div>
 </section>
 
-<!-- ============ CLEVELAND, YOU'RE THE REASON (campaign film behind) ============ -->
-<section class="v1-campaign section--dark" aria-labelledby="campaign-heading" data-film>
-  <video class="v1-campaign__video" data-src="assets/video/campaign.mp4" poster="assets/site/img/neighbors.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
-  <div class="v1-campaign__shade" aria-hidden="true"></div>
-  <div class="wrap wrap--wide v1-campaign__inner">
-    <p class="eyebrow">The campaign</p>
-    <h2 id="campaign-heading">Cleveland, You're the Reason</h2>
-    <p class="lede lede--lg">Community foundations were invented here. You're the reason it works.</p>
-    <div class="flex gap-2">
-      <button type="button" class="btn btn--overlay btn--icon" data-film-play aria-label="Pause video"></button>
-      <button type="button" class="btn btn--overlay btn--icon" data-film-sound aria-label="Turn sound on"></button>
-    </div>
-  </div>
-</section>
-
 <!-- ============ NEIGHBORS HELPING NEIGHBORS ============ -->
-<section class="section section--lg" aria-labelledby="neighbors-heading">
+<section class="section section--lg v1-neighbors" aria-labelledby="neighbors-heading">
+  <div class="v1-shapes v1-shapes--a"><svg viewBox="0 0 120 120" fill="#086C43" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="20"/><circle cx="60" cy="20" r="20"/><circle cx="20" cy="60" r="20"/><rect x="40" y="40" width="40" height="40"/><circle cx="100" cy="60" r="20"/><circle cx="60" cy="100" r="20"/></svg></div>
+  <div class="v1-shapes v1-shapes--b"><svg viewBox="0 0 120 120" fill="#164430" aria-hidden="true" focusable="false"><circle cx="60" cy="20" r="20"/><rect x="80" y="0" width="40" height="40"/><circle cx="20" cy="60" r="20"/><circle cx="60" cy="60" r="20"/><circle cx="100" cy="60" r="20"/><rect x="80" y="80" width="40" height="40"/></svg></div>
   <div class="wrap wrap--narrow">
     <header class="section__head">
       <p class="eyebrow">A Community Trust, Powered by the People</p>

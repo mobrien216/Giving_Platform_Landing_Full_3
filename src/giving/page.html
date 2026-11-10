@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
-<link rel="stylesheet" href="../assets/giving/giving.css?v=57d5059e">
+<link rel="stylesheet" href="../assets/giving/giving.css?v=f623ef9a">
 <!-- @slot head -->
 <link rel="stylesheet" href="../assets/css/tcf-v3-giving.css?v=b2c4c0f2">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -232,43 +232,9 @@
     <div class="sr-meta"><span class="new"></span>2 new this week</div>
     <button class="sr-btn" onclick="navigate('newsfeed',false)" aria-label="Open the News Feed"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M8 7h9v9"/></svg></button>
   </div>
-  <div class="pgrid feed-row">
-    <button class="panel panel-story" onclick="openFeedStory(101)">
-      <div class="ps-bg ps-photo" style="background-image:url(../assets/img/stories/summer-job.jpg);background-position:center 30%;" role="img" aria-label="Two young people rebuilding an engine in a workshop"></div>
-      <span class="ps-spine" style="background:var(--p-pros);"></span>
-      <div class="ps-body">
-        <span class="ps-kicker">In the feed</span>
-        <div class="s-tag">Connect people to prosperity</div>
-        <div class="s-title">A summer job became a career on Euclid Avenue</div>
-      </div>
-    </button>
-
-    <button class="panel panel-story" onclick="openFeedStory(102)">
-      <div class="ps-bg ps-photo" style="background-image:url(../assets/img/stories/hough-homeowners.jpg);background-position:center 40%;" role="img" aria-label="A homeowner pointing down the street while neighbors look on, in front of a new house"></div>
-      <span class="ps-spine" style="background:var(--p-neigh);"></span>
-      <div class="ps-body">
-        <span class="ps-kicker">In the feed</span>
-        <div class="s-tag">Vibrant neighborhoods</div>
-        <div class="s-title">Hough's newest homeowners built more than houses</div>
-      </div>
-    </button>
-
-    <button class="panel panel-story" onclick="openFeedStory(103)">
-      <div class="ps-bg ps-photo" style="background-image:url(../assets/img/stories/midline.jpg);background-position:center 35%;" role="img" aria-label="Two men talking inside a large former industrial building"></div>
-      <span class="ps-spine" style="background:var(--p-region);"></span>
-      <div class="ps-body">
-        <span class="ps-kicker">In the feed</span>
-        <div class="s-tag">Grow our region</div>
-        <div class="s-title">See how the Midline is redefining the future with good jobs</div>
-      </div>
-    </button>
-
-    <button class="panel panel-cta" onclick="navigate('newsfeed',false)">
-      <div class="p-label" style="position:relative;">Open the News Feed</div>
-      <div class="p-sub" style="position:relative;">Stories from the foundation and the Whys your neighbors are sharing.</div>
-      <div class="p-count" style="position:relative;">2 new this week</div>
-    </button>
-  </div>
+  <!-- V1: featured stories as News Feed cards, side by side (built by assets/giving/extras.js from NF_POSTS 101-103) -->
+  <div class="v1-feed-cards" id="homeFeedCards"></div>
+  <div class="v1-feed-more"><button class="btn btn-quiet btn-sm" onclick="navigate('newsfeed',false)">Open the News Feed &rarr;</button></div>
 
   <!-- Donor quick cards (post-activation) -->
   <div id="donorQuickActions" style="display:none;">
@@ -1303,7 +1269,7 @@
 
 <script src="../assets/giving/app.js?v=5e185656"></script>
 
-<script src="../assets/giving/extras.js?v=a140fbfa"></script>
+<script src="../assets/giving/extras.js?v=6298dd89"></script>
 <!-- @slot app-scripts -->
 <script>window.SITE_HOME = "../";</script>
 <script src="../assets/js/tcf-bridge.js?v=8fca3c3b"></script>
