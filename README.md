@@ -2,7 +2,7 @@
 
 > **This is the V1 (board demo) version.** It shows only what the first release will include. The full prototype, with every idea explored so far, stays at [Giving_Platform_Landing_Full_2](https://github.com/mobrien216/Giving_Platform_Landing_Full_2); build back toward it from there.
 
-## What V1 changes from Full_2 (11-09-2026)
+## What V1 changes from Full_2 (11-09-2026; last updated 11-10-2026)
 
 | Area | V1 |
 |---|---|
