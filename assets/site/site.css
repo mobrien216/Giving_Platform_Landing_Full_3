@@ -20,7 +20,13 @@
 .v1-hero__inner{width:100%;}
 .v1-hero .hero__content{max-width:40rem;}
 .v1-hero .hero__headline,.v1-hero .lede{color:#fff;}
-@media (max-width:880px){ .v1-hero .hero__content{margin-inline:auto;text-align:center;} }
+/* phones and small tablets: text sits left-aligned in the lower left, like the original site hero */
+@media (max-width:880px){
+  .v1-hero{align-items:flex-end;min-height:clamp(480px,78vh,680px);padding-bottom:0;}
+  .v1-hero__inner{padding-inline:20px;padding-bottom:clamp(28px,6vh,48px);}
+  .v1-hero .hero__content{margin-inline:0;text-align:left;max-width:34rem;}
+  .v1-hero .hero__content .flex{justify-content:flex-start;}
+}
 
 /* ---- Neighbors helping neighbors: the campaign film plays behind it; all text white ---- */
 .v1-neighbors{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(440px,70vh,680px);display:flex;align-items:center;background:var(--color-green,#164430);}
