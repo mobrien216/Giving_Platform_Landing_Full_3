@@ -20,20 +20,21 @@
   --focus:#1F6FB2; --over:#84C9C1; --track:#E7E0D2;
   --wood:#C89B66; --grain-a:rgba(255,240,215,.10); --grain-b:rgba(92,56,22,.10);
   --print:#FFFFFF;   /* photo border: a physical print, so it stays white in dark mode */
+  --page:#FBF7EE; --corner:#1E2B24; --accent-ink:#164430;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#141D18; --panel:#1B2720; --ink:#ECE7DC; --muted:#A8B2AB; --line:#33433A;
     --slot-empty:#22302A; --btn-bg:#E9E2D2; --btn-hover:#FFFFFF; --btn-ink:#16201A; --btn-off-bg:#2C3A32; --btn-off-ink:#8E9A92;
-    --focus:#7DB8EA; --over:#5FA79F; --track:#2A3830; --wood:#6E4D2D; --grain-a:rgba(255,230,200,.05); --grain-b:rgba(0,0,0,.18);
+    --focus:#7DB8EA; --over:#5FA79F; --track:#2A3830; --wood:#6E4D2D; --grain-a:rgba(255,230,200,.05); --grain-b:rgba(0,0,0,.18); --page:#E9E2D2; --corner:#1E2B24; --accent-ink:#164430;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#141D18; --panel:#1B2720; --ink:#ECE7DC; --muted:#A8B2AB; --line:#33433A;
   --slot-empty:#22302A; --btn-bg:#E9E2D2; --btn-hover:#FFFFFF; --btn-ink:#16201A; --btn-off-bg:#2C3A32; --btn-off-ink:#8E9A92;
-  --focus:#7DB8EA; --over:#5FA79F; --track:#2A3830; --wood:#6E4D2D; --grain-a:rgba(255,230,200,.05); --grain-b:rgba(0,0,0,.18);
+  --focus:#7DB8EA; --over:#5FA79F; --track:#2A3830; --wood:#6E4D2D; --grain-a:rgba(255,230,200,.05); --grain-b:rgba(0,0,0,.18); --page:#E9E2D2; --corner:#1E2B24; --accent-ink:#164430;
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -48,37 +49,71 @@ h1{font-family:var(--display);font-weight:700;font-size:34px;line-height:1.08;le
 .m-only{display:none}
 
 /* ---------------------------------------------------------------
-   Layout: ranked panel on the left, the table fills the rest
+   Layout: ranked panel on the left, the album fills the rest
 ---------------------------------------------------------------- */
 .app{display:grid;grid-template-columns:minmax(400px,470px) 1fr;height:100vh;height:100dvh}
 .panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:28px 26px 24px;display:flex;flex-direction:column}
 
-/* ---------------------------------------------------------------
-   Photos (prints)
----------------------------------------------------------------- */
-.photo{
-  position:absolute;--long:clamp(132px,11.5vw,190px);
-  width:calc(var(--long) * min(1, var(--ar)));aspect-ratio:var(--ar);
-  padding:5px;background:var(--print);border-radius:3px;
-  box-shadow:0 1px 1px rgba(30,20,10,.22),0 7px 16px rgba(45,28,10,.26);
-  transform:translate(-50%,-50%) rotate(var(--r));
-  touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;transition:box-shadow .15s
-}
-.photo img,.slot-photo img,.tray-slot img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
-.photo img{border-radius:1px;background:#d8d0c2}
-.photo:focus-visible{z-index:9999 !important;box-shadow:0 2px 2px rgba(30,20,10,.25),0 16px 30px rgba(45,28,10,.34)}   /* keyboard: bring the focused photo forward */
+/* the small prints in the ranked list and tray */
+.slot-photo img,.tray-slot img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
 
-.table{
-  position:relative;overflow:hidden;min-height:560px;
-  background-color:var(--wood);
-  background-image:
-    repeating-linear-gradient(94deg,var(--grain-a) 0 2px,transparent 2px 11px),
-    repeating-linear-gradient(91deg,var(--grain-b) 0 1px,transparent 1px 29px),
-    repeating-linear-gradient(97deg,transparent 0 140px,var(--grain-b) 140px 143px,transparent 143px 260px);
+/* ---------------------------------------------------------------
+   The album: an open book, two pages of two photos (one page on a phone).
+   Turn pages with the arrows, the keyboard, or a swipe. Picked photos
+   leave the album; putting one back returns it to its place.
+---------------------------------------------------------------- */
+.stage{position:relative;display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--bg);overflow:hidden}
+.album-wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:18px 20px 8px;perspective:2200px}
+.book{position:relative;display:flex;background:#164430;border-radius:10px;padding:12px;box-shadow:0 2px 4px rgba(10,30,20,.25),0 22px 48px rgba(10,30,20,.32)}
+.book::after{content:"";position:absolute;left:50%;top:6px;bottom:6px;width:2px;margin-left:-1px;background:rgba(0,0,0,.35);pointer-events:none}
+.book.single::after{display:none}
+.page{position:relative;width:var(--pw);height:var(--ph);background:var(--page);display:flex;flex-direction:column;padding:calc(var(--pw) * .07) calc(var(--pw) * .08);gap:calc(var(--pw) * .05);overflow:hidden}
+.page.left{border-radius:4px 0 0 4px;background-image:linear-gradient(to left,rgba(60,40,20,.16),rgba(60,40,20,0) 9%)}
+.page.right{border-radius:0 4px 4px 0;background-image:linear-gradient(to right,rgba(60,40,20,.16),rgba(60,40,20,0) 9%)}
+.book.single .page{border-radius:4px;background-image:none}
+.page-label{flex:none;margin:0;font-family:var(--display);font-weight:700;font-size:14px;line-height:1.2;color:var(--accent-ink);min-height:1.2em;letter-spacing:.01em}
+.page-label i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.page-num{position:absolute;bottom:8px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.page.left .page-num{left:14px}.page.right .page-num,.book.single .page-num{right:14px}
+.cells{flex:1;min-height:0;display:flex;flex-direction:column;gap:calc(var(--pw) * .06)}
+.cell{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.cell.empty::after{content:"";width:70%;height:70%;border:2px dashed var(--line);border-radius:6px;opacity:.6}
+.aphoto{position:relative;aspect-ratio:var(--ar);width:min(100cqw, 100cqh * var(--ar));padding:5px;background:var(--print);border-radius:2px;border:0;cursor:pointer;
+  box-shadow:0 1px 1px rgba(30,20,10,.18),0 6px 14px rgba(45,28,10,.2);transform:rotate(var(--r));transition:transform .15s,box-shadow .15s;touch-action:manipulation}
+.aphoto img{display:block;width:100%;height:100%;object-fit:cover;background:#d8d0c2;pointer-events:none;-webkit-user-drag:none;user-select:none}
+/* photo corners, the way prints are mounted in an album */
+.aphoto::before,.aphoto::after{content:"";position:absolute;width:18px;height:18px;background:var(--corner);pointer-events:none}
+.aphoto::before{left:-3px;top:-3px;clip-path:polygon(0 0,100% 0,0 100%)}
+.aphoto::after{right:-3px;bottom:-3px;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.zoom{position:absolute;right:9px;top:9px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,253,248,.92);color:#1E2B24;display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.25);opacity:0;transition:opacity .15s}
+.aphoto:hover .zoom,.aphoto:focus-within .zoom,.zoom:focus-visible{opacity:1}
+.pick-hint{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);white-space:nowrap;background:rgba(22,68,48,.92);color:#fff;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;opacity:0;transition:opacity .15s;pointer-events:none}
+@media (hover:hover){
+  .aphoto:hover{transform:rotate(var(--r)) translateY(-3px);box-shadow:0 2px 2px rgba(30,20,10,.2),0 14px 26px rgba(45,28,10,.28)}
+  .aphoto:hover .pick-hint{opacity:1}
 }
-.table-hint{position:absolute;left:16px;top:16px;z-index:10000;background:rgba(255,253,248,.92);color:#1E2B24;border-radius:10px;padding:8px 14px;font-size:15px;box-shadow:0 2px 8px rgba(40,25,10,.2);max-width:min(420px,calc(100% - 32px))}
-.table-tools{position:absolute;right:16px;bottom:16px;z-index:10000;display:flex;gap:8px}
-.chip-btn{background:rgba(255,253,248,.94);color:#1E2B24;border:0;border-radius:999px;padding:8px 16px;font-weight:600;font-size:15px;box-shadow:0 2px 8px rgba(40,25,10,.2)}
+@media (hover:none){ .zoom{opacity:1} }
+.album-bar{flex:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;padding:6px 16px 16px}
+.turn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);display:grid;place-items:center}
+.turn:disabled{opacity:.35;cursor:default}
+.page-count{min-width:9em;text-align:center;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
+.album-tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-btn{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-weight:600;font-size:14px}
+.chip-btn[aria-pressed="true"]{background:var(--btn-bg);border-color:var(--btn-bg);color:var(--btn-ink)}
+.album-empty{padding:30px;text-align:center;color:var(--muted)}
+/* the turning leaf */
+.leaf{position:absolute;top:12px;width:var(--pw);height:var(--ph);transform-style:preserve-3d;z-index:5;pointer-events:none;transition:transform .62s cubic-bezier(.45,.05,.3,1)}
+.leaf .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.leaf .face .page{width:100%;height:100%}
+.leaf .back{transform:rotateY(180deg)}
+.leaf.fwd{left:calc(12px + var(--pw));transform-origin:left center}
+.book.single .leaf.fwd{left:12px}
+.leaf.bwd{left:12px;transform-origin:right center}
+.leaf .face::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.18));opacity:0;transition:opacity .62s}
+.leaf.turning .face::after{opacity:1}
+.drag-clone{position:fixed;z-index:100000;pointer-events:none;margin:0;padding:5px;background:var(--print);border-radius:3px;transform:translate(-50%,-50%) rotate(-2deg) scale(1.04);box-shadow:0 4px 4px rgba(30,20,10,.2),0 22px 40px rgba(45,28,10,.4)}
+.drag-clone img{display:block;width:100%;height:100%;object-fit:cover}
+.stage.is-over-album .book{box-shadow:0 0 0 3px var(--over),0 22px 48px rgba(10,30,20,.32)}
 
 /* ---------------------------------------------------------------
    Ranked slots
@@ -110,22 +145,21 @@ h1{font-family:var(--display);font-weight:700;font-size:34px;line-height:1.08;le
 .secondary{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 20px;font-weight:600}
 /* Hover and press, matching the site: primary darkens to mid-green, secondary fills, links get the orange underline.
    Photos lift with a deeper shadow but keep their place in the pile; only dropping one brings it to the front. */
-.primary,.secondary,.chip-btn,.tool,.linkbtn,.tray-slot,.slot-photo{transition:background-color .15s,border-color .15s,box-shadow .15s,color .15s}
+.primary,.secondary,.chip-btn,.tool,.linkbtn,.tray-slot,.slot-photo,.turn{transition:background-color .15s,border-color .15s,box-shadow .15s,color .15s}
 .primary:not(:disabled):active,.secondary:active,.chip-btn:active{transform:translateY(1px)}
 @media (hover:hover){
-  .photo:hover{box-shadow:0 2px 2px rgba(30,20,10,.25),0 16px 30px rgba(45,28,10,.34)}
+  .turn:not(:disabled):hover{background:var(--slot-empty);border-color:var(--ink)}
   .primary:not(:disabled):hover{background:var(--btn-hover)}
   .secondary:hover{background:var(--slot-empty);border-color:var(--ink)}
-  .chip-btn:hover{background:#FFFFFF;text-decoration:underline;text-decoration-color:#EE7331;text-decoration-thickness:2px;text-underline-offset:.3em}
+  .chip-btn:hover{border-color:var(--ink);text-decoration:underline;text-decoration-color:#EE7331;text-decoration-thickness:2px;text-underline-offset:.3em}
   .linkbtn:hover{text-decoration-color:#EE7331;text-decoration-thickness:2px}
   .tray-slot.filled:hover,.slot-drop .slot-photo:hover{box-shadow:0 2px 4px rgba(0,0,0,.25),0 8px 18px rgba(45,28,10,.28)}
 }
 
-.drag-clone{position:fixed;z-index:100000;pointer-events:none;margin:0;cursor:grabbing;box-shadow:0 4px 4px rgba(30,20,10,.2),0 22px 40px rgba(45,28,10,.4)}
 body.is-dragging,body.is-dragging *{cursor:grabbing !important}
 
 /* ---------------------------------------------------------------
-   Mobile tray (5 slots under the table)
+   Mobile tray (5 slots under the album)
 ---------------------------------------------------------------- */
 .m-head{padding:16px 18px 12px;background:var(--panel)}
 .m-head h1{font-size:26px;margin-bottom:4px}
@@ -193,7 +227,7 @@ dialog::backdrop{background:rgba(20,29,24,.7)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------------------------------------------------------------
-   Mobile: header, table and tray fill the screen; then the
+   Mobile: header, album and tray fill the screen; then the
    ranked list gets its own screen for the "why"
 ---------------------------------------------------------------- */
 @media (max-width: 820px){
@@ -202,15 +236,17 @@ dialog::backdrop{background:rgba(20,29,24,.7)}
   .m-only{display:block}
   .app{display:flex;flex-direction:column;height:100vh;height:100dvh}
   .app[data-step="choose"] .panel{display:none}
-  .app[data-step="choose"] .table{flex:1;min-height:0}
+  .app[data-step="choose"] .stage{flex:1;min-height:0}
   .app[data-step="explain"]{height:auto;min-height:100dvh}
-  .app[data-step="explain"] .m-head,.app[data-step="explain"] .table,.app[data-step="explain"] .tray{display:none}
+  .app[data-step="explain"] .m-head,.app[data-step="explain"] .stage,.app[data-step="explain"] .tray{display:none}
   .tray{display:flex}
   .panel{border-right:0;overflow:visible;padding:18px 18px 32px;flex:1}
   h1{font-size:28px}
-  .photo{--long:min(28vw,140px);padding:4px}
-  .table-hint{font-size:14px;left:10px;top:10px;padding:6px 10px}
-  .table-tools{right:10px;bottom:10px}
+  .album-wrap{padding:10px 12px 4px}
+  .album-bar{padding:4px 10px 10px;gap:6px 10px}
+  .page-count{min-width:6.5em;font-size:14px}
+  .chip-btn{padding:6px 12px;font-size:13px}
+  .turn{width:40px;height:40px}
   .slot{grid-template-columns:22px 1fr;gap:10px}
   .slot-drop{grid-column:2;width:min(260px,100%);height:auto;aspect-ratio:4/3}
   .slot-photo{touch-action:auto;cursor:default}
@@ -236,7 +272,7 @@ dialog::backdrop{background:rgba(20,29,24,.7)}
   <header class="m-head m-only">
     <p class="brand" style="margin-bottom:6px">The Cleveland Foundation</p>
     <h1>Images that Inspire</h1>
-    <p class="lede">Move the photos around. Drag the five that speak to you most into the tray, or tap one to see it larger.</p>
+    <p class="lede">Flip through the album and tap the five photos that speak to you most. Tap the magnifier to see one larger.</p>
   </header>
 
   <!-- Ranked panel (desktop left / mobile step 2) -->
@@ -244,7 +280,7 @@ dialog::backdrop{background:rgba(20,29,24,.7)}
     <button class="tool m-only" id="m-back" style="margin:0 0 12px -8px">← Back to the photos</button>
     <p class="brand">The Cleveland Foundation</p>
     <h1 id="d-title">Images that Inspire</h1>
-    <p class="lede d-only">Look over the photos on the table and move them around. Drag the five that speak to you most into the spaces below, strongest first, then tell us what each one means to you.</p>
+    <p class="lede d-only">Flip through the album. Click the five photos that speak to you most to bring them over here, then put them in order, strongest first, and tell us what each one means to you.</p>
     <p class="lede m-only">Put the photo that speaks to you most first, then tell us what each one means to you. Type, or tap the microphone and talk.</p>
     <ol class="slots" id="slots"></ol>
     <div class="submit-row">
@@ -253,10 +289,21 @@ dialog::backdrop{background:rgba(20,29,24,.7)}
     </div>
   </aside>
 
-  <!-- The table -->
-  <main class="table" id="table" aria-label="Photos on the table. Press Enter on a photo to see it larger and choose it.">
-    <p class="table-hint d-only">Drag photos to move them. Click one to see it larger.</p>
-    <div class="table-tools"><button class="chip-btn" id="shuffle">Shuffle the table</button></div>
+  <!-- The album -->
+  <main class="stage" id="stage" aria-label="Photo album">
+    <div class="album-wrap" id="albumWrap">
+      <div class="book" id="book" aria-live="polite"></div>
+    </div>
+    <div class="album-bar">
+      <button class="turn" id="prev" aria-label="Previous pages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span class="page-count" id="pageCount" aria-live="polite"></span>
+      <button class="turn" id="next" aria-label="Next pages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+      <div class="album-tools">
+        <button class="chip-btn" id="shuffle">Shuffle</button>
+        <button class="chip-btn" id="group" aria-pressed="false">Group by theme</button>
+        <button class="chip-btn" id="reset">Reset album</button>
+      </div>
+    </div>
   </main>
 
   <!-- Mobile tray -->
@@ -337,7 +384,7 @@ const CONFIG = Object.assign({
   slotCount: 5,
   points: [5, 4, 3, 2, 1],  // a pick's weight by rank, the same as the values card game
   speechLang: "en-US",
-  storageKey: "tcf-images-inspire-v1"
+  storageKey: "tcf-images-inspire-v2"   // v2: the album (v1 saved table positions)
 }, (HOST && HOST.TCF_PHOTO_SORT_CONFIG) || window.TCF_PHOTO_SORT_CONFIG || {});
 
 const DECK_VERSION = "tcf-photos-2026-11";
@@ -391,7 +438,7 @@ function score(picks){
 function buildSummaryPrompt(picks){
   const lines = picks.map(p =>
     `${p.rank}. A photo showing: ${BY_ID[p.photoId].alt}\n   Their words: ${p.reason}`).join("\n");
-  return `You are writing a short reflection for someone who just finished a photo card sort with The Cleveland Foundation, a community foundation in Northeast Ohio. From a table of photos of everyday life in the region, they chose the five that inspire them most, ranked them (1 = most), and said in their own words what each one means to them.
+  return `You are writing a short reflection for someone who just finished a photo card sort with The Cleveland Foundation, a community foundation in Northeast Ohio. From an album of photos of everyday life in the region, they chose the five that inspire them most, ranked them (1 = most), and said in their own words what each one means to them.
 
 Write one or two sentences, no more than 55 words, in the second person, warm and plain-spoken. Say what kind of person they seem to be and what they seem to care about. Ground every point in what they actually wrote; the photo descriptions are only context. Weave the picks together rather than listing them. Do not invent details about their life, family, faith, wealth or work beyond what they said. Do not mention money, giving, donations, funds, or the Foundation. Do not diagnose, judge, or flatter. Frame it as a reflection, e.g. “It sounds like…” or “You seem to be someone who…”, varying the opening naturally.
 
@@ -439,12 +486,13 @@ function normalize(v){
 const state = {
   slots: Array(CONFIG.slotCount).fill(null),
   reasons: {},     // keyed by photo id, so a reason travels with its photo
-  pos: {},         // photo id -> {x, y, r, z} in % of the table
-  z: 100,
+  order: PHOTOS.map(p=>p.id),   // the album's order; picked photos are skipped, and go back to their place
+  mode: "default", // "default" | "shuffled" | "theme"
+  page: 0,         // first page on screen (always even on a two-page spread)
   step: "choose"
 };
 function save(){
-  try { localStorage.setItem(CONFIG.storageKey, JSON.stringify({v:DECK_VERSION, slots:state.slots, reasons:state.reasons, pos:state.pos, z:state.z})); } catch(e){}
+  try { localStorage.setItem(CONFIG.storageKey, JSON.stringify({v:DECK_VERSION, slots:state.slots, reasons:state.reasons, order:state.order, mode:state.mode, page:state.page})); } catch(e){}
 }
 function restore(){
   try {
@@ -452,14 +500,17 @@ function restore(){
     if (!s || s.v !== DECK_VERSION) return false;
     if (Array.isArray(s.slots) && s.slots.length === CONFIG.slotCount) state.slots = s.slots.map(id => BY_ID[id] ? id : null);
     state.reasons = s.reasons || {};
-    if (s.pos && PHOTOS.every(p => s.pos[p.id])) { state.pos = s.pos; state.z = s.z || 100; return true; }
+    if (Array.isArray(s.order) && s.order.length === PHOTOS.length && PHOTOS.every(p => s.order.includes(p.id))) state.order = s.order;
+    if (["default","shuffled","theme"].includes(s.mode)) state.mode = s.mode;
+    state.page = Math.max(0, +s.page || 0);
+    return true;
   } catch(e){}
   return false;
 }
 function clearSaved(){ try { localStorage.removeItem(CONFIG.storageKey); } catch(e){} }
 
 const $ = s => document.querySelector(s);
-const app = $("#app"), table = $("#table"), slotsEl = $("#slots"), trayEl = $("#tray");
+const app = $("#app"), stage = $("#stage"), book = $("#book"), slotsEl = $("#slots"), trayEl = $("#tray");
 const mobileMQ = window.matchMedia("(max-width: 820px)");
 const isMobile = () => mobileMQ.matches;
 const rand = (a,b) => a + Math.random()*(b-a);
@@ -468,37 +519,43 @@ const words = s => (s||"").trim().split(/\s+/).filter(Boolean).length;
 const inSlots = id => state.slots.includes(id);
 const filled = () => state.slots.filter(Boolean).length;
 
-/* Spread the photos over a grid that matches the table's shape, then jitter. */
-function scatter(){
-  const r = table.getBoundingClientRect();
-  const aspect = r.width && r.height ? r.width / r.height : 1.4;
-  const n = PHOTOS.length;
-  const cols = Math.max(3, Math.round(Math.sqrt(n * aspect))), rows = Math.ceil(n / cols);
-  const cells = shuffle([...Array(cols*rows).keys()]).slice(0, n);
-  shuffle(PHOTOS.map(p=>p.id)).forEach((id,i)=>{
-    const c = cells[i], col = c % cols, row = Math.floor(c / cols);
-    state.pos[id] = {
-      x: Math.min(93, Math.max(7, (col+.5)/cols*100 + rand(-3,3))),
-      y: Math.min(92, Math.max(8, (row+.5)/rows*100 + rand(-3,3))),
-      r: rand(-12,12), z: i
-    };
-  });
-  state.z = 100;
+/* ===============================================================
+   The album's pages. Two photos a page; a two-page spread on desktop,
+   one page at a time on a phone. Grouped by theme, each theme starts
+   on a fresh page with its name at the top.
+================================================================ */
+const themeOf = id => {
+  const a = (BY_ID[id].areas || []).find(k => AREAS[k]);
+  return a ? AREAS[a].p[0] : "all";
+};
+const tilt = id => { let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) | 0; return ((Math.abs(h) % 7) - 3) * 0.7; };
+function pages(){
+  const left = state.order.filter(id => !inSlots(id));
+  const out = [];
+  if (state.mode === "theme" && PILLARS.length){
+    PILLARS.forEach(p => {
+      const ids = left.filter(id => themeOf(id) === p.k);
+      for (let i = 0; i < ids.length; i += 2) out.push({label:p.n, color:p.c, ids:ids.slice(i, i+2)});
+    });
+    const rest = left.filter(id => !PILLAR[themeOf(id)]);
+    for (let i = 0; i < rest.length; i += 2) out.push({label:"More photos", color:"#58635C", ids:rest.slice(i, i+2)});
+  } else {
+    for (let i = 0; i < left.length; i += 2) out.push({label:"", ids:left.slice(i, i+2)});
+  }
+  return out;
+}
+const perView = () => isMobile() ? 1 : 2;
+function clampPage(total){
+  const step = perView();
+  const max = Math.max(0, total - 1);
+  let p = Math.min(state.page, max);
+  if (step === 2) p -= p % 2;
+  state.page = Math.max(0, p);
 }
 
 /* ===============================================================
    Render
 ================================================================ */
-function photoEl(id){
-  const p = BY_ID[id];
-  const el = document.createElement("div");
-  el.className = "photo"; el.dataset.id = id;
-  el.style.setProperty("--ar", (p.w/p.h).toFixed(4));
-  const img = document.createElement("img");
-  img.src = thumb(id); img.alt = ""; img.draggable = false; img.decoding = "async";
-  el.appendChild(img);
-  return el;
-}
 function slotPhotoEl(id){
   const d = document.createElement("div");
   d.className = "slot-photo"; d.dataset.id = id;
@@ -510,22 +567,118 @@ function slotPhotoEl(id){
 
 function render(){
   stopMic();
-  renderTable(); renderSlots(); renderTray(); updateStatus(); save();
+  renderAlbum(); renderSlots(); renderTray(); updateStatus(); save();
 }
 
-function renderTable(){
-  table.querySelectorAll(".photo").forEach(n=>n.remove());
-  PHOTOS.forEach(({id})=>{
-    if (inSlots(id)) return;
-    const p = state.pos[id], el = photoEl(id);
-    el.style.left = p.x+"%"; el.style.top = p.y+"%";
-    el.style.setProperty("--r", p.r+"deg");
-    el.style.zIndex = p.z;
-    el.tabIndex = 0;
-    el.setAttribute("role","button");
-    el.setAttribute("aria-label", `Photo: ${BY_ID[id].alt} Press Enter to see it larger.`);
-    table.appendChild(el);
-  });
+/* Size the book to the space it has: pages keep a 0.72 width:height shape. */
+function sizeBook(){
+  const wrap = $("#albumWrap"), r = wrap.getBoundingClientRect();
+  const cs = getComputedStyle(wrap);
+  const w = r.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 24;
+  const h = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 24;
+  const n = perView(), ratio = 0.72;
+  let ph = Math.max(220, Math.min(h, (w / n) / ratio));
+  let pw = ph * ratio;
+  book.style.setProperty("--pw", Math.floor(pw) + "px");
+  book.style.setProperty("--ph", Math.floor(ph) + "px");
+  stage.style.setProperty("--pw", Math.floor(pw) + "px");
+  stage.style.setProperty("--ph", Math.floor(ph) + "px");
+}
+
+function pageEl(pg, idx, side){
+  const el = document.createElement("section");
+  el.className = "page " + side;
+  if (!pg){ el.innerHTML = '<div class="cells"><div class="cell"></div></div>'; return el; }
+  el.setAttribute("aria-label", `Page ${idx+1}`);
+  const label = document.createElement("p");
+  label.className = "page-label";
+  if (pg.label){ label.innerHTML = `<i style="background:${pg.color}"></i>`; label.append(pg.label); }
+  el.appendChild(label);
+  const cells = document.createElement("div"); cells.className = "cells";
+  for (let k = 0; k < 2; k++){
+    const id = pg.ids[k], cell = document.createElement("div");
+    cell.className = "cell";
+    if (id){
+      const b = document.createElement("div");
+      b.className = "aphoto"; b.dataset.id = id; b.tabIndex = 0;
+      b.setAttribute("role", "button");
+      b.setAttribute("aria-label", `Choose this photo: ${BY_ID[id].alt}`);
+      b.style.setProperty("--ar", (BY_ID[id].w / BY_ID[id].h).toFixed(4));
+      b.style.setProperty("--r", tilt(id) + "deg");
+      b.innerHTML = `<img alt="" draggable="false" decoding="async"><span class="pick-hint">Add to my five</span>
+        <button class="zoom" data-zoom="${id}" aria-label="See this photo larger" tabindex="-1"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></button>`;
+      b.querySelector("img").src = thumb(id);
+      cell.appendChild(b);
+    }
+    cells.appendChild(cell);
+  }
+  el.appendChild(cells);
+  const num = document.createElement("span"); num.className = "page-num"; num.textContent = idx + 1;
+  el.appendChild(num);
+  return el;
+}
+
+function renderAlbum(){
+  const pgs = pages(), n = perView();
+  clampPage(pgs.length);
+  book.classList.toggle("single", n === 1);
+  sizeBook();
+  book.innerHTML = "";
+  if (!pgs.length){
+    book.innerHTML = '<div class="page" style="--pw:var(--pw)"><p class="album-empty">Every photo is in your five. Put one back to see it here again.</p></div>';
+  } else if (n === 1){
+    book.appendChild(pageEl(pgs[state.page], state.page, "single"));
+  } else {
+    book.appendChild(pageEl(pgs[state.page], state.page, "left"));
+    book.appendChild(pageEl(pgs[state.page+1], state.page+1, "right"));
+  }
+  const last = Math.min(pgs.length, state.page + n);
+  $("#pageCount").textContent = !pgs.length ? "" : n === 1 ? `Page ${state.page+1} of ${pgs.length}` : `Pages ${state.page+1}${last > state.page+1 ? "–"+last : ""} of ${pgs.length}`;
+  $("#prev").disabled = state.page === 0;
+  $("#next").disabled = state.page + n >= pgs.length;
+  $("#group").setAttribute("aria-pressed", state.mode === "theme");
+  $("#group").textContent = state.mode === "theme" ? "Grouped by theme" : "Group by theme";
+}
+
+/* Turn a page: a leaf lifts off and swings across the spine. */
+let turning = false;
+function turn(dir){
+  const pgs = pages(), n = perView();
+  const to = state.page + dir * n;
+  if (turning || to < 0 || to >= pgs.length) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce){ state.page = to; renderAlbum(); save(); return; }
+  turning = true;
+  const leaf = document.createElement("div");
+  leaf.className = "leaf " + (dir > 0 ? "fwd" : "bwd");
+  const front = document.createElement("div"), back = document.createElement("div");
+  front.className = "face front"; back.className = "face back";
+  if (n === 1){
+    front.appendChild(pageEl(pgs[state.page], state.page, "single"));
+    back.appendChild(pageEl(pgs[to], to, "single"));
+    leaf.classList.remove("bwd"); leaf.classList.add("fwd");
+    leaf.style.transformOrigin = dir > 0 ? "left center" : "right center";
+  } else if (dir > 0){
+    front.appendChild(pageEl(pgs[state.page+1], state.page+1, "right"));
+    back.appendChild(pageEl(pgs[to], to, "left"));
+  } else {
+    front.appendChild(pageEl(pgs[state.page], state.page, "left"));
+    back.appendChild(pageEl(pgs[to+1], to+1, "right"));
+  }
+  leaf.append(front, back);
+  // under the leaf, the pages that will be showing once it lands
+  const keep = book.children;
+  if (n === 1){ keep[0].replaceWith(pageEl(pgs[to], to, "single")); }
+  else if (dir > 0){ keep[1].replaceWith(pageEl(pgs[to+1], to+1, "right")); }
+  else { keep[0].replaceWith(pageEl(pgs[to], to, "left")); }
+  book.appendChild(leaf);
+  void leaf.offsetWidth;
+  leaf.classList.add("turning");
+  leaf.style.transform = n === 1 ? `rotateY(${dir > 0 ? -100 : 100}deg)` : `rotateY(${dir > 0 ? -180 : 180}deg)`;
+  if (n === 1) leaf.style.opacity = "0", leaf.style.transition = "transform .55s cubic-bezier(.45,.05,.3,1), opacity .55s ease-in";
+  const done = () => { if (!turning) return; turning = false; state.page = to; renderAlbum(); save(); };
+  leaf.addEventListener("transitionend", e => { if (e.target === leaf && e.propertyName === "transform") done(); });   /* only the leaf's own swing, not a photo's hover inside it */
+  setTimeout(done, 800);   // in case the transition never reports back
 }
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -549,7 +702,7 @@ function renderSlots(){
           <button class="tool" data-act="view">See larger</button>
           <button class="tool" data-act="up" ${i===0?"disabled":""}>Move up</button>
           <button class="tool" data-act="down" ${i===state.slots.length-1?"disabled":""}>Move down</button>
-          <button class="tool" data-act="remove">Back to table</button>
+          <button class="tool" data-act="remove">Back to album</button>
         </div>
       </div>`;
     const drop = li.querySelector(".slot-drop"), label = li.querySelector("label"), ta = li.querySelector("textarea");
@@ -560,7 +713,7 @@ function renderSlots(){
       ta.placeholder = SR ? "Type, or tap the mic and talk" : "Type your answer";
       li.querySelector(".mic").setAttribute("aria-label", `Speak your answer for photo ${i+1}`);
     } else {
-      drop.innerHTML = `<span class="placeholder">${isMobile() ? "Choose another photo" : "Drop a photo here"}</span>`;
+      drop.innerHTML = `<span class="placeholder">${isMobile() ? "Choose another photo" : "Click a photo in the album"}</span>`;
       label.textContent = `Photo ${i+1}`;
     }
     slotsEl.appendChild(li);
@@ -610,25 +763,25 @@ function placeInSlot(id, i, origin){
     const t = state.slots[i]; state.slots[i] = id; state.slots[origin] = t;
   } else {
     const displaced = state.slots[i];
-    if (displaced) returnToTable(displaced);
     state.slots[i] = id;
   }
 }
 function addToFirstEmpty(id){
   const i = state.slots.indexOf(null);
-  if (i === -1){ toast(isMobile() ? "Your five are full. Drag a photo onto a space to swap it." : "All five spaces are full. Drag a photo onto a space to swap it."); return -1; }
+  if (i === -1){ toast(isMobile() ? "Your five are full. Put one back to choose another." : "All five spaces are full. Put one back, or drag this photo onto a space to swap it."); return -1; }
   state.slots[i] = id;
   return i;
 }
-function returnToTable(id, x, y){
-  const p = state.pos[id];
-  p.x = x ?? rand(30,70); p.y = y ?? rand(30,70); p.r = rand(-10,10); p.z = ++state.z;
+function returnToAlbum(id){
+  /* the photo goes back to its own place in the album; show the page it lands on */
+  const pgs = pages(), at = pgs.findIndex(pg => pg.ids.includes(id));
+  if (at > -1) state.page = at - (perView() === 2 ? at % 2 : 0);
 }
 function removeAt(i){
   const id = state.slots[i];
   if (!id) return;
   state.slots[i] = null;
-  returnToTable(id);
+  returnToAlbum(id);
 }
 function moveSlot(i, dir){
   const j = i + dir;
@@ -642,95 +795,117 @@ function toast(msg){
 }
 
 /* ===============================================================
-   Drag and drop (pointer events: mouse, pen and touch)
+   Choosing, dragging and swiping (pointer events: mouse, pen, touch).
+   Click or tap an album photo to add it to your five. On desktop you
+   can also drag it onto a space; drag a pick back onto the album to
+   return it. On a phone, swipe the album to turn the page.
 ================================================================ */
+function choose(id){
+  const i = addToFirstEmpty(id);
+  if (i < 0) return;
+  render();
+  const n = filled();
+  if (n === CONFIG.slotCount) toast(isMobile() ? "That’s five. Tap Next to tell us why." : "That’s five. Now put them in order and tell us what each one means to you.");
+  else toast(`Added as #${i+1}. ${CONFIG.slotCount - n} to go.`);
+}
 let drag = null;
 document.addEventListener("pointerdown", e=>{
-  if (e.button !== 0) return;
-  const src = e.target.closest("#table .photo, .slot-drop .slot-photo, .tray-slot.filled");
-  if (!src) return;
-  // On a phone the ranked list scrolls; its photos open the viewer instead of dragging.
+  if (e.button !== 0 || turning) return;
+  if (e.target.closest(".zoom")) return;
+  const src = e.target.closest("#book .aphoto, .slot-drop .slot-photo, .tray-slot.filled");
+  if (!src){
+    if (e.target.closest("#albumWrap")) drag = {swipe:true, sx:e.clientX, sy:e.clientY, pid:e.pointerId};
+    return;
+  }
   if (isMobile() && src.classList.contains("slot-photo")) return;
   const slot = src.closest("[data-i]");
-  drag = {id: src.dataset.id, el: src, origin: slot ? +slot.dataset.i : "table",
+  drag = {id: src.dataset.id, el: src, origin: slot ? +slot.dataset.i : "album",
           sx: e.clientX, sy: e.clientY, pid: e.pointerId, started: false};
-  if (drag.origin === "table") e.preventDefault();
 });
 window.addEventListener("pointermove", e=>{
-  if (!drag || e.pointerId !== drag.pid) return;
+  if (!drag || e.pointerId !== drag.pid || drag.swipe) return;
   if (!drag.started){
-    if (Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) < 6) return;
+    if (Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) < 8) return;
+    // on a phone, a horizontal move on an album photo turns the page instead of dragging it
+    if (isMobile() && drag.origin === "album"){ drag = {swipe:true, sx:drag.sx, sy:drag.sy, pid:drag.pid}; return; }
     startDrag(e);
   }
-  drag.clone.style.left = (e.clientX - drag.offX) + "px";
-  drag.clone.style.top = (e.clientY - drag.offY) + "px";
+  drag.clone.style.left = e.clientX + "px";
+  drag.clone.style.top = e.clientY + "px";
   const over = dropTarget(e.clientX, e.clientY);
   document.querySelectorAll(".is-over").forEach(s=>{ if (s !== over) s.classList.remove("is-over"); });
   if (over) over.classList.add("is-over");
+  stage.classList.toggle("is-over-album", drag.origin !== "album" && !!overAlbum(e.clientX, e.clientY));
 }, {passive:true});
-function dropTarget(x, y){
-  const t = document.elementFromPoint(x, y);
-  return t?.closest(".slot, .tray-slot") || null;
-}
+function dropTarget(x, y){ return document.elementFromPoint(x, y)?.closest(".slot, .tray-slot") || null; }
+function overAlbum(x, y){ return document.elementFromPoint(x, y)?.closest("#stage"); }
 function startDrag(e){
-  const r = drag.el.getBoundingClientRect();
-  drag.offX = e.clientX - (r.left + r.width/2); drag.offY = e.clientY - (r.top + r.height/2);
-  const p = BY_ID[drag.id];
-  const clone = photoEl(drag.id);
-  clone.classList.add("drag-clone");
-  // keep the print the size it was on the table; slot and tray photos grow to table size
-  const tableSize = drag.origin === "table" ? drag.el.offsetWidth : Math.min(170, r.width * 1.6);
-  clone.style.width = tableSize + "px";
-  const rot = drag.origin === "table" ? state.pos[drag.id].r * 0.4 : 0;
-  clone.style.transform = `translate(-50%,-50%) rotate(${rot}deg) scale(1.05)`;
-  clone.style.setProperty("--ar", (p.w/p.h).toFixed(4));
+  const r = drag.el.getBoundingClientRect(), p = BY_ID[drag.id];
+  const clone = document.createElement("div");
+  clone.className = "drag-clone";
+  const w = drag.origin === "album" ? r.width : Math.min(180, r.width * 1.5);
+  clone.style.width = w + "px"; clone.style.height = (w / (p.w/p.h)) + "px";
+  clone.innerHTML = '<img alt="">'; clone.querySelector("img").src = thumb(drag.id);
+  clone.style.left = e.clientX + "px"; clone.style.top = e.clientY + "px";
   document.body.appendChild(clone);
   drag.clone = clone; drag.started = true;
   drag.el.style.visibility = "hidden";
   document.body.classList.add("is-dragging");
-  if (drag.el.hasPointerCapture?.(drag.pid)) drag.el.releasePointerCapture(drag.pid);
 }
 window.addEventListener("pointerup", e=>{
   if (!drag || e.pointerId !== drag.pid) return;
   const d = drag; drag = null;
-  if (!d.started){ openViewer(d.id); return; }
+  if (d.swipe){
+    const dx = e.clientX - d.sx, dy = e.clientY - d.sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) turn(dx < 0 ? 1 : -1);
+    return;
+  }
+  if (!d.started){
+    if (d.origin === "album") choose(d.id); else openViewer(d.id);
+    return;
+  }
   d.clone.remove();
   document.body.classList.remove("is-dragging");
+  stage.classList.remove("is-over-album");
   document.querySelectorAll(".is-over").forEach(s=>s.classList.remove("is-over"));
   const target = dropTarget(e.clientX, e.clientY);
-  const onTable = document.elementFromPoint(e.clientX, e.clientY)?.closest("#table");
   if (target){
-    placeInSlot(d.id, +target.dataset.i, d.origin);
-    if (d.origin === "table" && filled() === CONFIG.slotCount && isMobile()) toast("That’s five. Tap Next to tell us why.");
-  } else if (onTable){
-    const tr = table.getBoundingClientRect();
-    const x = Math.min(95, Math.max(5, (e.clientX - d.offX - tr.left)/tr.width*100));
-    const y = Math.min(95, Math.max(5, (e.clientY - d.offY - tr.top)/tr.height*100));
-    if (d.origin === "table"){
-      const p = state.pos[d.id];
-      p.x = x; p.y = y; p.z = ++state.z; p.r = p.r * 0.6 + rand(-4,4);
+    const i = +target.dataset.i;
+    if (d.origin === "album"){
+      const displaced = state.slots[i];
+      state.slots[i] = d.id;
+      if (displaced) toast("Swapped. The other photo went back into the album.");
     } else {
-      state.slots[d.origin] = null;
-      returnToTable(d.id, x, y);
+      const t = state.slots[i]; state.slots[i] = d.id; state.slots[d.origin] = t;
     }
+  } else if (d.origin !== "album" && overAlbum(e.clientX, e.clientY)){
+    removeAt(d.origin);
   }
   d.el.style.visibility = "";
   render();
 });
 window.addEventListener("pointercancel", ()=>{
   if (!drag) return;
-  drag.clone?.remove(); drag.el.style.visibility = "";
+  if (!drag.swipe){ drag.clone?.remove(); if (drag.el) drag.el.style.visibility = ""; }
   document.body.classList.remove("is-dragging");
+  stage.classList.remove("is-over-album");
   document.querySelectorAll(".is-over").forEach(s=>s.classList.remove("is-over"));
   drag = null;
 });
 
-/* Keyboard: Enter or Space on a table photo opens it */
-table.addEventListener("keydown", e=>{
-  const ph = e.target.closest(".photo");
-  if (!ph || (e.key !== "Enter" && e.key !== " ")) return;
-  e.preventDefault();
-  openViewer(ph.dataset.id);
+/* Keyboard: Enter or Space on an album photo chooses it; arrow keys turn the page */
+book.addEventListener("keydown", e=>{
+  const ph = e.target.closest(".aphoto");
+  if (ph && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); choose(ph.dataset.id); }
+});
+stage.addEventListener("keydown", e=>{
+  if (e.target.closest("textarea, input")) return;
+  if (e.key === "ArrowRight"){ e.preventDefault(); turn(1); }
+  if (e.key === "ArrowLeft"){ e.preventDefault(); turn(-1); }
+});
+book.addEventListener("click", e=>{
+  const z = e.target.closest(".zoom");
+  if (z){ e.stopPropagation(); openViewer(z.dataset.zoom); }
 });
 trayEl.addEventListener("keydown", e=>{
   const b = e.target.closest(".tray-slot.filled");
@@ -751,7 +926,7 @@ function openViewer(id){
   const at = state.slots.indexOf(id), act = $("#viewer-act"), note = $("#viewer-note");
   if (at > -1){
     note.textContent = `Your pick #${at+1}`;
-    act.textContent = "Put back on the table"; act.disabled = false; act.dataset.do = "remove";
+    act.textContent = "Put back in the album"; act.disabled = false; act.dataset.do = "remove";
   } else if (filled() === CONFIG.slotCount){
     note.textContent = "Your five are full. Put one back to choose this.";
     act.textContent = "Choose this photo"; act.disabled = true; act.dataset.do = "";
@@ -847,7 +1022,29 @@ function setStep(step){
 }
 $("#m-next").addEventListener("click", ()=>{ setStep("explain"); render(); });
 $("#m-back").addEventListener("click", ()=>{ setStep("choose"); render(); });
-$("#shuffle").addEventListener("click", ()=>{ scatter(); render(); });
+$("#prev").addEventListener("click", ()=>turn(-1));
+$("#next").addEventListener("click", ()=>turn(1));
+$("#shuffle").addEventListener("click", ()=>{
+  state.order = shuffle(state.order); state.mode = "shuffled"; state.page = 0; render();
+  toast("Album shuffled.");
+});
+$("#group").addEventListener("click", ()=>{
+  state.mode = state.mode === "theme" ? "default" : "theme"; state.page = 0;
+  if (state.mode === "default") state.order = PHOTOS.map(p=>p.id);
+  render();
+  toast(state.mode === "theme" ? "Grouped by impact area. Each theme starts on a new page." : "Back to the original order.");
+});
+$("#reset").addEventListener("click", ()=>{
+  const picks = filled();
+  if (picks && !confirm("Reset the album? Your " + picks + " chosen photo" + (picks>1?"s go":" goes") + " back into the album, in the original order. What you wrote is kept if you choose them again.")) return;
+  state.order = PHOTOS.map(p=>p.id); state.mode = "default"; state.page = 0;
+  state.slots = Array(CONFIG.slotCount).fill(null);
+  if (isMobile()) setStep("choose");
+  render();
+  toast("Album reset.");
+});
+let resizeT;
+window.addEventListener("resize", ()=>{ clearTimeout(resizeT); resizeT = setTimeout(()=>{ if (!turning) renderAlbum(); }, 80); });
 
 /* ===============================================================
    Reveal and results
@@ -956,7 +1153,8 @@ $("#r-restart").addEventListener("click", ()=>{
   state.slots = Array(CONFIG.slotCount).fill(null);
   state.reasons = {};
   clearSaved();
-  setStep("choose"); scatter(); render();
+  state.order = PHOTOS.map(p=>p.id); state.mode = "default"; state.page = 0;
+  setStep("choose"); render();
 });
 
 mobileMQ.addEventListener("change", ()=>{ if (!isMobile()) setStep("choose"); render(); });
@@ -964,7 +1162,7 @@ mobileMQ.addEventListener("change", ()=>{ if (!isMobile()) setStep("choose"); re
 /* Expose the pieces the portal and backend reuse */
 window.TCFPhotoSort = { PHOTOS, DECK_VERSION, score, buildSummaryPrompt };
 
-if (!restore()) scatter();
+restore();
 render();
 })();
 </script>
